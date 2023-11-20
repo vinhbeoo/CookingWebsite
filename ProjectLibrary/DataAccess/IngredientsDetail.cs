@@ -11,5 +11,5 @@ public partial class IngredientsDetail
 
     public string Description { get; set; } = null!;
 
-    public virtual IngredientsGroup Ingredient { get; set; } = null!;
+    public virtual IngredientsGroup? Ingredient { get; set; } = null!;
 }

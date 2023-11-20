@@ -9,5 +9,5 @@ public partial class Type
 
     public string TypeName { get; set; } = null!;
 
-    public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+    public virtual ICollection<Recipe>? Recipes { get; set; } = new List<Recipe>();
 }

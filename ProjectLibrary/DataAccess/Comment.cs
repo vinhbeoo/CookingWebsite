@@ -13,7 +13,7 @@ public partial class Comment
 
     public string CommentText { get; set; } = null!;
 
-    public virtual Recipe Recipe { get; set; } = null!;
+    public virtual Recipe? Recipe { get; set; } = null!;
 
-    public virtual User User { get; set; } = null!;
+    public virtual User? User { get; set; } = null!;
 }
