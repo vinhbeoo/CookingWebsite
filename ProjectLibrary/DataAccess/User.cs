@@ -17,21 +17,21 @@ public partial class User
 
     public string? Status { get; set; }
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<Comment>? Comments { get; set; } = new List<Comment>();
 
-    public virtual ICollection<Contest> Contests { get; set; } = new List<Contest>();
+    public virtual ICollection<Contest>? Contests { get; set; } = new List<Contest>();
 
-    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+    public virtual ICollection<Rating>? Ratings { get; set; } = new List<Rating>();
 
-    public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+    public virtual ICollection<Recipe>? Recipes { get; set; } = new List<Recipe>();
 
     public virtual Role? Role { get; set; }
 
-    public virtual ICollection<UserActivity> UserActivities { get; set; } = new List<UserActivity>();
+    public virtual ICollection<UserActivity>? UserActivities { get; set; } = new List<UserActivity>();
 
     public virtual UserDetail? UserDetail { get; set; }
 
-    public virtual ICollection<UserRegHistory> UserRegHistories { get; set; } = new List<UserRegHistory>();
+    public virtual ICollection<UserRegHistory>? UserRegHistories { get; set; } = new List<UserRegHistory>();
 
-    public virtual ICollection<WinnerInfo> WinnerInfos { get; set; } = new List<WinnerInfo>();
+    public virtual ICollection<WinnerInfo>? WinnerInfos { get; set; } = new List<WinnerInfo>();
 }

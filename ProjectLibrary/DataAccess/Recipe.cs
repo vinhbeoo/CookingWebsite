@@ -43,19 +43,19 @@ public partial class Recipe
 
     public int Rating { get; set; }
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public virtual ICollection<Comment>? Comments { get; set; } = new List<Comment>();
 
     public virtual Contest? Contest { get; set; }
 
-    public virtual User CreatorNavigation { get; set; } = null!;
+    public virtual User? CreatorNavigation { get; set; } = null!;
 
-    public virtual ICollection<IngredientsGroup> IngredientsGroups { get; set; } = new List<IngredientsGroup>();
+    public virtual ICollection<IngredientsGroup>? IngredientsGroups { get; set; } = new List<IngredientsGroup>();
 
-    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+    public virtual ICollection<Rating>? Ratings { get; set; } = new List<Rating>();
 
-    public virtual ICollection<RecipesStep> RecipesSteps { get; set; } = new List<RecipesStep>();
+    public virtual ICollection<RecipesStep>? RecipesSteps { get; set; } = new List<RecipesStep>();
 
-    public virtual Tag Tag { get; set; } = null!;
+    public virtual Tag? Tag { get; set; } = null!;
 
     public virtual Type? Type { get; set; }
 }

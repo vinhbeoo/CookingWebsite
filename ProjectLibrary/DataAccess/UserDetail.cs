@@ -17,5 +17,5 @@ public partial class UserDetail
 
     public string? Avatar { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public virtual User? User { get; set; } = null!;
 }

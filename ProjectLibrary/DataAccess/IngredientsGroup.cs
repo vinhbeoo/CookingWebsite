@@ -11,7 +11,7 @@ public partial class IngredientsGroup
 
     public int? RecipeId { get; set; }
 
-    public virtual ICollection<IngredientsDetail> IngredientsDetails { get; set; } = new List<IngredientsDetail>();
+    public virtual ICollection<IngredientsDetail>? IngredientsDetails { get; set; } = new List<IngredientsDetail>();
 
     public virtual Recipe? Recipe { get; set; }
 }

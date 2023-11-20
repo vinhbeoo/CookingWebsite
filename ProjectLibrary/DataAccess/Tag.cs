@@ -9,5 +9,5 @@ public partial class Tag
 
     public string? NameTags { get; set; }
 
-    public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+    public virtual ICollection<Recipe>? Recipes { get; set; } = new List<Recipe>();
 }
