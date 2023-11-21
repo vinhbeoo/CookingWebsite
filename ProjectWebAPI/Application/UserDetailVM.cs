@@ -1,4 +1,4 @@
-﻿namespace ProjectWebAPI.ViewModel
+﻿namespace ProjectWebAPI.Application
 {
     public class UserDetailVM
     {
