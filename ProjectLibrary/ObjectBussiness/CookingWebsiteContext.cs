@@ -43,11 +43,13 @@ public partial class CookingWebsiteContext : DbContext
 
     public virtual DbSet<UserRegHistory> UserRegHistories { get; set; }
 
+    public virtual DbSet<Notification> Notifications { get; set; }
+
     public virtual DbSet<WinnerInfo> WinnerInfos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=VINHBEOO\\SQLEXPRESS; database=CookingWebsite;uid=;pwd=;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
+        => optionsBuilder.UseSqlServer("Data Source=ADMIN\\SQLEXPRESS; database=CookingWebsite;User ID=sa;Password=123456;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -166,6 +168,7 @@ public partial class CookingWebsiteContext : DbContext
                 .HasForeignKey(d => d.TypeId)
                 .HasConstraintName("FK_Recipes_Type");
         });
+        
 
         modelBuilder.Entity<RecipesStep>(entity =>
         {
@@ -259,6 +262,12 @@ public partial class CookingWebsiteContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__UserDetai__UserI__5165187F");
         });
+
+        modelBuilder.Entity<Notification>()
+        .HasOne(n => n.User)
+        .WithMany(u => u.Notifications)
+        .HasForeignKey(n => n.UserId);
+        
 
         modelBuilder.Entity<UserRegHistory>(entity =>
         {

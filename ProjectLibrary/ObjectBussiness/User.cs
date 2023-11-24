@@ -34,4 +34,5 @@ public partial class User
     public virtual ICollection<UserRegHistory> UserRegHistories { get; set; } = new List<UserRegHistory>();
 
     public virtual ICollection<WinnerInfo> WinnerInfos { get; set; } = new List<WinnerInfo>();
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 }
