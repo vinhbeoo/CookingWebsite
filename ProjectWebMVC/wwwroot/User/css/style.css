@@ -2781,6 +2781,22 @@ textarea{
 	font-size:50px;
 }
 
+/* CONTESTS SECTION* -------------------------- */
+
+.contests {
+    background: url(../images/bg_contests.jpg) no-repeat center;
+    background-size: 100%;
+    color: #fff;
+}
+
+    .contests .bwt-offset-top-20 {
+        margin-top: 20px;
+    }
+
+    .contests p {
+    color: #fff;
+}
+
 /* TEAM SECTION* -------------------------- */	
 
 .team {
@@ -2873,14 +2889,32 @@ textarea{
 	height: 100% !important;
 }
 
-/* CONTACT SECTION* -------------------------- */	
+/* REGISTER SECTION* -------------------------- */	
 
-.contact {
+.register {
 	background:#f2f2f2;
 }
-.contact .bwt-offset-top-20 {
+.register .bwt-offset-top-20 {
 	margin-top:20px;
 }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+    .form-group label {
+        margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .form-group .form-control-file {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
 
 /* FOOTER SECTION* -------------------------- */	
 

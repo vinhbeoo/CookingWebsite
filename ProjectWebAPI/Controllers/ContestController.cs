@@ -18,19 +18,17 @@ namespace ProjectWebAPI.Controllers
         public ActionResult<IEnumerable<Contest>> GetProducts() => repository.GetContests();
 
         // GET api/<ContestController>/5
-        [HttpGet("{id}")]
-        public ActionResult<Contest> GetContestById(int id)
+        [HttpGet("{contestId}")]
+        public ActionResult<Contest> GetContestById(int contestId)
         {
-            var contest = repository.GetContestById(id);
+            var contest = repository.GetContestById(contestId);
             if (contest == null)
             {
                 return NotFound(); // Trả về lỗi 404 nếu không tìm thấy sản phẩm
             }
-
             return contest;
         }
 
-        // POST api/<ContestController>
         [HttpPost]
         public IActionResult CreateContest([FromBody] ContestDTO contestDTO)
         {
@@ -48,7 +46,6 @@ namespace ProjectWebAPI.Controllers
                 StartTime = contestDTO.StartTime,
                 EndTime = contestDTO.EndTime,
                 OwnerUserId = contestDTO.OwnerUserId,
-                RecipeId = contestDTO.RecipeId
             };
 
             // Gọi dịch vụ để thêm cuộc thi vào cơ sở dữ liệu
@@ -80,7 +77,6 @@ namespace ProjectWebAPI.Controllers
             existingContest.StartTime = updatedContestDTO.StartTime;
             existingContest.EndTime = updatedContestDTO.EndTime;
             existingContest.OwnerUserId = updatedContestDTO.OwnerUserId;
-            existingContest.RecipeId = updatedContestDTO.RecipeId;
 
             // Gọi dịch vụ để lưu thay đổi vào cơ sở dữ liệu
             repository.UpdateContest(existingContest);
@@ -90,16 +86,16 @@ namespace ProjectWebAPI.Controllers
         }
 
         // DELETE api/<ContestController>/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteContest(int id)
+        [HttpDelete("{contestId}")]
+        public IActionResult DeleteContest(int contestId)
         {
-            var temp = repository.GetContestById(id);
-            if (temp == null)
+            var contest = repository.GetContestById(contestId);
+            if (contest == null)
             {
                 return NotFound();
             }
-            repository.DeleteContest(temp);
-            return NoContent();
+            repository.DeleteContest(contest);
+            return Ok("Contest Delete successfully");
         }
     }
 }

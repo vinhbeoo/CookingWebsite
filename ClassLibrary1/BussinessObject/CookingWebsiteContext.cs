@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProjectLibrary.ObjectBussiness;
+namespace ClassLibrary1.BussinessObject;
 
 public partial class CookingWebsiteContext : DbContext
 {
@@ -218,9 +218,9 @@ public partial class CookingWebsiteContext : DbContext
         {
             entity.HasKey(e => e.TagId).HasName("PK__Tags__9FCD3F7E1BFA9C7C");
 
-            entity.HasIndex(e => e.TagName, "UQ__Tags__2EAE8F47CB170E55").IsUnique();
+            entity.HasIndex(e => e.NameTags, "UQ__Tags__2EAE8F47CB170E55").IsUnique();
 
-            entity.Property(e => e.TagName).HasMaxLength(50);
+            entity.Property(e => e.NameTags).HasMaxLength(50);
         });
 
         modelBuilder.Entity<User>(entity =>

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectLibrary", "ProjectLibrary\ProjectLibrary.csproj", "{81C07FC5-6BC0-408B-B17C-B6EF9A77ACA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectLibrary", "ProjectLibrary\ProjectLibrary.csproj", "{81C07FC5-6BC0-408B-B17C-B6EF9A77ACA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectWebAPI", "ProjectWebAPI\ProjectWebAPI.csproj", "{9B61C583-2779-424B-A20F-81C908D0CEA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectWebAPI", "ProjectWebAPI\ProjectWebAPI.csproj", "{9B61C583-2779-424B-A20F-81C908D0CEA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectWebMVC", "ProjectWebMVC\ProjectWebMVC.csproj", "{CBCDCA23-DDE6-48B0-AF87-47C516198AE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectWebMVC", "ProjectWebMVC\ProjectWebMVC.csproj", "{CBCDCA23-DDE6-48B0-AF87-47C516198AE9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

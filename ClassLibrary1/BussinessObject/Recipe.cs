@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ProjectLibrary.ObjectBussiness;
+namespace ClassLibrary1.BussinessObject;
 
 public partial class Recipe
 {
@@ -42,7 +42,8 @@ public partial class Recipe
     public int? ContestId { get; set; }
 
     public int Rating { get; set; }
-    public Boolean ReadFree { get; set; }
+
+    public virtual Category? Category { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
@@ -57,6 +58,4 @@ public partial class Recipe
     public virtual ICollection<RecipesStep> RecipesSteps { get; set; } = new List<RecipesStep>();
 
     public virtual Tag Tag { get; set; } = null!;
-
-    public virtual Category? Category { get; set; }
 }

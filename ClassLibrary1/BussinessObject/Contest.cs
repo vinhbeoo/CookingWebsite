@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ProjectLibrary.ObjectBussiness;
+namespace ClassLibrary1.BussinessObject;
 
 public partial class Contest
 {

@@ -8,6 +8,5 @@
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public int OwnerUserId { get; set; }
-        public int RecipeId { get; set; }
     }
 }
