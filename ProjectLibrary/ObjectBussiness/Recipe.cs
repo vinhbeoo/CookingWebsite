@@ -37,11 +37,12 @@ public partial class Recipe
 
     public string? Protein { get; set; }
 
-    public int? TypeId { get; set; }
+    public int? CategoryId { get; set; }
 
     public int? ContestId { get; set; }
 
     public int Rating { get; set; }
+    public Boolean ReadFree { get; set; }
 
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
@@ -57,5 +58,5 @@ public partial class Recipe
 
     public virtual Tag Tag { get; set; } = null!;
 
-    public virtual Type? Type { get; set; }
+    public virtual Category? Category { get; set; }
 }

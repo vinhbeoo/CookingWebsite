@@ -7,13 +7,17 @@ using ProjectLibrary.ObjectBussiness;
 
 namespace ProjectLibrary.DataAccess
 {
+    /// <summary>
+    /// Đây là lớp DAO (Data Access Object) dùng để thao tác với cơ sở dữ liệu liên quan đến cuộc thi.
+    /// </summary>
     public class ContestDAO
     {
         private static ContestDAO instance = null;
         private static readonly object instanceLock = new object();
+
+        //Thể hiện duy nhất của lớp ContestDAO, sử dụng mẫu thiết kế Singleton.
         public static ContestDAO Instance
         {
-            //Singlestone pattern
             get
             {
                 lock (instanceLock)
@@ -27,6 +31,7 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
+        //Lấy danh sách tất cả cuộc thi từ cơ sở dữ liệu.
         public List<Contest> GetContests()
         {
             var list = new List<Contest>();
@@ -39,35 +44,58 @@ namespace ProjectLibrary.DataAccess
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                // Xử lý ngoại lệ và ném ngoại lệ mới với thông điệp lỗi.
+                throw new Exception("Error retrieving contest list: " + ex.Message);
             }
             return list;
         }
 
-        public Contest FindContestById(int id)
+        /// <summary>
+        /// Tìm kiếm một cuộc thi theo ID.
+        /// </summary>
+        /// <param name="contestId">ID của cuộc thi cần tìm kiếm.</param>
+        /// <returns>Contest: Đối tượng cuộc thi được tìm thấy.</returns>
+        public Contest FindContestById(int contestId)
         {
-            Contest c = new Contest();
+            Contest contest = new Contest();
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    c = context.Contests.SingleOrDefault(x => x.ContestId == id);
+                    contest = context.Contests.FirstOrDefault(x => x.ContestId == contestId);
+                }
+                if (contest == null)
+                {
+                    throw new Exception("Contest doesn't exists");
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return c;
+            return contest;
         }
-        //
-        public void SaveContest(Contest c)
+
+        /// <summary>
+        /// Lưu một cuộc thi mới vào cơ sở dữ liệu.
+        /// </summary>
+        /// <param name="contest">Contest: Đối tượng cuộc thi cần lưu.</param>
+        public void SaveContest(Contest contest)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    context.Contests.Add(c);
+                    // Kiểm tra trùng lặp trước khi thêm mới
+                    var existingContest = context.Contests.FirstOrDefault(x => x.ContestId == contest.ContestId);
+                    if (existingContest != null)
+                    {
+                        // Xử lý trường hợp trùng lặp (ví dụ: ném ngoại lệ hoặc cập nhật đối tượng đã tồn tại)
+                        throw new Exception("Contest already exists");
+                    }
+
+                    // Thêm đối tượng vào cơ sở dữ liệu
+                    context.Contests.Add(contest);
                     context.SaveChanges();
                 }
             }
@@ -76,15 +104,33 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception(ex.Message);
             }
         }
-        //
-        public void UpdateContest(Contest c)
+
+        /// <summary>
+        /// Cập nhật thông tin của một cuộc thi trong cơ sở dữ liệu.
+        /// </summary>
+        /// <param name="contest">Contest: Đối tượng cuộc thi cần cập nhật.</param>
+        public void UpdateContest(Contest contest)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    context.Entry<Contest>(c).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    context.SaveChanges();
+                    // Truy vấn đối tượng cần cập nhật từ cơ sở dữ liệu
+                    var existingContest = context.Contests.FirstOrDefault(x => x.ContestId == contest.ContestId);
+
+                    if (existingContest != null)
+                    {
+                        // Sao chép dữ liệu từ đối tượng đầu vào (c) vào đối tượng đã truy vấn được (existingContest)
+                        context.Entry(existingContest).CurrentValues.SetValues(contest);
+
+                        // Lưu thay đổi vào cơ sở dữ liệu
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        // Xử lý trường hợp đối tượng không tồn tại
+                        throw new Exception("Contest not found");
+                    }
                 }
             }
             catch (Exception ex)
@@ -92,16 +138,28 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception(ex.Message);
             }
         }
-        //
-        public void DeleteContest(Contest c)
+
+        /// <summary>
+        /// Cập nhật thông tin của một cuộc thi trong cơ sở dữ liệu.
+        /// </summary>
+        /// <param name="c">Contest: Đối tượng cuộc thi cần xóa.</param>
+        public void DeleteContest(Contest contest)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    var c1 = context.Contests.SingleOrDefault(x => x.ContestId == c.ContestId);
-                    context.Contests.Remove(c1);
-                    context.SaveChanges();
+                    var contestDel = context.Contests.FirstOrDefault(x => x.ContestId == contest.ContestId);
+                    if (contestDel == null)
+                    {
+                        // Nếu đối tượng không tồn tại, đưa ra thông báo lỗi
+                        throw new Exception("Contest is null");
+                    }
+                    else
+                    {
+                        context.Contests.Remove(contestDel);
+                        context.SaveChanges();
+                    }
                 }
             }
             catch (Exception ex)

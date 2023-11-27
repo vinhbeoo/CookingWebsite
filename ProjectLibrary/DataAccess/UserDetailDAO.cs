@@ -7,13 +7,17 @@ using ProjectLibrary.ObjectBussiness;
 
 namespace ProjectLibrary.DataAccess
 {
+    /// <summary>
+    /// Đây là lớp DAO (Data Access Object) dùng để thao tác với cơ sở dữ liệu liên quan đến chi tiết thông tin người dùng.
+    /// </summary>
     public class UserDetailDAO
     {
         private static UserDetailDAO instance = null;
         private static readonly object instanceLock = new object();
+
+        //Thể hiện duy nhất của lớp ContestDAO, sử dụng mẫu thiết kế Singleton.
         public static UserDetailDAO Instance
         {
-            //Singlestone pattern
             get
             {
                 lock (instanceLock)
@@ -26,6 +30,8 @@ namespace ProjectLibrary.DataAccess
                 }
             }
         }
+
+        //Lấy danh sách tất cả chi tiết người dùng từ cơ sở dữ liệu.
         public List<UserDetail> GetUserDetails()
         {
             var listUserDetails = new List<UserDetail>();
@@ -36,35 +42,60 @@ namespace ProjectLibrary.DataAccess
                     listUserDetails = context.UserDetails.ToList();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message);
+                // Xử lý ngoại lệ và ném ngoại lệ mới với thông điệp lỗi.
+                throw new Exception("Error retrieving UserDetail list: " + ex.Message);
             }
             return listUserDetails;
         }
+
+        /// <summary>
+        /// Tìm kiếm một chi tiết người dùng theo ID.
+        /// </summary>
+        /// <param name="userId">ID của chi tiết người dùng cần tìm kiếm.</param>
+        /// <returns>Contest: Đối tượng chi tiết người dùng được tìm thấy.</returns>
         public UserDetail FindUserDetailById(int userId)
         {
-            UserDetail u = new UserDetail();
+            UserDetail userDetail = new UserDetail();
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    u = context.UserDetails.SingleOrDefault(x => x.UserId == userId);
+                    userDetail = context.UserDetails.FirstOrDefault(x => x.UserId == userId);
+                }
+                if (userDetail == null)
+                {
+                    throw new Exception("UserDetail doesn't exists");
                 }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            return u;
+            return userDetail;
         }
-        public void SaveUserDetail(UserDetail u)
+
+        /// <summary>
+        /// Lưu một chi tiết người dùng mới vào cơ sở dữ liệu.
+        /// </summary>
+        /// <param name="userDetail">CserDetail: Đối tượng chi tiết người dùng cần lưu.</param>
+        public void SaveUserDetail(UserDetail userDetail)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    context.UserDetails.Add(u);
+                    // Kiểm tra trùng lặp trước khi thêm mới
+                    var user = context.UserDetails.FirstOrDefault(x => x.UserId == userDetail.UserId);
+                    if (user != null)
+                    {
+                        // Xử lý trường hợp trùng lặp (ví dụ: ném ngoại lệ hoặc cập nhật đối tượng đã tồn tại)
+                        throw new Exception("UserDetail already exists");
+                    }
+
+                    // Thêm đối tượng vào cơ sở dữ liệu
+                    context.UserDetails.Add(userDetail);
                     context.SaveChanges();
                 }
             }
@@ -73,35 +104,66 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception(e.Message);
             }
         }
-        public void UpdateUserDetail(UserDetail u)
+
+        /// <summary>
+        /// Cập nhật thông tin của một chi tiết người dùng trong cơ sở dữ liệu.
+        /// </summary>
+        /// <param name="userDetail">UserDetail: Đối tượng chi tiết người dùng cần cập nhật.</param>
+        public void UpdateUserDetail(UserDetail userDetail)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    context.Entry<UserDetail>(u).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    context.SaveChanges();
+                    // Truy vấn đối tượng cần cập nhật từ cơ sở dữ liệu
+                    var user = context.UserDetails.FirstOrDefault(x => x.UserId == userDetail.UserId);
+
+                    if (user != null)
+                    {
+                        // Sao chép dữ liệu từ đối tượng đầu vào (c) vào đối tượng đã truy vấn được (existingContest)
+                        context.Entry(user).CurrentValues.SetValues(userDetail);
+
+                        // Lưu thay đổi vào cơ sở dữ liệu
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        // Xử lý trường hợp đối tượng không tồn tại
+                        throw new Exception("UserDetail not found");
+                    }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message);
+                throw new Exception(ex.Message);
             }
         }
-        public void DeleteUserDetail(UserDetail u)
+        /// <summary>
+        /// Cập nhật thông tin của một chi tiết người dùng trong cơ sở dữ liệu.
+        /// </summary>
+        /// <param name="userDetail">UserDetail: Đối tượng chi tiết người dùng cần xóa.</param>
+        public void DeleteUserDetail(UserDetail userDetail)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    var u1 = context.UserDetails.SingleOrDefault(n => n.UserId == u.UserId);
-                    context.UserDetails.Remove(u1);
-                    context.SaveChanges();
+                    var userDetailDel = context.UserDetails.FirstOrDefault(x => x.UserId == userDetail.UserId);
+                    if (userDetailDel == null)
+                    {
+                        // Nếu đối tượng không tồn tại, đưa ra thông báo lỗi
+                        throw new Exception("Contest is null");
+                    }
+                    else
+                    {
+                        context.UserDetails.Remove(userDetailDel);
+                        context.SaveChanges();
+                    }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                throw new Exception(e.Message);
+                throw new Exception(ex.Message);
             }
         }
     }

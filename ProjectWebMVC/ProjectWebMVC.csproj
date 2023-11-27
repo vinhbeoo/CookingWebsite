@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\User\**" />
+    <Content Remove="Areas\User\**" />
+    <EmbeddedResource Remove="Areas\User\**" />
+    <None Remove="Areas\User\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
   </ItemGroup>
 
@@ -15,10 +22,21 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\" />
-    <Folder Include="Areas\User\Controllers\" />
-    <Folder Include="Areas\User\Data\" />
-    <Folder Include="Areas\User\Models\" />
-    <Folder Include="Areas\User\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\User\fonts\fontawesome-webfont.svg" />
+    <None Include="wwwroot\User\fonts\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\User\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\User\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\User\fonts\Linearicons-Free.svg" />
+    <None Include="wwwroot\User\fonts\Linearicons-Free.woff2" />
+    <None Include="wwwroot\User\images\Thumbs.db" />
+    <None Include="wwwroot\User\js\bootstrap.min.js" />
+    <None Include="wwwroot\User\js\jquery.easing.min.js" />
+    <None Include="wwwroot\User\js\jquery.lightbox.min.js" />
+    <None Include="wwwroot\User\js\jquery.min.js" />
+    <None Include="wwwroot\User\js\script.js" />
   </ItemGroup>
 
   <ItemGroup>

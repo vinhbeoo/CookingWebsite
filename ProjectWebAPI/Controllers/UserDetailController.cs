@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectLibrary.DataAccess;
 using ProjectLibrary.ObjectBussiness;
 using ProjectLibrary.Repository;
 using ProjectWebAPI.Application;
@@ -16,10 +17,10 @@ namespace ProjectWebAPI.Controllers
         public ActionResult<IEnumerable<UserDetail>> GetUserDetails() => repository.GetUserDetails();
 
         // GET api/<UserDetailController>/5
-        [HttpGet("{id}")]
-        public ActionResult<UserDetail> GetUserDetailById(int id)
+        [HttpGet("{userId}")]
+        public ActionResult<UserDetail> GetUserDetailById(int userId)
         {
-            var userdetail = repository.GetUserDetailById(id);
+            var userdetail = repository.GetUserDetailById(userId);
             if (userdetail == null)
             {
                 return NotFound(); // Trả về lỗi 404 nếu không tìm thấy sản phẩm
@@ -30,50 +31,60 @@ namespace ProjectWebAPI.Controllers
 
         // POST api/<UserDetailController>
         [HttpPost]
-        public IActionResult PostUserDetail(UserDetailDTO udvm)
+        public IActionResult PostUserDetail(UserDetailDTO userDetailDTO)
         {
+            if (userDetailDTO == null)
+            {
+                return BadRequest("Invalid UserDetail data");
+            }
+
             var ud = new UserDetail
             {
-                UserId = udvm.UserId,
-                FullName = udvm.FullName,
-                Gender = udvm.Gender,
-                Phone = udvm.Phone,
-                Address = udvm.Address,
-                Avatar = udvm.Avatar,
+                UserId = userDetailDTO.UserId,
+                FullName = userDetailDTO.FullName,
+                Gender = userDetailDTO.Gender,
+                Phone = userDetailDTO.Phone,
+                Address = userDetailDTO.Address,
+                Avatar = userDetailDTO.Avatar,
             };
             repository.SaveUserDetail(ud);
-            return NoContent();
-
+            return Ok("UserDetail created successfully");
         }
 
         // PUT api/<UserDetailController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateUserDetail(int id, UserDetailDTO udvm)
+        public IActionResult UpdateUserDetail(int id, UserDetailDTO updateUserDetailDTO)
         {
-            var temp = repository.GetUserDetailById(id);
-            if (temp == null)
+            if (updateUserDetailDTO == null || id != updateUserDetailDTO.UserId)
             {
-                return NotFound();
+                return BadRequest("Invalid UserDetail data");
             }
-            temp.UserId = udvm.UserId;
-            temp.FullName = udvm.FullName;
-            temp.Gender = udvm.Gender;
-            temp.Phone = udvm.Phone;
-            temp.Address = udvm.Address;
-            temp.Avatar = udvm.Avatar;
-            repository.UpdateUserDetail(temp);
-            return NoContent();
+            var userDetail = repository.GetUserDetailById(id);
+            if (userDetail == null)
+            {
+                return NotFound("UserDetail not found");
+            }
+            userDetail.UserId = updateUserDetailDTO.UserId;
+            userDetail.FullName = updateUserDetailDTO.FullName;
+            userDetail.Gender = updateUserDetailDTO.Gender;
+            userDetail.Phone = updateUserDetailDTO.Phone;
+            userDetail.Address = updateUserDetailDTO.Address;
+            userDetail.Avatar = updateUserDetailDTO.Avatar;
+
+            repository.UpdateUserDetail(userDetail);
+            return Ok("UserDetail Updated successfully");
         }
 
         // DELETE api/<UserDetailController>/5
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUserDetail(int id)
+        [HttpDelete("{userId}")]
+        public IActionResult DeleteUserDetail(int userId)
         {
-            var u = repository.GetUserDetailById(id);
-            if (u == null)
+            var userDetail = repository.GetUserDetailById(userId);
+            if (userDetail == null)
                 return NotFound();
-            repository.DeleteUserDetail(u);
-            return NoContent();
+
+            repository.DeleteUserDetail(userDetail);
+            return Ok("UserDetail Delete successfully");
         }
     }
 }

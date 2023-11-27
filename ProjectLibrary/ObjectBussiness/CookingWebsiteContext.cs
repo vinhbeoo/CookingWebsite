@@ -15,6 +15,8 @@ public partial class CookingWebsiteContext : DbContext
     {
     }
 
+    public virtual DbSet<Category> Categories { get; set; }
+
     public virtual DbSet<Comment> Comments { get; set; }
 
     public virtual DbSet<Contest> Contests { get; set; }
@@ -35,8 +37,6 @@ public partial class CookingWebsiteContext : DbContext
 
     public virtual DbSet<Tag> Tags { get; set; }
 
-    public virtual DbSet<Type> Types { get; set; }
-
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserActivity> UserActivities { get; set; }
@@ -53,6 +53,13 @@ public partial class CookingWebsiteContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.HasKey(e => e.CategoryId).HasName("PK_Type");
+
+            entity.Property(e => e.CategoryName).HasMaxLength(500);
+        });
+
         modelBuilder.Entity<Comment>(entity =>
         {
             entity.ToTable("Comment");
@@ -161,6 +168,10 @@ public partial class CookingWebsiteContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("VideoURL");
 
+            entity.HasOne(d => d.Category).WithMany(p => p.Recipes)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK_Recipes_Recipes");
+
             entity.HasOne(d => d.Contest).WithMany(p => p.Recipes)
                 .HasForeignKey(d => d.ContestId)
                 .HasConstraintName("FK_Recipes_Contests");
@@ -173,10 +184,6 @@ public partial class CookingWebsiteContext : DbContext
                 .HasForeignKey(d => d.TagId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Recipes__IdTags__6FE99F9F");
-
-            entity.HasOne(d => d.Type).WithMany(p => p.Recipes)
-                .HasForeignKey(d => d.TypeId)
-                .HasConstraintName("FK_Recipes_Type");
         });
 
         modelBuilder.Entity<RecipesStep>(entity =>
@@ -209,18 +216,11 @@ public partial class CookingWebsiteContext : DbContext
 
         modelBuilder.Entity<Tag>(entity =>
         {
-            entity.HasKey(e => e.IdTags).HasName("PK__Tags__9FCD3F7E1BFA9C7C");
+            entity.HasKey(e => e.TagId).HasName("PK__Tags__9FCD3F7E1BFA9C7C");
 
-            entity.HasIndex(e => e.NameTags, "UQ__Tags__2EAE8F47CB170E55").IsUnique();
+            entity.HasIndex(e => e.TagName, "UQ__Tags__2EAE8F47CB170E55").IsUnique();
 
-            entity.Property(e => e.NameTags).HasMaxLength(50);
-        });
-
-        modelBuilder.Entity<Type>(entity =>
-        {
-            entity.ToTable("Type");
-
-            entity.Property(e => e.TypeName).HasMaxLength(500);
+            entity.Property(e => e.TagName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<User>(entity =>

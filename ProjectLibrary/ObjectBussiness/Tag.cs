@@ -5,9 +5,9 @@ namespace ProjectLibrary.ObjectBussiness;
 
 public partial class Tag
 {
-    public int IdTags { get; set; }
+    public int TagId { get; set; }
 
-    public string? NameTags { get; set; }
+    public string TagName { get; set; }
 
     public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
 }

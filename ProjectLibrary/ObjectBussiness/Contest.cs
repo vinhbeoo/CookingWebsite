@@ -17,8 +17,6 @@ public partial class Contest
 
     public int? OwnerUserId { get; set; }
 
-    public int? RecipeId { get; set; }
-
     public virtual User? OwnerUser { get; set; }
 
     public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
