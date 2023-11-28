@@ -23,7 +23,7 @@ app.UseAuthorization();
 app.MapAreaControllerRoute(
     name: "admin",
     areaName: "Admin",
-    pattern: "Admin/{controller=Contest}/{action=Index}/{id?}");
+    pattern: "Admin/{controller=Admin}/{action=Index}/{id?}");
 
 app.MapAreaControllerRoute(
     name: "user",
