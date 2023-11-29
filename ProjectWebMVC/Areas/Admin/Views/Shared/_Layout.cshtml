@@ -51,7 +51,7 @@
         </aside>
         <!--sidebar end-->
         <div>
-            <main role="main" class="pb-3">
+            <main role="main" id="main" class="main">
                 @RenderBody()
             </main>
         </div>
@@ -70,6 +70,8 @@
 
     <!-- Template Main JS File -->
     <script src="~/Admin/assets/js/main.js"></script>
+
+    <script src="~/Admin/assets/js/jquery.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 

@@ -1,0 +1,134 @@
+﻿@model IEnumerable<ProjectLibrary.ObjectBussiness.Contest>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a class="btn btn-danger create">Tạo mới</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ContestId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContestName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OwnerUserId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContestId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContestName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OwnerUserId)
+            </td>
+            <td>
+                    <button class="btn btn-danger edit" data-id="@item.ContestId">Sửa</button>;
+                    <button class="btn btn-danger detail" data-id="@item.ContestId">Chi tiết</button>;
+                    <a class="btn btn-danger delete" data-id="@item.ContestId">Xoá</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div id="modal-form" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-contest" method="post" action="#">
+                    <div class="form-group">
+                        <label for="ContestName">Contest Name</label>
+                        <input type="text" class="form-control" id="ContestName" name="ContestName" placeholder="Enter Contest Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description">Description</label>
+                        <textarea class="form-control" id="Description" name="Description" placeholder="Enter Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="StartTime">Start Time</label>
+                        <input type="datetime-local" class="form-control" id="StartTime" name="StartTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="EndTime">End Time</label>
+                        <input type="datetime-local" class="form-control" id="EndTime" name="EndTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="OwnerUserId">Owner User ID</label>
+                        <input type="text" class="form-control" id="OwnerUserId" name="OwnerUserId" placeholder="Enter Owner User ID" required>
+                    </div>
+                    <input type="hidden" id="ContestId" name="ContestId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="btn-save">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Delete Modal -->
+<div class="modal fade" id="modal-delete" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa mục này?
+                <!-- Hidden field to store the id of the product -->
+                <input type="hidden" id="delete-id">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="btn-delete">Xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="processing-preview hidden"></div>
+@section scripts{
+    <script src="~/Admin/assets/js/Controllers/contestController.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+    $(function () {
+        $('#alertBox').removeClass('hide');
+        $('#alertBox').delay(5000).slideUp(500);
+    })
+    </script>
+}
