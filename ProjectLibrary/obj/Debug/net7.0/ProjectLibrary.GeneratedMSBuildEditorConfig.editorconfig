@@ -8,4 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ProjectLibrary
-build_property.ProjectDir = D:\Aptech\zFinalTest\BaiTap\CookingWebsite-master_29112023\CookingWebsite-master\ProjectLibrary\
+build_property.ProjectDir = D:\luu D\source\repos\Do_An_Tot_Nghiep\CookingWebsite\ProjectLibrary\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

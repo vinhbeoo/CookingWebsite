@@ -12,8 +12,8 @@ namespace ProjectLibrary.Repository
     {
         public List<Notification> GetNotifications() => NotificationDAO.Instance.GetNotifications();
         public Notification GetNotificationById(int id) => NotificationDAO.Instance.GetNotificationById(id);
-        public void SaveNotification(Notification n) => NotificationDAO.Instance.SaveNotification(n);
-        public void UpdateNotification(Notification n) => NotificationDAO.Instance.UpdateNotification(n);
-        public void DeleteNotification(Notification n) => NotificationDAO.Instance.DeleteNotification(n);
+        public void SaveNotification(Notification notification, int userId) => NotificationDAO.Instance.SaveNotification(notification, userId);
+        public void UpdateNotification(Notification notification, int userId) => NotificationDAO.Instance.UpdateNotification(notification, userId);
+        public void DeleteNotification(Notification notification, int userId) => NotificationDAO.Instance.DeleteNotification(notification, userId);
     }
 }

@@ -34,7 +34,7 @@ namespace ProjectWebAPI.Controllers
 
         // POST api/<CategoryController>
         [HttpPost]
-        public IActionResult CreateComment([FromBody] CommentDTO commentDTO)
+        public IActionResult CreateComment([FromBody] CommentDTO commentDTO,int userId)
         {
             if (commentDTO == null)
             {
@@ -49,7 +49,7 @@ namespace ProjectWebAPI.Controllers
                 CommentText = commentDTO.CommentText,
             };
             // Call the service to add the category to the database
-            repository.SaveComment(newComment);
+            repository.SaveComment(newComment, userId);
 
             // Return a success message or other necessary information
             return Ok("Comment created successfully");
@@ -57,7 +57,7 @@ namespace ProjectWebAPI.Controllers
 
         // PUT api/<CategoryController>/5
         [HttpPut("{commentId}")]
-        public IActionResult UpdateComment(int commentid, [FromBody] CommentDTO updatedCommentDTO)
+        public IActionResult UpdateComment(int commentid, [FromBody] CommentDTO updatedCommentDTO, int userId)
         {
             if (updatedCommentDTO == null || commentid != updatedCommentDTO.CommentId)
             {
@@ -72,13 +72,13 @@ namespace ProjectWebAPI.Controllers
             }
 
             // Update category information
-            existingComment.CommentId = updatedCommentDTO.CommentId;
+            
             existingComment.UserId = updatedCommentDTO.UserId;
             existingComment.RecipeId = updatedCommentDTO.RecipeId;
             existingComment.CommentText = updatedCommentDTO.CommentText;
 
             // Call the service to save changes to the database
-            repository.UpdateComment(existingComment);
+            repository.UpdateComment(existingComment, userId);
 
             // Return a success message or other necessary information
             return Ok("Comment updated successfully");
@@ -87,14 +87,14 @@ namespace ProjectWebAPI.Controllers
 
         // DELETE api/<CategoryController>/5
         [HttpDelete("{commentId}")]
-        public IActionResult DeleteCategory(int commentId)
+        public IActionResult DeleteComment(int commentId, int userId)
         {
             var comment = repository.GetCommentById(commentId);
             if (comment == null)
             {
                 return NotFound();
             }
-            repository.DeleteComment(comment);
+            repository.DeleteComment(comment, userId);
             return Ok("Comment deleted successfully");
         }
     }

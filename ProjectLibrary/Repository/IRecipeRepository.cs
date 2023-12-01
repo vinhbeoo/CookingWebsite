@@ -7,8 +7,8 @@ namespace ProjectLibrary.Repository
     {
         List<Recipe> GetRecipes();
         Recipe GetRecipeById(int id);
-        void SaveRecipe(Recipe recipe);
-        void UpdateRecipe(Recipe recipe);
-        void DeleteRecipe(Recipe recipe);
+        void SaveRecipe(Recipe recipe, int userId);
+        void UpdateRecipe(Recipe recipe, int userId);
+        void DeleteRecipe(Recipe recipe, int userId);
     }
 }
