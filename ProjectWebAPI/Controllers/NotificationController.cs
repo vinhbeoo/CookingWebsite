@@ -3,18 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectLibrary.Repository;
 using ProjectWebAPI.Application;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System;
 
 namespace ProjectWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class NotificationController : ControllerBase
     {
         private INotificationRepository _response = new NotificationRepository();
         // GET: api/<NotificationController>
         [HttpGet]
         public ActionResult<IEnumerable<Notification>> GetNotifications() => _response.GetNotifications();
-
 
 
         // GET api/<NotificationController>/5
@@ -86,5 +88,7 @@ namespace ProjectWebAPI.Controllers
             _response.DeleteNotification(temp, userId);
             return Ok("Notification dalete successfully");
         }
+
     }
+    
 }
