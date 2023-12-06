@@ -47,9 +47,23 @@ public partial class CookingWebsiteContext : DbContext
 
     public virtual DbSet<WinnerInfo> WinnerInfos { get; set; }
 
+    public void LogUserActivity(int userId, string action, string details)
+    {
+        var logEntry = new UserActivity
+        {
+            UserId = userId,
+            Action = action,
+            Details = details,
+            LogDate = DateTime.Now
+        };
+
+        UserActivities.Add(logEntry);
+        SaveChanges();
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=VINHBEOO\\SQLEXPRESS; database=CookingWebsite;uid=;pwd=;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-B0D0J2Q\\CHAU92;Initial Catalog=CookingWebsite;Persist Security Info=True;User ID=sa;Password=chau840848;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

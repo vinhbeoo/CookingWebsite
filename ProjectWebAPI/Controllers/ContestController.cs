@@ -30,7 +30,7 @@ namespace ProjectWebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateContest([FromBody] ContestDTO contestDTO)
+        public IActionResult CreateContest([FromBody] ContestDTO contestDTO, int userId)
         {
             if (contestDTO == null)
             {
@@ -49,7 +49,7 @@ namespace ProjectWebAPI.Controllers
             };
 
             // Gọi dịch vụ để thêm cuộc thi vào cơ sở dữ liệu
-            repository.SaveContest(newContest);
+            repository.SaveContest(newContest, userId);
 
             // Trả về một thông báo thành công hoặc các thông tin khác cần thiết
             return Ok("Contest created successfully");
@@ -57,7 +57,7 @@ namespace ProjectWebAPI.Controllers
 
         // PUT api/<ContestController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateContest(int id, [FromBody] ContestDTO updatedContestDTO)
+        public IActionResult UpdateContest(int id, [FromBody] ContestDTO updatedContestDTO, int userId)
         {
             if (updatedContestDTO == null || id != updatedContestDTO.ContestId)
             {
@@ -79,7 +79,7 @@ namespace ProjectWebAPI.Controllers
             existingContest.OwnerUserId = updatedContestDTO.OwnerUserId;
 
             // Gọi dịch vụ để lưu thay đổi vào cơ sở dữ liệu
-            repository.UpdateContest(existingContest);
+            repository.UpdateContest(existingContest, userId);
 
             // Trả về một thông báo thành công hoặc các thông tin khác cần thiết
             return Ok("Contest updated successfully");
@@ -87,14 +87,14 @@ namespace ProjectWebAPI.Controllers
 
         // DELETE api/<ContestController>/5
         [HttpDelete("{contestId}")]
-        public IActionResult DeleteContest(int contestId)
+        public IActionResult DeleteContest(int contestId, int userId)
         {
             var contest = repository.GetContestById(contestId);
             if (contest == null)
             {
                 return NotFound();
             }
-            repository.DeleteContest(contest);
+            repository.DeleteContest(contest, userId);
             return Ok("Contest Delete successfully");
         }
     }

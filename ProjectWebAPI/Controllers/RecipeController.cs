@@ -30,7 +30,7 @@ namespace ProjectWebAPI.Controllers
 
         // POST api/<RecipeController>
         [HttpPost]
-        public IActionResult CreateRecipe([FromBody] RecipeDTO recipeDTO)
+        public IActionResult CreateRecipe([FromBody] RecipeDTO recipeDTO, int userId)
         {
             if (recipeDTO == null)
             {
@@ -63,7 +63,7 @@ namespace ProjectWebAPI.Controllers
             };
 
             // Call the service to add the recipe to the database
-            repository.SaveRecipe(newRecipe);
+            repository.SaveRecipe(newRecipe, userId);
 
             // Return a success message or other necessary information
             return Ok("Recipe created successfully");
@@ -71,7 +71,7 @@ namespace ProjectWebAPI.Controllers
 
         // PUT api/<RecipeController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateRecipe(int id, [FromBody] RecipeDTO updatedRecipeDTO)
+        public IActionResult UpdateRecipe(int id, [FromBody] RecipeDTO updatedRecipeDTO, int userId)
         {
             if (updatedRecipeDTO == null || id != updatedRecipeDTO.RecipeId)
             {
@@ -107,7 +107,7 @@ namespace ProjectWebAPI.Controllers
             existingRecipe.ReadFree = updatedRecipeDTO.ReadFree;
 
             // Call the service to save changes to the database
-            repository.UpdateRecipe(existingRecipe);
+            repository.UpdateRecipe(existingRecipe, userId);
 
             // Return a success message or other necessary information
             return Ok("Recipe updated successfully");
@@ -115,14 +115,14 @@ namespace ProjectWebAPI.Controllers
 
         // DELETE api/<RecipeController>/5
         [HttpDelete("{recipeId}")]
-        public IActionResult DeleteRecipe(int recipeId)
+        public IActionResult DeleteRecipe(int recipeId, int userId)
         {
             var recipe = repository.GetRecipeById(recipeId);
             if (recipe == null)
             {
                 return NotFound();
             }
-            repository.DeleteRecipe(recipe);
+            repository.DeleteRecipe(recipe, userId);
             return Ok("Recipe deleted successfully");
         }
     }

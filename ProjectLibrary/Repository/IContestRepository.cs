@@ -10,9 +10,9 @@ namespace ProjectLibrary.Repository
     public interface IContestRepository
     {
         List<Contest> GetContests();
-        void SaveContest(Contest c);
+        void SaveContest(Contest c,int userId);
         Contest GetContestById(int id);
-        void DeleteContest(Contest c);
-        void UpdateContest(Contest c);
+        void DeleteContest(Contest c, int userId);
+        void UpdateContest(Contest c, int userId);
     }
 }

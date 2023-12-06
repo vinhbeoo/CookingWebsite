@@ -3,18 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectLibrary.Repository;
 using ProjectWebAPI.Application;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System;
 
 namespace ProjectWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class NotificationController : ControllerBase
     {
         private INotificationRepository _response = new NotificationRepository();
         // GET: api/<NotificationController>
         [HttpGet]
         public ActionResult<IEnumerable<Notification>> GetNotifications() => _response.GetNotifications();
-
 
 
         // GET api/<NotificationController>/5
@@ -31,7 +33,7 @@ namespace ProjectWebAPI.Controllers
 
         // POST api/<NotificationController>
         [HttpPost]
-        public IActionResult PostNotification(NotificationDTO nDTO)
+        public IActionResult PostNotification(NotificationDTO nDTO, int userId)
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +46,7 @@ namespace ProjectWebAPI.Controllers
                     UserId = nDTO.UserId,
                 };
 
-                _response.SaveNotification(newNotification);
+                _response.SaveNotification(newNotification, userId);
 
                 return Ok("Notification created successfully");
             }
@@ -54,7 +56,7 @@ namespace ProjectWebAPI.Controllers
 
         // PUT api/<NotificationController>/5
         [HttpPut("{id}")]
-        public IActionResult PutNotification(int id, NotificationDTO nDTO)
+        public IActionResult PutNotification(int id, NotificationDTO nDTO, int userId)
         {
             var existingNotification = _response.GetNotificationById(id);
 
@@ -69,22 +71,24 @@ namespace ProjectWebAPI.Controllers
             existingNotification.Date = nDTO.Date;
             existingNotification.UserId = nDTO.UserId;
 
-            _response.UpdateNotification(existingNotification);
+            _response.UpdateNotification(existingNotification, userId);
 
             return Ok("Notification updated successfully");
         }
 
         // DELETE api/<NotificationController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteNotification(int id)
+        public IActionResult DeleteNotification(int id, int userId)
         {
             var temp = _response.GetNotificationById(id);
             if (temp == null)
             {
                 return NotFound();
             }
-            _response.DeleteNotification(temp);
+            _response.DeleteNotification(temp, userId);
             return Ok("Notification dalete successfully");
         }
+
     }
+    
 }

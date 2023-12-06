@@ -65,7 +65,7 @@ namespace ProjectLibrary.DataAccess
             return recipe;
         }
 
-        public void SaveRecipe(Recipe recipe)
+        public void SaveRecipe(Recipe recipe, int userId)
         {
             try
             {
@@ -79,6 +79,9 @@ namespace ProjectLibrary.DataAccess
 
                     context.Recipes.Add(recipe);
                     context.SaveChanges();
+
+                    // Log user activity for adding a recipe
+                    context.LogUserActivity(userId, "CreateRecipe", $"Created a new recipe with ID {recipe.RecipeId}");
                 }
             }
             catch (Exception ex)
@@ -87,7 +90,7 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
-        public void UpdateRecipe(Recipe recipe)
+        public void UpdateRecipe(Recipe recipe, int userId)
         {
             try
             {
@@ -99,6 +102,8 @@ namespace ProjectLibrary.DataAccess
                     {
                         context.Entry(existingRecipe).CurrentValues.SetValues(recipe);
                         context.SaveChanges();
+                        // Log user activity
+                        context.LogUserActivity(userId, "UpdateRecipe", $"Updated recipe with ID {recipe.RecipeId}");
                     }
                     else
                     {
@@ -112,7 +117,7 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
-        public void DeleteRecipe(Recipe recipe)
+        public void DeleteRecipe(Recipe recipe, int userId)
         {
             try
             {
@@ -127,6 +132,8 @@ namespace ProjectLibrary.DataAccess
                     {
                         context.Recipes.Remove(recipeToDelete);
                         context.SaveChanges();
+                        // Log user activity
+                        context.LogUserActivity(userId, "DeleteRecipe", $"Deleted recipe with ID {recipe.RecipeId}");
                     }
                 }
             }

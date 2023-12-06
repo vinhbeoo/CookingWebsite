@@ -3094,19 +3094,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ADMIN\\.nuget\\packages\\": {}
+    "C:\\Users\\tranv\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Aptech\\zFinalTest\\BaiTap\\CookingWebsite-master_29112023\\CookingWebsite-master\\ProjectWebAPI\\ProjectWebAPI.csproj",
+      "projectUniqueName": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj",
       "projectName": "ProjectWebAPI",
-      "projectPath": "D:\\Aptech\\zFinalTest\\BaiTap\\CookingWebsite-master_29112023\\CookingWebsite-master\\ProjectWebAPI\\ProjectWebAPI.csproj",
-      "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-      "outputPath": "D:\\Aptech\\zFinalTest\\BaiTap\\CookingWebsite-master_29112023\\CookingWebsite-master\\ProjectWebAPI\\obj\\",
+      "projectPath": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj",
+      "packagesPath": "C:\\Users\\tranv\\.nuget\\packages\\",
+      "outputPath": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectWebAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\tranv\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3114,15 +3114,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\Aptech\\zFinalTest\\BaiTap\\CookingWebsite-master_29112023\\CookingWebsite-master\\ProjectLibrary\\ProjectLibrary.csproj": {
-              "projectPath": "D:\\Aptech\\zFinalTest\\BaiTap\\CookingWebsite-master_29112023\\CookingWebsite-master\\ProjectLibrary\\ProjectLibrary.csproj"
+            "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj": {
+              "projectPath": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj"
             }
           }
         }
@@ -3165,7 +3164,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

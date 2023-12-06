@@ -12,8 +12,8 @@ namespace ProjectLibrary.Repository
     {
         public List<Recipe> GetRecipes() => RecipeDAO.Instance.GetRecipes();
         public Recipe GetRecipeById(int id) => RecipeDAO.Instance.GetRecipeById(id);
-        public void SaveRecipe(Recipe recipe) => RecipeDAO.Instance.SaveRecipe(recipe);
-        public void UpdateRecipe(Recipe recipe) => RecipeDAO.Instance.UpdateRecipe(recipe);
-        public void DeleteRecipe(Recipe recipe) =>RecipeDAO.Instance.DeleteRecipe(recipe);
+        public void SaveRecipe(Recipe recipe, int userId) => RecipeDAO.Instance.SaveRecipe(recipe,userId);
+        public void UpdateRecipe(Recipe recipe, int userId) => RecipeDAO.Instance.UpdateRecipe(recipe, userId);
+        public void DeleteRecipe(Recipe recipe, int userId) =>RecipeDAO.Instance.DeleteRecipe(recipe, userId);
     }
 }

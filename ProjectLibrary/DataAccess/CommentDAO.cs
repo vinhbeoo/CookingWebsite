@@ -1,4 +1,5 @@
-﻿using ProjectLibrary.ObjectBussiness;
+﻿using Microsoft.EntityFrameworkCore;
+using ProjectLibrary.ObjectBussiness;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +69,7 @@ namespace ProjectLibrary.DataAccess
         }
 
         // insert comment 
-        public void SaveComment(Comment comment)
+        public void SaveComment(Comment comment, int userId)
         {
             try
             {
@@ -83,15 +84,23 @@ namespace ProjectLibrary.DataAccess
 
                     context.Comments.Add(comment);
                     context.SaveChanges();
+                    // Log user activity for adding a comment
+                    context.LogUserActivity(userId, "CreateComment", $"Created a new comment with ID {comment.CommentId}");
                 }
+            }
+            catch (DbUpdateException ex)
+            {
+                // Handle specific database update exception
+                throw new Exception("Error saving changes to the database. See inner exception for details.", ex);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                // Handle other exceptions
+                throw new Exception("An error occurred while saving the entity changes. See the inner exception for details.", ex);
             }
         }
         //Update Comment
-        public void UpdateComment(Comment comment)
+        public void UpdateComment(Comment comment, int userId)
         {
             try
             {
@@ -103,6 +112,8 @@ namespace ProjectLibrary.DataAccess
                     {
                         context.Entry(existingComment).CurrentValues.SetValues(comment);
                         context.SaveChanges();
+                        // Log user activity
+                        context.LogUserActivity(userId, "UpdateComment", $"Updated comment with ID {comment.CommentId}");
                     }
                     else
                     {
@@ -116,7 +127,7 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
-        public void DeleteComment(Comment comment)
+        public void DeleteComment(Comment comment, int userId)
         {
             try
             {
@@ -131,6 +142,8 @@ namespace ProjectLibrary.DataAccess
                     {
                         context.Comments.Remove(commentToDelete);
                         context.SaveChanges();
+                        // Log user activity
+                        context.LogUserActivity(userId, "DeleteComment", $"Deleted comment with ID {comment.CommentId}");
                     }
                 }
             }

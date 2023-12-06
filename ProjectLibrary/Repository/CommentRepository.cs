@@ -11,9 +11,9 @@ namespace ProjectLibrary.Repository
     public class CommentRepository : ICommentRepository
     {
         public List<Comment> GetComments(int recipeId) => CommentDAO.Instance.GetComments(recipeId);
-        public void SaveComment(Comment comment) => CommentDAO.Instance.SaveComment(comment);
+        public void SaveComment(Comment comment, int userId) => CommentDAO.Instance.SaveComment(comment,userId);
         public Comment GetCommentById(int id) => CommentDAO.Instance.FindCommentById(id);
-        public void DeleteComment(Comment comment) => CommentDAO.Instance.DeleteComment(comment);
-        public void UpdateComment(Comment comment) => CommentDAO.Instance.UpdateComment(comment);
+        public void DeleteComment(Comment comment, int userId) => CommentDAO.Instance.DeleteComment(comment, userId);
+        public void UpdateComment(Comment comment, int userId   ) => CommentDAO.Instance.UpdateComment(comment, userId);
     }
 }
