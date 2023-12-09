@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
 namespace ProjectLibrary.ObjectBussiness;
 
 public partial class UserRegHistory
 {
-    
+    [Key]
     public int RegistrationId { get; set; }
 
     public int? UserId { get; set; }

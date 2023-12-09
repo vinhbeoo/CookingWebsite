@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj": {}
+    "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj": {}
   },
   "projects": {
-    "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj": {
+    "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj",
+        "projectUniqueName": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj",
         "projectName": "ProjectLibrary",
-        "projectPath": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj",
-        "packagesPath": "C:\\Users\\tranv\\.nuget\\packages\\",
-        "outputPath": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectLibrary\\obj\\",
+        "projectPath": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj",
+        "packagesPath": "C:\\Users\\84988\\.nuget\\packages\\",
+        "outputPath": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tranv\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\84988\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -59,6 +59,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.14, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             }
           },
           "imports": [
@@ -77,21 +85,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj": {
+    "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj",
+        "projectUniqueName": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj",
         "projectName": "ProjectWebAPI",
-        "projectPath": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj",
-        "packagesPath": "C:\\Users\\tranv\\.nuget\\packages\\",
-        "outputPath": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectWebAPI\\obj\\",
+        "projectPath": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectWebAPI\\ProjectWebAPI.csproj",
+        "packagesPath": "C:\\Users\\84988\\.nuget\\packages\\",
+        "outputPath": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectWebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tranv\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\84988\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -105,8 +113,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj": {
-                "projectPath": "D:\\luu D\\source\\repos\\Do_An_Tot_Nghiep\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj"
+              "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj": {
+                "projectPath": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj"
               }
             }
           }
@@ -149,7 +157,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }

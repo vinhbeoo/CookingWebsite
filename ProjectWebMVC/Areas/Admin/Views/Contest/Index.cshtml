@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ProjectLibrary.ObjectBussiness.Contest>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    @Html.ActionLink("Tạo mới","Create","Contest", null, new {@class="btn btn-danger"})
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                ContestName
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                StartTime
+            </th>
+            <th>
+                EndTime
+            </th>
+            <th>
+                OwnerUserId
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContestId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContestName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OwnerUserId)
+                </td>
+                <td>
+                    @Html.ActionLink("Sửa", "Edit", new {  id=item.ContestId  },new {@class="text-danger"}) |
+                    @Html.ActionLink("Chi Tiết", "Details", new {  id=item.ContestId},new {@class="text-danger" })  |
+                    @Html.ActionLink("Xóa", "Delete", new {id=item.ContestId },new {@class="text-danger"})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

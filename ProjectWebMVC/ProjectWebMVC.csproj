@@ -293,4 +293,10 @@
     <Folder Include="Areas\User\Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Logger">
+      <HintPath>bin\Debug\net7.0\Logger.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

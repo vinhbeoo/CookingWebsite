@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Requires Email Authentication";
+}
+
+<h1>Email Confirmation</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <p class="error">@TempData["ErrorMessage"]</p>
+}
+else
+{
+    <p>Congratulations! You have successfully registered.</p>
+    <p>Please check your email at <strong>@ViewData["Email"]</strong> to confirm your registration.</p>
+}

@@ -43,7 +43,7 @@ namespace ProjectLibrary.Migrations
                 {
                     TagId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TagName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    TagName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -59,8 +59,11 @@ namespace ProjectLibrary.Migrations
                     UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    EmailConfirmationToken = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: true),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
+                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    UserType = table.Column<int>(type: "int", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,8 +125,8 @@ namespace ProjectLibrary.Migrations
                     ActivityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    Action = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Action = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Details = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LogDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -167,6 +170,7 @@ namespace ProjectLibrary.Migrations
                     SubscriptionType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: true),
                     EndDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    MemberType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18,0)", nullable: true)
                 },
                 constraints: table =>
@@ -448,7 +452,8 @@ namespace ProjectLibrary.Migrations
                 name: "UQ__Tags__2EAE8F47CB170E55",
                 table: "Tags",
                 column: "TagName",
-                unique: true);
+                unique: true,
+                filter: "[TagName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserActivity_UserId",
