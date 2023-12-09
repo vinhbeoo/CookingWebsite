@@ -14,4 +14,10 @@
     <ProjectReference Include="..\ProjectLibrary\ProjectLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Logger">
+      <HintPath>..\ProjectWebMVC\bin\Debug\net7.0\Logger.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

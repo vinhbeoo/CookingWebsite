@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectLibrary.ObjectBussiness;
 
 public partial class RecipesStep
 {
+    [Key]
     public int Step { get; set; }
 
     public int? RecipeId { get; set; }

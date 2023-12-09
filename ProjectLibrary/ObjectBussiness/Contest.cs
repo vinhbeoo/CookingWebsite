@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectLibrary.ObjectBussiness;
 
 public partial class Contest
 {
+    [Key]
     public int ContestId { get; set; }
 
     public string ContestName { get; set; } = null!;
@@ -19,7 +21,7 @@ public partial class Contest
 
     public virtual User? OwnerUser { get; set; }
 
-    public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+    public virtual ICollection<Recipe>? Recipes { get; set; }
 
-    public virtual ICollection<WinnerInfo> WinnerInfos { get; set; } = new List<WinnerInfo>();
+    public virtual ICollection<WinnerInfo>? WinnerInfos { get; set; }
 }

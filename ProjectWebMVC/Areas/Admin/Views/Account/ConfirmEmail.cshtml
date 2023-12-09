@@ -1,0 +1,17 @@
+﻿@model ProjectWebAPI.Models.ConfirmEmailModel
+
+@{
+    ViewData["Title"] = "Confirm Email";
+}
+
+<h1>Confirm Email</h1>
+
+<p>Your email has been successfully confirmed.</p>
+
+@using (Html.BeginForm("ConfirmEmail", "Account", FormMethod.Post, new { @class = "row g-3 needs-validation", @novalidate = "novalidate" }))
+{
+    @Html.HiddenFor(m => m.Email)
+    @Html.HiddenFor(m => m.Token)
+
+    <button type="submit">Xác nhận</button>
+}

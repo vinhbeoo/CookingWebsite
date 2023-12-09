@@ -13,28 +13,33 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
+    public bool EmailConfirmed { get; set; }
+
+    public string? EmailConfirmationToken { get; set; }
+
     public int? RoleId { get; set; }
-    public string? MemberType { get; set; }
 
     public string? Status { get; set; }
 
-    public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public int UserType { get; set; }
 
-    public virtual ICollection<Contest> Contests { get; set; } = new List<Contest>();
+    public virtual ICollection<Comment>? Comments { get; set; }
 
-    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+    public virtual ICollection<Contest>? Contests { get; set; }
 
-    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+    public virtual ICollection<Notification>? Notifications { get; set; }
 
-    public virtual ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+    public virtual ICollection<Rating>? Ratings { get; set; } 
+
+    public virtual ICollection<Recipe>? Recipes { get; set; }
 
     public virtual Role? Role { get; set; }
 
-    public virtual ICollection<UserActivity> UserActivities { get; set; } = new List<UserActivity>();
+    public virtual ICollection<UserActivity>? UserActivities { get; set; } 
 
     public virtual UserDetail? UserDetail { get; set; }
 
-    public virtual ICollection<UserRegHistory> UserRegHistories { get; set; } = new List<UserRegHistory>();
+    public virtual ICollection<UserRegHistory>? UserRegHistories { get; set; }
 
-    public virtual ICollection<WinnerInfo> WinnerInfos { get; set; } = new List<WinnerInfo>();
+    public virtual ICollection<WinnerInfo>? WinnerInfos { get; set; } 
 }

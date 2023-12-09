@@ -30,7 +30,7 @@ namespace ProjectWebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateContest([FromBody] ContestDTO contestDTO, int userId)
+        public IActionResult CreateContest([FromBody] ContestDTO contestDTO)
         {
             if (contestDTO == null)
             {
@@ -49,7 +49,7 @@ namespace ProjectWebAPI.Controllers
             };
 
             // Gọi dịch vụ để thêm cuộc thi vào cơ sở dữ liệu
-            repository.SaveContest(newContest, userId);
+            repository.SaveContest(newContest);
 
             // Trả về một thông báo thành công hoặc các thông tin khác cần thiết
             return Ok("Contest created successfully");
@@ -57,7 +57,7 @@ namespace ProjectWebAPI.Controllers
 
         // PUT api/<ContestController>/5
         [HttpPut("{id}")]
-        public IActionResult UpdateContest(int id, [FromBody] ContestDTO updatedContestDTO, int userId)
+        public IActionResult UpdateContest(int id, [FromBody] ContestDTO updatedContestDTO)
         {
             if (updatedContestDTO == null || id != updatedContestDTO.ContestId)
             {
@@ -79,7 +79,7 @@ namespace ProjectWebAPI.Controllers
             existingContest.OwnerUserId = updatedContestDTO.OwnerUserId;
 
             // Gọi dịch vụ để lưu thay đổi vào cơ sở dữ liệu
-            repository.UpdateContest(existingContest, userId);
+            repository.UpdateContest(existingContest);
 
             // Trả về một thông báo thành công hoặc các thông tin khác cần thiết
             return Ok("Contest updated successfully");
@@ -94,7 +94,7 @@ namespace ProjectWebAPI.Controllers
             {
                 return NotFound();
             }
-            repository.DeleteContest(contest, userId);
+            repository.DeleteContest(contest);
             return Ok("Contest Delete successfully");
         }
     }

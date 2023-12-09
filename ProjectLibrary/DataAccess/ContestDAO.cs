@@ -80,7 +80,7 @@ namespace ProjectLibrary.DataAccess
         /// Lưu một cuộc thi mới vào cơ sở dữ liệu.
         /// </summary>
         /// <param name="contest">Contest: Đối tượng cuộc thi cần lưu.</param>
-        public void SaveContest(Contest contest, int userId)
+        public void SaveContest(Contest contest)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace ProjectLibrary.DataAccess
                     context.Contests.Add(contest);
                     context.SaveChanges();
                     // Log user activity for adding a contest
-                    context.LogUserActivity(userId, "CreateContest", $"Created a new contest with ID {contest.ContestId}");
+                    context.LogUserActivity(1, "CreateContest", $"Created a new contest with ID {contest.ContestId}");
                 }
             }
             catch (Exception ex)
@@ -111,7 +111,7 @@ namespace ProjectLibrary.DataAccess
         /// Cập nhật thông tin của một cuộc thi trong cơ sở dữ liệu.
         /// </summary>
         /// <param name="contest">Contest: Đối tượng cuộc thi cần cập nhật.</param>
-        public void UpdateContest(Contest contest, int userId)
+        public void UpdateContest(Contest contest)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace ProjectLibrary.DataAccess
                         // Lưu thay đổi vào cơ sở dữ liệu
                         context.SaveChanges();
                         // Log user activity
-                        context.LogUserActivity(userId, "UpdateContest", $"Updated contest with ID {contest.ContestId}");
+                        context.LogUserActivity(1, "UpdateContest", $"Updated contest with ID {contest.ContestId}");
                     }
                     else
                     {
@@ -147,7 +147,7 @@ namespace ProjectLibrary.DataAccess
         /// Cập nhật thông tin của một cuộc thi trong cơ sở dữ liệu.
         /// </summary>
         /// <param name="c">Contest: Đối tượng cuộc thi cần xóa.</param>
-        public void DeleteContest(Contest contest, int userId)
+        public void DeleteContest(Contest contest)
         {
             try
             {
@@ -164,7 +164,7 @@ namespace ProjectLibrary.DataAccess
                         context.Contests.Remove(contestDel);
                         context.SaveChanges();
                         // Log user activity
-                        context.LogUserActivity(userId, "DeleteContest", $"Deleted contest with ID {contest.ContestId}");
+                        context.LogUserActivity(1, "DeleteContest", $"Deleted contest with ID {contest.ContestId}");
                     }
                 }
             }

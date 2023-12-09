@@ -9,9 +9,9 @@ public partial class UserActivity
 
     public int UserId { get; set; }
 
-    public string Action { get; set; } // Thêm cột Action để lưu hành động (Thêm/Xóa/Sửa).
+    public string? Action { get; set; } // Thêm cột Action để lưu hành động (Thêm/Xóa/Sửa).
 
-    public string Details { get; set; } // Thêm cột Details để lưu thông tin thêm (có thể là JSON).
+    public string? Details { get; set; } // Thêm cột Details để lưu thông tin thêm (có thể là JSON).
 
     public DateTime LogDate { get; set; } // Thêm cột LogDate để lưu ngày ghi log.
 

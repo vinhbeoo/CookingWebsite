@@ -369,7 +369,6 @@ namespace ProjectLibrary.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TagId"));
 
                     b.Property<string>("TagName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -377,7 +376,8 @@ namespace ProjectLibrary.Migrations
                         .HasName("PK__Tags__9FCD3F7E1BFA9C7C");
 
                     b.HasIndex(new[] { "TagName" }, "UQ__Tags__2EAE8F47CB170E55")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[TagName] IS NOT NULL");
 
                     b.ToTable("Tags");
                 });
@@ -395,6 +395,13 @@ namespace ProjectLibrary.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("EmailConfirmationToken")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -411,6 +418,10 @@ namespace ProjectLibrary.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UserType")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
 
                     b.HasKey("UserId")
                         .HasName("PK__Users__1788CC4C95FAAD11");
@@ -435,11 +446,9 @@ namespace ProjectLibrary.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActivityId"));
 
                     b.Property<string>("Action")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Details")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LogDate")
@@ -500,6 +509,9 @@ namespace ProjectLibrary.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("MemberType")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime");

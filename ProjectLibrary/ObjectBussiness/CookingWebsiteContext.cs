@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ProjectLibrary.ObjectBussiness;
 
@@ -62,8 +63,13 @@ public partial class CookingWebsiteContext : DbContext
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-B0D0J2Q\\CHAU92;Initial Catalog=CookingWebsite;Persist Security Info=True;User ID=sa;Password=chau840848;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
+    {
+        var builder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", true, true);
+        IConfigurationRoot configuration = builder.Build();
+        optionsBuilder.UseSqlServer(configuration.GetConnectionString("CookingWebSite"));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -246,9 +252,12 @@ public partial class CookingWebsiteContext : DbContext
             entity.HasIndex(e => e.UserName, "UQ__Users__C9F284564CC9CD89").IsUnique();
 
             entity.Property(e => e.Email).HasMaxLength(255);
+            entity.Property(e => e.EmailConfirmed).IsRequired();
+            entity.Property(e => e.EmailConfirmationToken).HasMaxLength(500);
             entity.Property(e => e.Password).HasMaxLength(255);
             entity.Property(e => e.Status).HasMaxLength(50);
             entity.Property(e => e.UserName).HasMaxLength(50);
+            entity.Property(e => e.UserType).HasMaxLength(50);
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.RoleId)
