@@ -1,0 +1,60 @@
+﻿@model ProjectWebAPI.Application.UserDetailDTO
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>UserDetailDTO</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Create", "UserDetail", FormMethod.Post))
+        {
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control", @placeholder = "UserId" } })
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FullName" class="control-label"></label>
+                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", @placeholder = "Fullname" } })
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control", @placeholder = "Gender" } })
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @placeholder = "Phone" } })
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @placeholder = "Address" } })
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Avatar" class="control-label"></label>
+                @Html.EditorFor(model => model.Avatar, new { htmlAttributes = new { @class = "form-control", @placeholder = "Avatar" } })
+                <span asp-validation-for="Avatar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        }        
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

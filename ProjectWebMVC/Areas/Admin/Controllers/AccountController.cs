@@ -6,6 +6,7 @@ using ProjectWebAPI.Models;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class AccountController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -15,7 +16,8 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         {
             _httpClient = new HttpClient();
             var contextType = new MediaTypeWithQualityHeaderValue("application/json");
-            _userApiUrl = "https://localhost:7269/api/User";
+            //_userApiUrl = "https://localhost:7269/api/User";
+            _userApiUrl = "https://localhost:44388/api/User";
         }
         public async Task<IActionResult> Index()
         {
@@ -89,7 +91,8 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     switch (user.RoleId)
                     {
                         case 1:
-                            return RedirectToAction("Index", "Admin");
+                            //return RedirectToAction("Index", "Admin");
+                            return Redirect("~/Admin/Admin/Index");
                         case 2:
                             return RedirectToAction("Index", "Customer");
                         // Xử lý các RoleId khác tại đây

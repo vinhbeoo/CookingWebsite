@@ -6,6 +6,7 @@ using System.Text.Json;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class NotificationController : Controller
     {
         // GET: NotificationController

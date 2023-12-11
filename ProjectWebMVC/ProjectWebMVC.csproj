@@ -295,7 +295,7 @@
 
   <ItemGroup>
     <Reference Include="Logger">
-      <HintPath>bin\Debug\net7.0\Logger.dll</HintPath>
+      <HintPath>..\ProjectWebAPI\bin\Debug\net7.0\Logger.dll</HintPath>
     </Reference>
   </ItemGroup>
 
