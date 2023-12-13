@@ -286,7 +286,7 @@ public partial class CookingWebsiteContext : DbContext
             entity.Property(e => e.Address).HasMaxLength(255);
             entity.Property(e => e.Avatar).HasMaxLength(255);
             entity.Property(e => e.FullName).HasMaxLength(255);
-            entity.Property(e => e.Gender).HasMaxLength(10);
+            
             entity.Property(e => e.Phone).HasMaxLength(20);
 
             entity.HasOne(d => d.User).WithOne(p => p.UserDetail)

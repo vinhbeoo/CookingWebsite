@@ -1,0 +1,74 @@
+﻿@model ProjectLibrary.ObjectBussiness.User
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+		@using (Html.BeginForm("Edit", "User", FormMethod.Post))
+		{
+			@Html.HiddenFor(model=>model.UserId)
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label>@Html.DisplayNameFor(model => model.UserName)</label>
+				@Html.EditorFor(model=>model.UserName,new {htmlAttributes= new{@class="form-control"} })
+				<span asp-validation-for="UserName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label>@Html.DisplayNameFor(model => model.Password)</label>
+				@Html.EditorFor(model=>model.Password,new {htmlAttributes= new{@class="form-control"} })
+				<span asp-validation-for="Password" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label>@Html.DisplayNameFor(model => model.Email)</label>
+				@Html.EditorFor(model=>model.Email,new {htmlAttributes= new{@class="form-control"} }) 
+				<span asp-validation-for="Email" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label>@Html.DisplayNameFor(model => model.EmailConfirmed)</label>
+				<div>
+				@Html.CheckBoxFor(model => model.EmailConfirmed, new { htmlAttributes = new { @class = "form-control" } })
+				<span asp-validation-for="EmailConfirmed" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>@Html.DisplayNameFor(model => model.EmailConfirmationToken)</label>
+				@Html.EditorFor(model=>model.EmailConfirmationToken,new {htmlAttributes= new{@class="form-control"} }) 
+				<span asp-validation-for="EmailConfirmationToken" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label>@Html.DisplayNameFor(model => model.RoleId)</label>
+				@Html.EditorFor(model=>model.RoleId,new {htmlAttributes= new{@class="form-control"} }) 
+				<span asp-validation-for="RoleId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label>@Html.DisplayNameFor(model => model.Status)</label>
+				@Html.EditorFor(model=>model.Status,new {htmlAttributes= new{@class="form-control"} }) 
+				<span asp-validation-for="Status" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label>@Html.DisplayNameFor(model => model.UserType)</label>
+				@Html.EditorFor(model=>model.UserType,new {htmlAttributes= new{@class="form-control"} }) 
+				<span asp-validation-for="UserType" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-primary" />
+			</div>
+		}
+    </div>
+</div>
+<div>
+	@Html.ActionLink("Back to List", "Index", "User", null, new { @class = "btn btn-danger" })
+</div>
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}
+
