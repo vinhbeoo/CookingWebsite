@@ -1,0 +1,66 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@{
+	ViewData["title"] = "RecipesList";
+	Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+	var recipes = ViewBag.Recipe;
+	var categories = ViewBag.Category;
+	var recipesCount = ViewBag.Recipe.Count;
+}
+
+
+
+
+
+<body id="page-top">
+
+	<section id="recipesList" class="recipesList bwt-90">
+		<div class="container text-center">
+
+			@*Search Begin_____________*@
+			<div class="bwt-footer bwt-100">
+				<div class="container text-center">
+					<div class="form-box">
+						<form action="RecipesList" method="post">
+							<input type="text" placeholder="Search your Recipe...." name="searchString" required>
+							<input type="submit" value="Search" class="btn btn-primary btn-lg">
+						</form>
+					</div>
+				</div>
+			</div>
+			@*Search End_______________*@
+
+			<br />
+
+			@*List Recipe Begin_____________*@
+			<div class="row">
+				@foreach (var recipe in recipes)
+				{
+					<div class="col-sm-6 col-md-6 text-sm-left text-md-left text-lg-left bwt-offset-top-20">
+						<div class="row">
+							<div class="col-sm-4 col-md-3"><img src="@recipe.ImageTitle" class="img-responsive img-square"></div>
+							<div class="col-sm-8 col-md-9">
+								@{
+									//string linkrec = @recipe.RecipeId.ToString();
+									string recTitle = @recipe.RecipeTitle;
+								}
+								<h1>
+									@Html.ActionLink(recTitle,"Index","Recipe",new {recipeId=@recipe.RecipeId},null)
+								</h1>
+								<p>@recipe.Description</p>
+							</div>
+						</div>
+					</div>
+				}
+				<br />
+				@*Pagination Begin*@
+				@Html.PagedListPager((IPagedList) recipes,page=> Url.Action("Index", new {page = page}))
+				@*Pagination End*@
+			</div>
+			@*List Recipe End_____________*@
+		</div>
+
+
+	</section>
+</body>

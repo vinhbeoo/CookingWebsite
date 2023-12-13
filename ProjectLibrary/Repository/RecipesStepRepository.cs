@@ -11,7 +11,8 @@ namespace ProjectLibrary.Repository
     public class RecipesStepRepository : IRecipesStepRepository
     {
         public List<RecipesStep> GetRecipesSteps() => RecipesStepDAO.Instance.GetRecipesSteps();
-        public RecipesStep GetRecipesStepById(int id) => RecipesStepDAO.Instance.GetRecipesStepById(id);
+		public List<RecipesStep> GetRecipesStepListById(int recipeId) => RecipesStepDAO.Instance.GetRecipesStepListById(recipeId);
+		public RecipesStep GetRecipesStepById(int id) => RecipesStepDAO.Instance.GetRecipesStepById(id);
         public void SaveRecipesStep(RecipesStep recipesStep) => RecipesStepDAO.Instance.SaveRecipesStep(recipesStep);
         public void UpdateRecipesStep(RecipesStep recipesStep) => RecipesStepDAO.Instance.UpdateRecipesStep(recipesStep);
         public void DeleteRecipesStep(RecipesStep recipesStep) => RecipesStepDAO.Instance.DeleteRecipesStep(recipesStep);

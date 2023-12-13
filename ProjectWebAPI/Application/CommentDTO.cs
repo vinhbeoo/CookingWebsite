@@ -10,5 +10,7 @@
 
         public string CommentText { get; set; } = null!;
 
-    }
+		public DateTime CreateDate { get; set; }
+
+	}
 }
