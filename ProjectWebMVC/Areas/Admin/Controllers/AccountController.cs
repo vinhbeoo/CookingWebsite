@@ -6,6 +6,7 @@ using ProjectWebAPI.Models;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class AccountController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -36,24 +37,6 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             }
         }
 
-        public async Task<IActionResult> Details(string identifier)
-        {
-            HttpResponseMessage response = await _httpClient.GetAsync($"{_userApiUrl}/{identifier}");
-            if (response.IsSuccessStatusCode)
-            {
-                string strData = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true,
-                };
-                User user = JsonSerializer.Deserialize<User>(strData, options);
-                return View(user);
-            }
-            else
-            {
-                return View(new User());
-            }
-        }
 
         [HttpGet]
         public IActionResult Login()
@@ -89,7 +72,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     switch (user.RoleId)
                     {
                         case 1:
-                            return RedirectToAction("Index", "Admin");
+                            return RedirectToAction("Index", "HomeAdmin");
                         case 2:
                             return RedirectToAction("Index", "Customer");
                         // Xử lý các RoleId khác tại đây

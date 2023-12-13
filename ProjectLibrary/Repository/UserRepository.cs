@@ -10,11 +10,14 @@ namespace ProjectLibrary.Repository
 {
     public class UserRepository : IUserRepository
     {
-        public Task<List<User>> GetUsers() => UserDAO.Instance.GetAllUsers();
+        public void DeleteUser(User user) => UserDAO.Instance.DeleteUser(user);
+        public void SaveUser(User user) => UserDAO.Instance.SaveUser(user);
+        public void UpdateUser(User user) => UserDAO.Instance.UpdateUser(user);
+        public List<User> GetUsers() => UserDAO.Instance.GetUsers();
+        public User GetUserById(int id) => UserDAO.Instance.FindUserById(id);
+        public string CheckAddUser(User user) => UserDAO.Instance.CheckAddUser(user);
+        //
         public Task<User> GetUserByEmailOrUserName(string input) => UserDAO.Instance.GetUserByEmailOrUserName(input);
-        public Task<User> CreateUser(User user) => UserDAO.Instance.CreateUser(user);
-        public Task<User> UpdateUser(User user) => UserDAO.Instance.UpdateUser(user);
-        public Task<User> DeleteUser(User user) => UserDAO.Instance.DeleteUser(user);
         public Task<bool> ConfirmEmailAsync(string email, string token) => UserDAO.Instance.ConfirmEmailAsync(email, token);
     }
 }
