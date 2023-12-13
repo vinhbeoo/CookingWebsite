@@ -13,8 +13,6 @@ public partial class Comment
 
     public string CommentText { get; set; } = null!;
 
-	public DateTime CreateDate { get; set; }
-
 	public virtual Recipe? Recipe { get; set; }
 
     public virtual User? User { get; set; }
