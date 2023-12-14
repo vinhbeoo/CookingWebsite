@@ -1,10 +1,15 @@
+using ProjectWebMVC.Services;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
 var environment = builder.Environment;
 
 
-builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+//builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
+builder.Services.AddRazorPages()
+    .AddRazorRuntimeCompilation();
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 builder.Services.AddControllersWithViews();
 
