@@ -65,7 +65,25 @@ namespace ProjectLibrary.DataAccess
             return ingredientsGroup;
         }
 
-        public void SaveIngredientsGroup(IngredientsGroup ingredientsGroup)
+		public List<IngredientsGroup> GetIngredientsGroupsByRecipeId(int RecipeId)
+		{
+			var list = new List<IngredientsGroup>();
+			try
+			{
+				using (var context = new CookingWebsiteContext())
+				{
+					list = context.IngredientsGroups.ToList();
+					list = list.Where(x => x.RecipeId.Equals(RecipeId)).ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error retrieving ingredients groups list: " + ex.Message);
+			}
+			return list;
+		}
+
+		public void SaveIngredientsGroup(IngredientsGroup ingredientsGroup)
         {
             try
             {

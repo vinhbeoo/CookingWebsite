@@ -29,25 +29,26 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
-        // Get comment theo id recipe
-        public List<Comment> GetComments(int recipeId)
-        {
-            var comments = new List<Comment>();
-            try
-            {
-                using (var context = new CookingWebsiteContext())
-                {
-                    comments = context.Comments.Where(c => c.RecipeId == recipeId).ToList();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error retrieving Comments list: " + ex.Message);
-            }
-            return comments;
-        }
-        // get comment theo id comment
-        public Comment FindCommentById(int commentid)
+		// Get comment theo id recipe
+		public List<Comment> GetComments(int recipeId)
+		{
+			var comments = new List<Comment>();
+			try
+			{
+				using (var context = new CookingWebsiteContext())
+				{
+					comments = context.Comments.Where(c => c.RecipeId == recipeId).Include(s => s.User).ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error retrieving Comments list: " + ex.Message);
+			}
+			return comments;
+		}
+
+		// get comment theo id comment
+		public Comment FindCommentById(int commentid)
         {
             Comment comment = new Comment();
             try

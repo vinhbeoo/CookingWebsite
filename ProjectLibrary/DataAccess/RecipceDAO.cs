@@ -44,7 +44,25 @@ namespace ProjectLibrary.DataAccess
             return list;
         }
 
-        public Recipe GetRecipeById(int id)
+		public List<Recipe> GetRecipeListById(int id)
+		{
+			var list = new List<Recipe>();
+			try
+			{
+				using (var context = new CookingWebsiteContext())
+				{
+					list = context.Recipes.ToList();
+					list = list.Where(x => x.RecipeId.Equals(id)).ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error retrieving recipes list: " + ex.Message);
+			}
+			return list;
+		}
+
+		public Recipe GetRecipeById(int id)
         {
             Recipe recipe = new Recipe();
             try

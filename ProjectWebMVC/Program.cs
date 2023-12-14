@@ -4,7 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 var environment = builder.Environment;
 
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

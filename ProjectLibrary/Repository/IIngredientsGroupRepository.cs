@@ -7,7 +7,8 @@ namespace ProjectLibrary.Repository
     {
         List<IngredientsGroup> GetIngredientsGroups();
         IngredientsGroup GetIngredientsGroupById(int id);
-        void SaveIngredientsGroup(IngredientsGroup ingredientsGroup);
+		List<IngredientsGroup> GetIngredientsGroupsByRecipeId(int RecipeId);
+		void SaveIngredientsGroup(IngredientsGroup ingredientsGroup);
         void UpdateIngredientsGroup(IngredientsGroup ingredientsGroup);
         void DeleteIngredientsGroup(IngredientsGroup ingredientsGroup);
     }

@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectLibrary.Repository;
+using ProjectWebAPI.Application;
 
-namespace ProjectWebAPI.Application
+namespace ProjectWebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

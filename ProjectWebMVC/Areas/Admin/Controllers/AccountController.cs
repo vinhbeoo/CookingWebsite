@@ -28,12 +28,12 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                 {
                     PropertyNameCaseInsensitive = true,
                 };
-                List<User> userList = JsonSerializer.Deserialize<List<User>>(strData, options);
+                List<ProjectLibrary.ObjectBussiness.User> userList = JsonSerializer.Deserialize<List<ProjectLibrary.ObjectBussiness.User>>(strData, options);
                 return View(userList);
             }
             else
             {
-                return View(new List<User>());
+                return View(new List<ProjectLibrary.ObjectBussiness.User>());
             }
         }
 
@@ -62,7 +62,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     {
                         PropertyNameCaseInsensitive = true,
                     };
-                    User user = JsonSerializer.Deserialize<User>(strData, options);
+					ProjectLibrary.ObjectBussiness.User user = JsonSerializer.Deserialize<ProjectLibrary.ObjectBussiness.User>(strData, options);
                     if (!user.EmailConfirmed)
                     {
                         TempData["Message"] = "Email chưa được xác thực.";

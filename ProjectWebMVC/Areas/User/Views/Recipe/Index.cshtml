@@ -1,0 +1,112 @@
+﻿@{
+	ViewData["title"] = "Recipe";
+	Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+	var recipes = ViewBag.Recipe as IEnumerable<ProjectLibrary.ObjectBussiness.Recipe>;
+	var IngredientGroups = ViewBag.IngredientGroup as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsGroup>;
+	var IngredientDetails = ViewBag.IngredientDetail as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsDetail>;
+	var RecipeSteps = ViewBag.RecipeStep as IEnumerable<ProjectLibrary.ObjectBussiness.RecipesStep>;
+	var Comments = ViewBag.Comment as IEnumerable<ProjectLibrary.ObjectBussiness.Comment>;
+}
+
+
+<body id="page-top">
+
+	<section id="recipe" class="recipe bwt-90">
+
+
+
+
+		<div class="container">
+			<div class="col-md-6">
+				<img src="@recipes.FirstOrDefault().ImageTitle" class="img-responsive">
+			</div>
+			<div class="col-md-6 bwt-offset-lg-top-0 bwt-offset-md-top-0 bwt-offset-xxs-top-30">
+				<h1 class="title">@recipes.FirstOrDefault().RecipeTitle</h1>
+				<h4>By: @recipes.FirstOrDefault().Creator</h4>
+				<h4>Updated on: @recipes.FirstOrDefault().CreateDate</h4>
+				<p>@recipes.FirstOrDefault().Description</p>
+			</div>
+		</div>
+		<hr />
+		<div class="container">
+			<div class="col-sm-6 col-md-6 text-sm-left text-md-left text-lg-left bwt-offset-top-20">
+				<div class="row" style="border: 1px solid black;">
+					<h1>Info</h1>
+					<p>Prep Time: @recipes.FirstOrDefault().PrepTime</p>
+					<p>Cook Time: @recipes.FirstOrDefault().CookTime</p>
+					<p>Total Time: @recipes.FirstOrDefault().TotalTime</p>
+					<p>Servings: @recipes.FirstOrDefault().Servings</p>
+				</div>
+			</div>
+
+			<div class="col-sm-6 col-md-6 text-sm-left text-md-left text-lg-left bwt-offset-top-20">
+				<div class="row" style="border: 1px solid black;">
+					<h1>Nutrition Facts</h1>
+					<p>Calories: @recipes.FirstOrDefault().Calories</p>
+					<p>Fat: @recipes.FirstOrDefault().Fat</p>
+					<p>Carbs: @recipes.FirstOrDefault().Carbs</p>
+					<p>Protein: @recipes.FirstOrDefault().Protein</p>
+				</div>
+			</div>
+
+		</div>
+		<hr />
+
+
+
+		<div class="container">
+			<h1>INGREDIENTS</h1>
+			@foreach (var IngGroup in IngredientGroups)
+			{
+				<h1>
+					<p>@IngGroup.NameIngredients</p>
+				</h1>
+				@foreach (var IngDetail in IngredientDetails)
+				{
+					@if (@IngDetail.IngredientId == @IngGroup.IngredientId)
+					{
+
+						<p>@IngDetail.Stt -- @IngDetail.Description</p>
+					}
+				}
+			}
+		</div>
+		<hr />
+
+
+
+		<div class="container">
+			<h1>STEP BY STEP</h1>
+			@foreach (var RecipeStep in RecipeSteps)
+			{
+				<p><h1>STEP: @RecipeStep.Step</h1></p>
+				<p>@RecipeStep.Description</p>
+				<p>Link Pic: @RecipeStep.ImageUrl</p>
+				<p>Link Video: @RecipeStep.VideoUrl</p>
+			}
+		</div>
+		<hr />
+
+
+
+		<div class="container">
+			<h1>VIDEO TUTORIAL</h1>
+			<iframe width="560" height="315" src="@recipes.FirstOrDefault().VideoUrl.ToString()" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+		</div>
+		<hr />
+
+
+
+		<div class="container">
+			<h1>Comment</h1>
+
+			@foreach (var Comment in Comments)
+			{
+				<p><h1>User: @Comment.UserId -- @Comment.User.UserName</h1></p>
+				<p>Cooment: @Comment.CommentText</p>
+				<p>Date: @Comment.CreateDate</p>
+
+			}
+		</div>
+	</section>
+</body>

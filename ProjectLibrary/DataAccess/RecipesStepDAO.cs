@@ -65,7 +65,25 @@ namespace ProjectLibrary.DataAccess
             return recipesStep;
         }
 
-        public void SaveRecipesStep(RecipesStep recipesStep)
+		public List<RecipesStep> GetRecipesStepListById(int recipeId)
+		{
+			var list = new List<RecipesStep>();
+			try
+			{
+				using (var context = new CookingWebsiteContext())
+				{
+					list = context.RecipesSteps.ToList();
+					list = list.Where(x => x.RecipeId.Equals(recipeId)).ToList();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception("Error retrieving recipes steps list: " + ex.Message);
+			}
+			return list;
+		}
+
+		public void SaveRecipesStep(RecipesStep recipesStep)
         {
             try
             {
