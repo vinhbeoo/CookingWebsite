@@ -9,11 +9,14 @@ namespace ProjectLibrary.Repository
 {
     public interface IUserRepository
     {
-        Task<List<User>> GetUsers();
+        void SaveUser(User user);
+        User GetUserById(int id);
+        void DeleteUser(User user);
+        void UpdateUser(User user);
+        List<User> GetUsers();
+        string CheckAddUser(User user);
+        //
         Task<User> GetUserByEmailOrUserName(string input);
-        Task<User> CreateUser(User user);
-        Task<User> UpdateUser(User user);
-        Task<User> DeleteUser(User user);
         Task<bool> ConfirmEmailAsync(string email, string token);
 
     }

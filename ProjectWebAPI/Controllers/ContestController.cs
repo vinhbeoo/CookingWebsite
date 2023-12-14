@@ -87,7 +87,7 @@ namespace ProjectWebAPI.Controllers
 
         // DELETE api/<ContestController>/5
         [HttpDelete("{contestId}")]
-        public IActionResult DeleteContest(int contestId, int userId)
+        public IActionResult DeleteContest(int contestId)
         {
             var contest = repository.GetContestById(contestId);
             if (contest == null)

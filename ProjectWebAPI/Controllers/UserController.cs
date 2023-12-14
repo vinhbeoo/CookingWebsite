@@ -1,11 +1,13 @@
-﻿using System.Net.Mail;
-using System.Net;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectLibrary.Repository;
+using ProjectWebAPI.Application;
 using ProjectWebAPI.Models;
+using System.Net.Mail;
+using System.Net;
 using ProjectWebMVC.Areas.App.Code;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace ProjectWebAPI.Controllers
 {
@@ -14,9 +16,13 @@ namespace ProjectWebAPI.Controllers
     public class UserController : ControllerBase
     {
         private IUserRepository repository = new UserRepository();
+        /*private IUserDetailRepository detailRepository = new UserDetailRepository();*/
         // GET: api/<UserController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers() => await repository.GetUsers();
+        public ActionResult<IEnumerable<User>> GetUsers() => repository.GetUsers();
+
+        
+        //
 
         [HttpGet("{input}")]
         public async Task<IActionResult> GetUserByEmailOrUserName(string input)
@@ -30,7 +36,6 @@ namespace ProjectWebAPI.Controllers
 
             return Ok(user);
         }
-
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginViewModel model)
@@ -59,8 +64,6 @@ namespace ProjectWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error during login: " + ex.Message);
             }
         }
-
-
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
@@ -100,7 +103,7 @@ namespace ProjectWebAPI.Controllers
                         Status = "Hoạt động" // Mặc định giá trị cho Status
                     };
 
-                    await repository.CreateUser(user);
+                    repository.SaveUser(user);
 
                     // Gửi email xác nhận
                     SendConfirmationEmail(user.Email, user.EmailConfirmationToken);
@@ -136,7 +139,7 @@ namespace ProjectWebAPI.Controllers
                     mailMessage.Body = body;
                     mailMessage.IsBodyHtml = true; // Có thể sử dụng HTML trong nội dung email
 
-                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com")) 
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com"))
                     {
                         smtp.Port = 587;
                         smtp.Credentials = new NetworkCredential("jamesthewchess@gmail.com", "lqrz rman kncd tsgh"); // Điền email và mật khẩu của trang web
@@ -175,19 +178,6 @@ namespace ProjectWebAPI.Controllers
                 // Lỗi xác thực, trả về thông báo lỗi
                 return BadRequest(new { success = false, message = ex.Message });
             }
-        }
-
-        // DELETE api/<UserController>/5
-        [HttpDelete("{userName}")]
-        public async Task<IActionResult> DeleteUser(string userName)
-        {
-            var user = await repository.GetUserByEmailOrUserName(userName);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            await repository.DeleteUser(user);
-            return Ok("User deleted successfully");
         }
     }
 }
