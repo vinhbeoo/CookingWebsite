@@ -1,4 +1,6 @@
+
 using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var environment = builder.Environment;
@@ -16,8 +18,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.LoginPath = new PathString("/Admin/Account/Login");
 });
 
+
 // Configuring services
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
 builder.Services.AddControllersWithViews();
 
 
