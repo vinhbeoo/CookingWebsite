@@ -26,6 +26,23 @@ namespace ProjectLibrary.DataAccess
                 }
             }
         }
+        public List<UserActivity> GetUserActivities()
+        {
+            var list = new List<UserActivity>();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    list = context.UserActivities.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ và ném ngoại lệ mới với thông điệp lỗi.
+                throw new Exception("Error retrieving contest list: " + ex.Message);
+            }
+            return list;
+        }
 
         public void LogUserActivity(UserActivity userActivity)
         {

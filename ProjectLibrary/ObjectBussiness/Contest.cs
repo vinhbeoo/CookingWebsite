@@ -17,7 +17,7 @@ public partial class Contest
 
     public DateTime EndTime { get; set; }
 
-    public int? OwnerUserId { get; set; }
+    public int OwnerUserId { get; set; }
 
     public virtual User? OwnerUser { get; set; }
 

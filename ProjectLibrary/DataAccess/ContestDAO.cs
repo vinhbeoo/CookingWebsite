@@ -97,8 +97,6 @@ namespace ProjectLibrary.DataAccess
                     // Thêm đối tượng vào cơ sở dữ liệu
                     context.Contests.Add(contest);
                     context.SaveChanges();
-                    // Log user activity for adding a contest
-                    context.LogUserActivity(1, "CreateContest", $"Created a new contest with ID {contest.ContestId}");
                 }
             }
             catch (Exception ex)
@@ -128,7 +126,7 @@ namespace ProjectLibrary.DataAccess
                         // Lưu thay đổi vào cơ sở dữ liệu
                         context.SaveChanges();
                         // Log user activity
-                        context.LogUserActivity(1, "UpdateContest", $"Updated contest with ID {contest.ContestId}");
+                        context.LogUserActivity(existingContest.OwnerUserId, "UpdateContest", $"Updated contest with ID {contest.ContestId}");
                     }
                     else
                     {
@@ -164,7 +162,7 @@ namespace ProjectLibrary.DataAccess
                         context.Contests.Remove(contestDel);
                         context.SaveChanges();
                         // Log user activity
-                        context.LogUserActivity(1, "DeleteContest", $"Deleted contest with ID {contest.ContestId}");
+                        context.LogUserActivity(contestDel.OwnerUserId, "DeleteContest", $"Deleted contest with ID {contest.ContestId}");
                     }
                 }
             }

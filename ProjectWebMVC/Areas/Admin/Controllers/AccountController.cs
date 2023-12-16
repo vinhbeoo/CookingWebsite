@@ -1,5 +1,8 @@
 ﻿using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectWebAPI.Models;
@@ -41,10 +44,12 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            ViewData["Title"] = "Đăng nhập";
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -62,27 +67,78 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     {
                         PropertyNameCaseInsensitive = true,
                     };
-					ProjectLibrary.ObjectBussiness.User user = JsonSerializer.Deserialize<ProjectLibrary.ObjectBussiness.User>(strData, options);
+
+                    ProjectLibrary.ObjectBussiness.User user = JsonSerializer.Deserialize<ProjectLibrary.ObjectBussiness.User>(strData, options);
+
                     if (!user.EmailConfirmed)
                     {
                         TempData["Message"] = "Email chưa được xác thực.";
                         return View("NotificationEmailComfirm");
                     }
-                    // Xử lý các trường hợp RoleId
-                    switch (user.RoleId)
+
+                    var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()), // Assuming Id is an integer
+            };
+
+                    if (user.RoleId == 1)
                     {
-                        case 1:
-                            return RedirectToAction("Index", "HomeAdmin");
-                        case 2:
-                            return RedirectToAction("Index", "Customer");
-                        // Xử lý các RoleId khác tại đây
-                        default:
-                            return StatusCode(StatusCodes.Status500InternalServerError, "Unhandled RoleId.");
+                        claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+
+                        var identity = new ClaimsIdentity(claims, "Admin");
+                        var principal = new ClaimsPrincipal(identity);
+
+                        await HttpContext.SignInAsync("Admin", principal, new AuthenticationProperties
+                        {
+                            IsPersistent = model.RememberLogin
+                        });
+
+                        TempData["Message"] = "Đăng nhập thành công";
+
+                        var routeValues = new RouteValueDictionary
+                {
+                    {"area", "Admin"},
+                    {"claimType", "UserClaim"},
+                    {"claimValue", "true"}
+                };
+
+                        return RedirectToAction("Index", "HomeAdmin", routeValues);
+                    }
+                    else if (user.RoleId == 2)
+                    {
+                        claims.Add(new Claim(ClaimTypes.Role, "User"));
+
+                        var identity = new ClaimsIdentity(claims, "User");
+                        var principal = new ClaimsPrincipal(identity);
+
+                        await HttpContext.SignInAsync("User", principal, new AuthenticationProperties
+                        {
+                            IsPersistent = model.RememberLogin
+                        });
+
+
+
+                        TempData["Message"] = "Đăng nhập thành công";
+                        var routeValues = new RouteValueDictionary
+                {
+                    {"area", "User"},
+                    {"claimType", "UserClaim"},
+                    {"claimValue", "true"}
+                };
+
+                        // Redirect to a view for regular users
+                        return RedirectToAction("Index", "HomeUser", routeValues);
+                    }
+                    else
+                    {
+                        // Handle other roles or scenarios
+                        ModelState.AddModelError("", "Role not supported");
+                        return View("Login", model);
                     }
                 }
                 else
                 {
-                    // Đăng nhập thất bại, xử lý lỗi hoặc hiển thị thông báo
                     string errorData = await response.Content.ReadAsStringAsync();
                     ModelState.AddModelError(string.Empty, $"Error: {errorData}");
                     return View("Login", model);
@@ -90,9 +146,17 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             }
             catch
             {
-                // Xử lý ngoại lệ
                 return View("Error");
             }
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            // Đăng xuất người dùng
+            await HttpContext.SignOutAsync();
+
+            // Chuyển hướng đến trang đăng nhập hoặc trang chính
+            return RedirectToAction("Login", "Account", new { area = "Admin" }); // Thay thế bằng tên trang đăng nhập hoặc trang chính của bạn
         }
 
         public IActionResult Register()

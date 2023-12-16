@@ -1,6 +1,11 @@
-﻿<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
+﻿@using System.Security.Claims;
+@{
+    var user = User as ClaimsPrincipal;
+    var userName = user?.FindFirstValue(ClaimTypes.Name);
+}
 
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span> <i class="fa fa-bars"></i>
@@ -12,11 +17,41 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="active"><a class="page-scroll" href="#home">Home</a></li>
                 <li><a class="page-scroll" href="#about"> About us</a></li>
-                <li><a class="page-scroll" href="#recipes">Recipes</a></li>
+                <li><a class="page-scroll" href="@Url.Action("Index", "RecipesList", new { area = "User" })">Recipes</a></li>
                 <li><a class="page-scroll" href="#gallery">Gallery</a></li>
                 <li><a class="page-scroll" href="#contests">Contests</a></li>
                 <li><a class="page-scroll" href="#blog">Blog</a></li>
-                <li><a class="page-scroll" href="#register">Register</a></li>
+
+                @if (userName != null)
+                {
+                    <li class="dropdown">
+                        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-toggle="dropdown">
+                            @* <img alt="" class="profile-img" src="@Url.Content("~/Admin/assets/img/profile-img.jpg")"> *@
+                            <span class="dropdown-toggle ps-2">@userName <b class="caret"></b></span>
+                        </a>
+
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="@Url.Action("UserProfile", "Account", new { area = "User" })"><i class="bi bi-person"></i> My Profile</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("AccountSettings", "Account", new { area = "User" })"><i class="bi bi-gear"></i> Account Settings</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Help", "Account", new { area = "User" })"><i class="bi bi-question-circle"></i> Need Help?</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="@Url.Action("Logout", "Account", new { area = "Admin" })"><i class="bi bi-box-arrow-right"></i> Sign Out</a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li><a class="page-scroll" href="@Url.Action("Login", "Account", new { area = "Admin" })">Login</a></li>
+                }
+
                 <li>
                     <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span class="fa fa-search"></span>

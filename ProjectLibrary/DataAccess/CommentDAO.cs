@@ -29,8 +29,26 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
-		// Get comment theo id recipe
-		public List<Comment> GetComments(int recipeId)
+        // Get all comment 
+        public List<Comment> GetAllComments()
+        {
+            var comments = new List<Comment>();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    comments = context.Comments.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving Comments list: " + ex.Message);
+            }
+            return comments;
+        }
+
+        // Get comment theo id recipe
+        public List<Comment> GetComments(int recipeId)
 		{
 			var comments = new List<Comment>();
 			try
@@ -70,7 +88,7 @@ namespace ProjectLibrary.DataAccess
         }
 
         // insert comment 
-        public void SaveComment(Comment comment, int userId)
+        public void SaveComment(Comment comment)
         {
             try
             {
@@ -85,8 +103,7 @@ namespace ProjectLibrary.DataAccess
 
                     context.Comments.Add(comment);
                     context.SaveChanges();
-                    // Log user activity for adding a comment
-                    context.LogUserActivity(userId, "CreateComment", $"Created a new comment with ID {comment.CommentId}");
+
                 }
             }
             catch (DbUpdateException ex)
@@ -100,8 +117,9 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception("An error occurred while saving the entity changes. See the inner exception for details.", ex);
             }
         }
+
         //Update Comment
-        public void UpdateComment(Comment comment, int userId)
+        public void UpdateComment(Comment comment)
         {
             try
             {
@@ -113,8 +131,8 @@ namespace ProjectLibrary.DataAccess
                     {
                         context.Entry(existingComment).CurrentValues.SetValues(comment);
                         context.SaveChanges();
-                        // Log user activity
-                        context.LogUserActivity(userId, "UpdateComment", $"Updated comment with ID {comment.CommentId}");
+                        /*// Log user activity
+                        context.LogUserActivity(existingComment.UserId, "UpdateComment", $"Updated comment:  {comment.CommentText}");*/
                     }
                     else
                     {
@@ -128,7 +146,7 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
-        public void DeleteComment(Comment comment, int userId)
+        public void DeleteComment(Comment comment)
         {
             try
             {
@@ -143,8 +161,8 @@ namespace ProjectLibrary.DataAccess
                     {
                         context.Comments.Remove(commentToDelete);
                         context.SaveChanges();
-                        // Log user activity
-                        context.LogUserActivity(userId, "DeleteComment", $"Deleted comment with ID {comment.CommentId}");
+                        /*// Log user activity
+                        context.LogUserActivity(commentToDelete.UserId, "DeleteComment", $"Deleted comment:  {comment.CommentText}");*/
                     }
                 }
             }

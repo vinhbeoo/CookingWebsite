@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ProjectLibrary.ObjectBussiness.Comment>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    @Html.ActionLink("Tạo mới","Create","Comment", null, new {@class="btn btn-danger"})
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CommentId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CommentText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentId)
+            </td>
+            <td>
+                    @Html.ActionLink(item.UserId.ToString(),"Details","UserDetail",new { id = item.UserId },null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CommentText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CommentId}) |
+                    @Html.ActionLink("Details", "Details", new { id = item.CommentId}) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.CommentId})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

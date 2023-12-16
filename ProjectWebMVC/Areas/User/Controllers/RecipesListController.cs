@@ -2,11 +2,14 @@
 using ProjectLibrary.ObjectBussiness;
 using Newtonsoft.Json;
 using X.PagedList;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectWebMVC.Areas.User.Controllers
 {
-	
-	[Area("User")]
+
+    [Area("User")]
+    [Authorize(Roles = "User")]
+    [Authorize(AuthenticationSchemes = "User")]
     public class RecipesListController : Controller
     {
         //private readonly HttpClient _httpClient;

@@ -11,7 +11,7 @@ public partial class Recipe
 
     public string ImageTitle { get; set; } = null!;
 
-    public int? Creator { get; set; }
+    public int Creator { get; set; }
 
     public DateTime CreateDate { get; set; }
 

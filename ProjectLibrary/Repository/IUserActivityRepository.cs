@@ -10,5 +10,6 @@ namespace ProjectLibrary.Repository
     public interface IUserActivityRepository
     {
         void LogActivity(UserActivity userActivity);
+        List<UserActivity> GetUserActivities();
     }
 }

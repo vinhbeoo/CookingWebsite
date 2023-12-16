@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using System.Net.Http.Headers;
@@ -6,6 +7,9 @@ using System.Text.Json;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class NotificationController : Controller
     {
         // GET: NotificationController

@@ -2,6 +2,7 @@
 using ProjectLibrary.DataAccess;
 using ProjectLibrary.ObjectBussiness;
 using ProjectLibrary.Repository;
+using ProjectWebAPI.App.Code;
 using ProjectWebAPI.Application;
 using System.ComponentModel.Design;
 
@@ -15,13 +16,16 @@ namespace ProjectWebAPI.Controllers
 	{
 		private ICommentRepository repository = new CommentRepository(); // Assuming you have a CategoryRepository
 
+        // GET: api/<CommentController> 
+        [HttpGet]
+        public ActionResult<IEnumerable<Comment>> GetAllComments() => repository.GetAllComments();
 
-		// GET: api/<CategoryController> get comment by recipeid
-		[HttpGet("CommentByRecipe/{recipeId}")]
+        // GET: api/<CommentController> get comment by recipeid
+        [HttpGet("CommentByRecipe/{recipeId}")]
 		public ActionResult<IEnumerable<Comment>> GetComments(int recipeId) => repository.GetComments(recipeId);
 
-		// GET api/<CategoryController>/5
-		[HttpGet("{commentId}")]
+        // GET api/<CommentController>/5
+        [HttpGet("{commentId}")]
 		public ActionResult<Comment> GetCommentById(int commentId)
 		{
 			var comment = repository.GetCommentById(commentId);
@@ -33,9 +37,9 @@ namespace ProjectWebAPI.Controllers
 		}
 
 
-		// POST api/<CategoryController>
-		[HttpPost]
-		public IActionResult CreateComment([FromBody] CommentDTO commentDTO, int userId)
+        // POST api/<CommentController>
+        [HttpPost]
+		public IActionResult CreateComment([FromBody] CommentDTO commentDTO)
 		{
 			if (commentDTO == null)
 			{
@@ -47,19 +51,21 @@ namespace ProjectWebAPI.Controllers
 				CommentId = commentDTO.CommentId,
 				UserId = commentDTO.UserId,
 				RecipeId = commentDTO.RecipeId,
-				CommentText = commentDTO.CommentText,
-				CreateDate = commentDTO.CreateDate,
+				CommentText = commentDTO.CommentText
 			};
 			// Call the service to add the category to the database
-			repository.SaveComment(newComment, userId);
+			repository.SaveComment(newComment);
 
-			// Return a success message or other necessary information
-			return Ok("Comment created successfully");
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogCommentActivity(newComment.UserId, newComment.CommentId, "Create", $"Created a new comment: {newComment.CommentText}");
+
+            // Return a success message or other necessary information
+            return Ok("Comment created successfully");
 		}
 
-		// PUT api/<CategoryController>/5
-		[HttpPut("{commentId}")]
-		public IActionResult UpdateComment(int commentid, [FromBody] CommentDTO updatedCommentDTO, int userId)
+        // PUT api/<CommentController>/5
+        [HttpPut("{commentId}")]
+		public IActionResult UpdateComment(int commentid, [FromBody] CommentDTO updatedCommentDTO)
 		{
 			if (updatedCommentDTO == null || commentid != updatedCommentDTO.CommentId)
 			{
@@ -80,24 +86,31 @@ namespace ProjectWebAPI.Controllers
 			existingComment.CommentText = updatedCommentDTO.CommentText;
 			existingComment.CreateDate = updatedCommentDTO.CreateDate;
 			// Call the service to save changes to the database
-			repository.UpdateComment(existingComment, userId);
+			repository.UpdateComment(existingComment);
 
-			// Return a success message or other necessary information
-			return Ok("Comment updated successfully");
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogCommentActivity(existingComment.UserId, existingComment.CommentId, "Update", "Update a comment");
+
+            // Return a success message or other necessary information
+            return Ok("Comment updated successfully");
 		}
 
 
-		// DELETE api/<CategoryController>/5
-		[HttpDelete("{commentId}")]
-		public IActionResult DeleteComment(int commentId, int userId)
+        // DELETE api/<CommentController>/5
+        [HttpDelete("{commentId}")]
+		public IActionResult DeleteComment(int commentId)
 		{
 			var comment = repository.GetCommentById(commentId);
 			if (comment == null)
 			{
 				return NotFound();
 			}
-			repository.DeleteComment(comment, userId);
-			return Ok("Comment deleted successfully");
+			repository.DeleteComment(comment);
+
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogCommentActivity(comment.UserId, comment.CommentId, "Delete", "Delete a comment");
+
+            return Ok("Comment deleted successfully");
 		}
 	}
 }

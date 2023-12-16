@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectLibrary.Repository;
+using ProjectWebAPI.App.Code;
 using ProjectWebAPI.Application;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -51,6 +52,8 @@ namespace ProjectWebAPI.Controllers
             // Gọi dịch vụ để thêm cuộc thi vào cơ sở dữ liệu
             repository.SaveContest(newContest);
 
+            LogUserActivity.LogContestActivity(newContest.OwnerUserId, newContest.ContestId, "Create", "Created a new contest");
+
             // Trả về một thông báo thành công hoặc các thông tin khác cần thiết
             return Ok("Contest created successfully");
         }
@@ -81,6 +84,8 @@ namespace ProjectWebAPI.Controllers
             // Gọi dịch vụ để lưu thay đổi vào cơ sở dữ liệu
             repository.UpdateContest(existingContest);
 
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogContestActivity(existingContest.OwnerUserId, existingContest.ContestId, "Update", "Update a new contest");
             // Trả về một thông báo thành công hoặc các thông tin khác cần thiết
             return Ok("Contest updated successfully");
         }
@@ -95,6 +100,10 @@ namespace ProjectWebAPI.Controllers
                 return NotFound();
             }
             repository.DeleteContest(contest);
+
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogContestActivity(contest.OwnerUserId, contest.ContestId, "Delete", "Delete a new contest");
+
             return Ok("Contest Delete successfully");
         }
     }
