@@ -1,6 +1,6 @@
 
 using Microsoft.AspNetCore.Authentication.Cookies;
-
+using ProjectWebMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var environment = builder.Environment;
@@ -21,6 +21,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 // Configuring services
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+
+builder.Services.AddScoped<IVnPayService, VnPayService>();
 
 builder.Services.AddControllersWithViews();
 
