@@ -13,7 +13,7 @@ public partial class UserActivity
 
     public string? Details { get; set; } // Thêm cột Details để lưu thông tin thêm (có thể là JSON).
 
-    public DateTime LogDate { get; set; } // Thêm cột LogDate để lưu ngày ghi log.
+    public DateTime LogDate { get; set; } = DateTime.Now; // Thêm cột LogDate để lưu ngày ghi log.
 
     public virtual User User { get; set; } = null!;
 }

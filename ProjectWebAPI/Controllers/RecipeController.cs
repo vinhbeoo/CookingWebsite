@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectLibrary.Repository;
+using ProjectWebAPI.App.Code;
 using ProjectWebAPI.Application;
 
 namespace ProjectWebAPI.Controllers
@@ -34,7 +35,7 @@ namespace ProjectWebAPI.Controllers
 
 		// POST api/<RecipeController>
 		[HttpPost]
-		public IActionResult CreateRecipe([FromBody] RecipeDTO recipeDTO, int userId)
+		public IActionResult CreateRecipe([FromBody] RecipeDTO recipeDTO)
 		{
 			if (recipeDTO == null)
 			{
@@ -67,15 +68,18 @@ namespace ProjectWebAPI.Controllers
 			};
 
 			// Call the service to add the recipe to the database
-			repository.SaveRecipe(newRecipe, userId);
+			repository.SaveRecipe(newRecipe);
 
-			// Return a success message or other necessary information
-			return Ok("Recipe created successfully");
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogCommentActivity(newRecipe.Creator, newRecipe.RecipeId, "Create", "Created a new Recipe");
+
+            // Return a success message or other necessary information
+            return Ok("Recipe created successfully");
 		}
 
 		// PUT api/<RecipeController>/5
 		[HttpPut("{id}")]
-		public IActionResult UpdateRecipe(int id, [FromBody] RecipeDTO updatedRecipeDTO, int userId)
+		public IActionResult UpdateRecipe(int id, [FromBody] RecipeDTO updatedRecipeDTO)
 		{
 			if (updatedRecipeDTO == null || id != updatedRecipeDTO.RecipeId)
 			{
@@ -111,23 +115,30 @@ namespace ProjectWebAPI.Controllers
 			existingRecipe.ReadFree = updatedRecipeDTO.ReadFree;
 
 			// Call the service to save changes to the database
-			repository.UpdateRecipe(existingRecipe, userId);
+			repository.UpdateRecipe(existingRecipe);
 
-			// Return a success message or other necessary information
-			return Ok("Recipe updated successfully");
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogCommentActivity(existingRecipe.Creator, existingRecipe.RecipeId, "Update", "Created a new Update");
+
+            // Return a success message or other necessary information
+            return Ok("Recipe updated successfully");
 		}
 
 		// DELETE api/<RecipeController>/5
 		[HttpDelete("{recipeId}")]
-		public IActionResult DeleteRecipe(int recipeId, int userId)
+		public IActionResult DeleteRecipe(int recipeId)
 		{
 			var recipe = repository.GetRecipeById(recipeId);
 			if (recipe == null)
 			{
 				return NotFound();
 			}
-			repository.DeleteRecipe(recipe, userId);
-			return Ok("Recipe deleted successfully");
+			repository.DeleteRecipe(recipe);
+
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogCommentActivity(recipe.Creator, recipe.RecipeId, "Delete", "Delete a new Recipe");
+
+            return Ok("Recipe deleted successfully");
 		}
 	}
 }

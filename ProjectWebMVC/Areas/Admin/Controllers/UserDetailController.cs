@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectWebAPI.Application;
 using System.Net.Http.Headers;
@@ -7,6 +8,8 @@ using System.Text.Json;
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class UserDetailController : Controller
     {
         private readonly HttpClient _httpClient = null;

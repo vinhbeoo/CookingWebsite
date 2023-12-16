@@ -6,6 +6,9 @@ using ProjectWebAPI.Models;
 using System.Net.Mail;
 using System.Net;
 using ProjectWebMVC.Areas.App.Code;
+using ProjectLibrary.DataAccess;
+using System;
+using ProjectWebAPI.App.Code;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -56,7 +59,7 @@ namespace ProjectWebAPI.Controllers
                 {
                     return Unauthorized("Invalid credentials.");
                 }
-
+                LogUserActivity.LogUserLoginActivity(user.UserId);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -104,6 +107,8 @@ namespace ProjectWebAPI.Controllers
                     };
 
                     repository.SaveUser(user);
+
+                    LogUserActivity.LogUserRegistrationActivity(user.UserId);
 
                     // Gửi email xác nhận
                     SendConfirmationEmail(user.Email, user.EmailConfirmationToken);

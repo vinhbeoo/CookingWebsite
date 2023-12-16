@@ -1,11 +1,14 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = "Admin")]
     public class ContestController : Controller
     {
         private readonly HttpClient _httpClient;

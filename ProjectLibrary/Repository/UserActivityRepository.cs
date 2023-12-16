@@ -1,4 +1,6 @@
-﻿using ProjectLibrary.ObjectBussiness;
+﻿using Microsoft.Identity.Client;
+using ProjectLibrary.DataAccess;
+using ProjectLibrary.ObjectBussiness;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,20 +11,7 @@ namespace ProjectLibrary.Repository
 {
     public class UserActivityRepository : IUserActivityRepository
     {
-        public void LogActivity(UserActivity userActivity)
-        {
-            try
-            {
-                using (var context = new CookingWebsiteContext())
-                {
-                    context.UserActivities.Add(userActivity);
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        public void LogActivity(UserActivity userActivity) => UserActivityDAO.Instance.LogUserActivity(userActivity);
+        public List<UserActivity> GetUserActivities() => UserActivityDAO.Instance.GetUserActivities();
     }
 }

@@ -9,10 +9,11 @@ namespace ProjectLibrary.Repository
 {
     public interface ICommentRepository
     {
+        List<Comment> GetAllComments();
         List<Comment> GetComments(int recipeId);
-        void SaveComment(Comment comment, int userId);
+        void SaveComment(Comment comment);
         Comment GetCommentById(int id);
-        void DeleteComment(Comment comment, int userId);
-        void UpdateComment(Comment comment, int userId);
+        void DeleteComment(Comment comment);
+        void UpdateComment(Comment comment);
     }
 }

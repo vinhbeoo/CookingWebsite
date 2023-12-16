@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProjectLibrary.ObjectBussiness;
 
 namespace ProjectWebMVC.Controllers
 {
     [Area("User")]
+    [Authorize(Roles = "User")]
+    [Authorize(AuthenticationSchemes = "User")]
     public class RecipeController : Controller
 	{
 		[Route("Recipe/{recipeId?}")]
