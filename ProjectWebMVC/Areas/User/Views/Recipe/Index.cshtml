@@ -9,104 +9,202 @@
 }
 
 
-<body id="page-top">
+<section id="recipe" class="recipe bwt-90">
+    <div class="bar"></div>
+    <div class="container">
+        <ol class="breadcrumb" style="border-radius: none; padding: 20px 10px;">
+            <li><a href="#" style="color: black;">Home</a></li>
+            <li><a href="#" style="color: black;">Recipe</a></li>
+            <li class="active">Spaghetti carbonara with rustic bread</li>
+        </ol>
+        <h1 class="title">@recipes.FirstOrDefault().RecipeTitle</h1>
+        <div class="recipe-info">
+            <div class="recipe-img">
+                <img src="@recipes.FirstOrDefault().ImageTitle">
+            </div>
+            <div class="recipe-author">
+                <h4>By: <span>@recipes.FirstOrDefault().Creator</span></h4>
+                <h4>Updated on: <span>@recipes.FirstOrDefault().CreateDate</span></h4>
+                <p>@recipes.FirstOrDefault().Description</p>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="repipe-content">
+        <div class="container">
+            <div class="recipe-wrap">
+                <div class="recipe-wrap-left">
+                    <h3 style="color: white;">Info</h3>
+                    <ul class="info-detail">
+                        <li class="info-item">
+                            <div class="item-left">
+                                Premp
+                            </div>
+                            <div class="item-right">
+                                @recipes.FirstOrDefault().PrepTime mins
+                            </div>
+                        </li>
+                        <li class="info-item">
+                            <div class="item-left">
+                                Cook Time
+                            </div>
+                            <div class="item-right">
+                                @recipes.FirstOrDefault().CookTime mins
+                            </div>
+                        </li>
+                        <li class="info-item">
+                            <div class="item-left">
+                                Total Time
+                            </div>
+                            <div class="item-right">
+                                @recipes.FirstOrDefault().TotalTime mins
+                            </div>
+                        </li>
+                        <li class="info-item">
+                            <div class="item-left">
+                                Servings
+                            </div>
+                            <div class="item-right">
+                                @recipes.FirstOrDefault().Servings people
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="recipe-wrap-left">
+                    <h3 style="color: white;">Nutrition Facts</h3>
+                    <ul class="info-detail">
+                        <li class="info-item">
+                            <div class="item-left">
+                                Calories
+                            </div>
+                            <div class="item-right">
+                                @recipes.FirstOrDefault().Calories g
+                            </div>
+                        </li>
+                        <li class="info-item">
+                            <div class="item-left">
+                                Fat
+                            </div>
+                            <div class="item-right">
+                                @recipes.FirstOrDefault().Fat g
+                            </div>
+                        </li>
+                        <li class="info-item">
+                            <div class="item-left">
+                                Carbs
+                            </div>
+                            <div class="item-right">
+                                @recipes.FirstOrDefault().Carbs g
+                            </div>
+                        </li>
+                        <li class="info-item">
+                            <div class="item-left">
+                                Protein
+                            </div>
+                            <div class="item-right">
+                                @recipes.FirstOrDefault().Protein g
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<section id="recipe" class="recipe bwt-90">
+    <hr />
+    <div class="ingredients">
+        <div class="container">
+            <h1>INGREDIENTS</h1>
+            <ul class="ingredients-content">
+                @foreach (var IngGroup in IngredientGroups)
+                {
+                    <li class="ingredients-content-item">
+                        @IngGroup.NameIngredients
+                        <ol>
+                            @foreach (var IngDetail in IngredientDetails)
+                            {
+                                @if (@IngDetail.IngredientId == @IngGroup.IngredientId)
+                                {
+                                    <li>@IngDetail.Stt -- @IngDetail.Description</li>                                   
+                                }
+                                
+                            }
+                            
+                        </ol>
+                    </li>
+                }                              
+            </ul>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="step">
+        <div class="container">
+            <h1>STEP BY STEP</h1>
+            <div class="step-content">
+                @foreach (var RecipeStep in RecipeSteps){
+                    <div class="step-item">
+                        <h3>Step: <span>@RecipeStep.Step</span></h3>
+                        <div class="step-item-detail">
+                            <div class="step-info">
+                                @RecipeStep.Description
+                            </div>
+                            <div class="step-img">
+                                <img src="@RecipeStep.ImageUrl" alt="">
+                            </div>
+                        </div>
+                    </div>
+                }                            
+            </div>
+        </div>
+    </div>
+
+    <hr>
 
 
+    <div class="video-tutorial">
+        <div class="container">
+            <div class="video-content">
+                <h1>VIDEO TUTORIAL</h1>
+                <iframe src="@recipes.FirstOrDefault().VideoUrl.ToString()" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <hr />
 
 
-		<div class="container">
-			<div class="col-md-6">
-				<img src="@recipes.FirstOrDefault().ImageTitle" class="img-responsive">
-			</div>
-			<div class="col-md-6 bwt-offset-lg-top-0 bwt-offset-md-top-0 bwt-offset-xxs-top-30">
-				<h1 class="title">@recipes.FirstOrDefault().RecipeTitle</h1>
-				<h4>By: @recipes.FirstOrDefault().Creator</h4>
-				<h4>Updated on: @recipes.FirstOrDefault().CreateDate</h4>
-				<p>@recipes.FirstOrDefault().Description</p>
-			</div>
-		</div>
-		<hr />
-		<div class="container">
-			<div class="col-sm-6 col-md-6 text-sm-left text-md-left text-lg-left bwt-offset-top-20">
-				<div class="row" style="border: 1px solid black;">
-					<h1>Info</h1>
-					<p>Prep Time: @recipes.FirstOrDefault().PrepTime</p>
-					<p>Cook Time: @recipes.FirstOrDefault().CookTime</p>
-					<p>Total Time: @recipes.FirstOrDefault().TotalTime</p>
-					<p>Servings: @recipes.FirstOrDefault().Servings</p>
-				</div>
-			</div>
-
-			<div class="col-sm-6 col-md-6 text-sm-left text-md-left text-lg-left bwt-offset-top-20">
-				<div class="row" style="border: 1px solid black;">
-					<h1>Nutrition Facts</h1>
-					<p>Calories: @recipes.FirstOrDefault().Calories</p>
-					<p>Fat: @recipes.FirstOrDefault().Fat</p>
-					<p>Carbs: @recipes.FirstOrDefault().Carbs</p>
-					<p>Protein: @recipes.FirstOrDefault().Protein</p>
-				</div>
-			</div>
-
-		</div>
-		<hr />
-
-
-
-		<div class="container">
-			<h1>INGREDIENTS</h1>
-			@foreach (var IngGroup in IngredientGroups)
-			{
-				<h1>
-					<p>@IngGroup.NameIngredients</p>
-				</h1>
-				@foreach (var IngDetail in IngredientDetails)
-				{
-					@if (@IngDetail.IngredientId == @IngGroup.IngredientId)
-					{
-
-						<p>@IngDetail.Stt -- @IngDetail.Description</p>
-					}
-				}
-			}
-		</div>
-		<hr />
-
-
-
-		<div class="container">
-			<h1>STEP BY STEP</h1>
-			@foreach (var RecipeStep in RecipeSteps)
-			{
-				<p><h1>STEP: @RecipeStep.Step</h1></p>
-				<p>@RecipeStep.Description</p>
-				<p>Link Pic: @RecipeStep.ImageUrl</p>
-				<p>Link Video: @RecipeStep.VideoUrl</p>
-			}
-		</div>
-		<hr />
-
-
-
-		<div class="container">
-			<h1>VIDEO TUTORIAL</h1>
-			<iframe width="560" height="315" src="@recipes.FirstOrDefault().VideoUrl.ToString()" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-		</div>
-		<hr />
-
-
-
-		<div class="container">
-			<h1>Comment</h1>
-
-			@foreach (var Comment in Comments)
-			{
-				<p><h1>User: @Comment.UserId -- @Comment.User.UserName</h1></p>
-				<p>Cooment: @Comment.CommentText</p>
-				<p>Date: @Comment.CreateDate</p>
-
-			}
-		</div>
-	</section>
-</body>
+    <div class="comment">
+        <div class="container">
+            <h1>COMMENT</h1>
+            <div class="comment-content">
+                @foreach (var Comment in Comments){
+                    <div class="comment-item">
+                        <h3>@Comment.UserId -- @Comment.User.UserName</h3>
+                        <small>Date: @Comment.CreateDate</small>
+                        <div class="user-wrap">
+                            <p>@Comment.CommentText</p>
+                            <a class="" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                View Reply
+                            </a>
+                            <div class="collapse" id="collapseExample">
+                                <div class="well">
+                                    <h4>User 3</h4>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Obcaecati nostrum deserunt rerum delectus nobis quas aperiam dolores mollitia quidem. Amet?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }                  
+                <div class="add-comment">
+                    <h3>Your comments</h3>
+                    <textarea name="new-comment" id="" cols="30" rows="5">
+                    </textarea>
+                    <div class="comment-btn">
+                        <button class="btn btn-primary" type="submit">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
