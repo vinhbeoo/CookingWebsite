@@ -6,7 +6,6 @@ namespace ProjectLibrary.ObjectBussiness;
 
 public partial class IngredientsGroup
 {
-    [Key]
     public int IngredientId { get; set; }
 
     public string? NameIngredients { get; set; }

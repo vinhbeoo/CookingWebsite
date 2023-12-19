@@ -27,6 +27,9 @@ namespace ProjectWebAPI.Controllers
 			}
 			return ind;
 		}
+		[HttpGet("GetByRecipeId/{recipeid}")]
+		public ActionResult<IEnumerable<IngredientsDetail>> GetIngredientsDetailByRecipeId(int recipeid) => repository.GetIngredientsDetailByRecipeId(recipeid);
+
 
 		// POST api/<TypeController>
 		[HttpPost]
@@ -42,7 +45,8 @@ namespace ProjectWebAPI.Controllers
 			{
 				IngredientId = ingredientsDetailDTO.IngredientId,
 				Stt = ingredientsDetailDTO.Stt,
-				Description = ingredientsDetailDTO.Description
+				Description = ingredientsDetailDTO.Description,
+				RecipeId = ingredientsDetailDTO.RecipeId
 			};
 
 			// Gọi dịch vụ để thêm cuộc thi vào cơ sở dữ liệu
@@ -72,6 +76,7 @@ namespace ProjectWebAPI.Controllers
 			existingIngredientsDetail.IngredientId = updatedIngredientsDetailDTO.IngredientId;
 			existingIngredientsDetail.Stt = updatedIngredientsDetailDTO.Stt;
 			existingIngredientsDetail.Description = updatedIngredientsDetailDTO.Description;
+			existingIngredientsDetail.RecipeId = updatedIngredientsDetailDTO.RecipeId;
 
 			// Gọi dịch vụ để lưu thay đổi vào cơ sở dữ liệu
 			repository.UpdateIngredientDetail(existingIngredientsDetail);

@@ -70,11 +70,11 @@ namespace ProjectWebAPI.Controllers
 			// Call the service to add the recipe to the database
 			repository.SaveRecipe(newRecipe);
 
-            //Hàm ghi log UserActivity
-            LogUserActivity.LogCommentActivity(newRecipe.Creator, newRecipe.RecipeId, "Create", "Created a new Recipe");
+			//Hàm ghi log UserActivity
+			LogUserActivity.LogCommentActivity(newRecipe.Creator, newRecipe.RecipeId, "Create", "Created a new Recipe");
 
-            // Return a success message or other necessary information
-            return Ok("Recipe created successfully");
+			// Return a success message or other necessary information
+			return Ok(newRecipe.RecipeId);
 		}
 
 		// PUT api/<RecipeController>/5
@@ -117,11 +117,11 @@ namespace ProjectWebAPI.Controllers
 			// Call the service to save changes to the database
 			repository.UpdateRecipe(existingRecipe);
 
-            //Hàm ghi log UserActivity
-            LogUserActivity.LogCommentActivity(existingRecipe.Creator, existingRecipe.RecipeId, "Update", "Created a new Update");
+			//Hàm ghi log UserActivity
+			LogUserActivity.LogCommentActivity(existingRecipe.Creator, existingRecipe.RecipeId, "Update", "Created a new Update");
 
-            // Return a success message or other necessary information
-            return Ok("Recipe updated successfully");
+			// Return a success message or other necessary information
+			return Ok("Recipe updated successfully");
 		}
 
 		// DELETE api/<RecipeController>/5
@@ -135,10 +135,10 @@ namespace ProjectWebAPI.Controllers
 			}
 			repository.DeleteRecipe(recipe);
 
-            //Hàm ghi log UserActivity
-            LogUserActivity.LogCommentActivity(recipe.Creator, recipe.RecipeId, "Delete", "Delete a new Recipe");
+			//Hàm ghi log UserActivity
+			LogUserActivity.LogCommentActivity(recipe.Creator, recipe.RecipeId, "Delete", "Delete a new Recipe");
 
-            return Ok("Recipe deleted successfully");
+			return Ok("Recipe deleted successfully");
 		}
 	}
 }

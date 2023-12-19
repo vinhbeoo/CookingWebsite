@@ -112,26 +112,34 @@ public partial class CookingWebsiteContext : DbContext
 
         modelBuilder.Entity<IngredientsDetail>(entity =>
         {
-            entity.HasKey(e => e.Stt);
+			//entity.HasKey(e => e.Stt);
+			//them key
+			entity.HasKey(e => new { e.IngredientId, e.RecipeId, e.Stt });
 
-            entity.ToTable("Ingredients_Detail");
+			entity.ToTable("Ingredients_Detail");
 
             entity.Property(e => e.Stt)
                 .ValueGeneratedNever()
                 .HasColumnName("stt");
             entity.Property(e => e.IngredientId).ValueGeneratedOnAdd();
 
-            entity.HasOne(d => d.Ingredient).WithMany(p => p.IngredientsDetails)
-                .HasForeignKey(d => d.IngredientId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Ingredients_Detail_Ingredients_Group");
-        });
+			//entity.HasOne(d => d.Ingredient).WithMany(p => p.IngredientsDetails)
+			//    .HasForeignKey(d => d.IngredientId)
+			//    .OnDelete(DeleteBehavior.ClientSetNull)
+			//    .HasConstraintName("FK_Ingredients_Detail_Ingredients_Group");
+
+			entity.HasOne(d => d.Recipe).WithMany(p => p.IngredientsDetails)
+				.HasForeignKey(d => d.RecipeId)
+				.HasConstraintName("FK__Ingredien__Recip__73BA3083");
+		});
 
         modelBuilder.Entity<IngredientsGroup>(entity =>
         {
-            entity.HasKey(e => e.IngredientId).HasName("PK__Ingredie__BEAEB25A7C2114F2");
+            //entity.HasKey(e => e.IngredientId).HasName("PK__Ingredie__BEAEB25A7C2114F2");
+			//them key
+			entity.HasKey(e => new { e.IngredientId, e.RecipeId }).HasName("PK__Ingredie__BEAEB25A7C2114F2");
 
-            entity.ToTable("Ingredients_Group");
+			entity.ToTable("Ingredients_Group");
 
             entity.Property(e => e.NameIngredients).HasMaxLength(255);
 
@@ -208,9 +216,11 @@ public partial class CookingWebsiteContext : DbContext
 
         modelBuilder.Entity<RecipesStep>(entity =>
         {
-            entity.HasKey(e => e.Step);
+			//entity.HasKey(e => e.Step);
+			//them key
+			entity.HasKey(e => new { e.RecipeId, e.Step });
 
-            entity.ToTable("Recipes_Step");
+			entity.ToTable("Recipes_Step");
 
             entity.Property(e => e.Step).ValueGeneratedNever();
             entity.Property(e => e.ImageUrl)
