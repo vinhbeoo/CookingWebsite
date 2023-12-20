@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
+using ProjectWebAPI.App.Code;
 using ProjectWebAPI.Models;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
@@ -77,10 +78,10 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     }
 
                     var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()), // Assuming Id is an integer
-            };
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()), // Assuming Id is an integer
+                    };
 
                     if (user.RoleId == 1)
                     {
@@ -97,12 +98,13 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                         TempData["Message"] = "Đăng nhập thành công";
 
                         var routeValues = new RouteValueDictionary
-                {
-                    {"area", "Admin"},
-                    {"claimType", "UserClaim"},
-                    {"claimValue", "true"}
-                };
-
+                        {
+                            {"area", "Admin"},
+                            {"claimType", "UserClaim"},
+                            {"claimValue", "true"}
+                        };
+                        // In ra Console để kiểm tra xác thực trạng thái
+                        Console.WriteLine($"Is Authenticated: {User.Identity.IsAuthenticated}");
                         return RedirectToAction("Index", "HomeAdmin", routeValues);
                     }
                     else if (user.RoleId == 2)
@@ -117,16 +119,13 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                             IsPersistent = model.RememberLogin
                         });
 
-
-
                         TempData["Message"] = "Đăng nhập thành công";
                         var routeValues = new RouteValueDictionary
-                {
-                    {"area", "User"},
-                    {"claimType", "UserClaim"},
-                    {"claimValue", "true"}
-                };
-
+                        {
+                            {"area", "User"},
+                            {"claimType", "UserClaim"},
+                            {"claimValue", "true"}
+                        };
                         // Redirect to a view for regular users
                         return RedirectToAction("Index", "HomeUser", routeValues);
                     }
@@ -144,16 +143,29 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     return View("Login", model);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error: {ex.Message}");
                 return View("Error");
             }
         }
 
         public async Task<IActionResult> Logout()
         {
+            var user = User as ClaimsPrincipal;
+            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier);
+            // Lấy UserId từ Claims
+
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
+            {
+                // Log thông tin đăng xuất
+                LogUserActivity.LogUserLogoutActivity(userId);
+
+            }
             // Đăng xuất người dùng
             await HttpContext.SignOutAsync();
+
+
 
             // Chuyển hướng đến trang đăng nhập hoặc trang chính
             return RedirectToAction("Login", "Account", new { area = "Admin" }); // Thay thế bằng tên trang đăng nhập hoặc trang chính của bạn

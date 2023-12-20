@@ -922,9 +922,9 @@ h6 {
   font-size: 14px;
 }
 
-.dashboard .recent-sales .table thead {
-  background: #f6f6fe;
-}
+    .dashboard .recent-sales .table thead {
+        background: #6699FF;
+    }
 
 .dashboard .recent-sales .table thead th {
   border: 0;

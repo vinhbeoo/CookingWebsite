@@ -53,6 +53,31 @@ namespace ProjectWebAPI.App.Code
                 Console.WriteLine("Error logging user registration activity: " + ex.Message);
             }
         }
+
+        public static void LogUserLogoutActivity(int userId)
+        {
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    var userActivity = new UserActivity
+                    {
+                        UserId = userId,
+                        Action = "Logout",
+                        Details = "User logged out",
+                        LogDate = DateTime.Now
+                    };
+
+                    context.UserActivities.Add(userActivity);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the error when logging the user logout activity
+                Console.WriteLine("Error logging user logout activity: " + ex.Message);
+            }
+        }
         public static void LogContestActivity(int userId, int contestId, string action, string details)
         {
             LogActivity(userId, "Contest", contestId, action, details);

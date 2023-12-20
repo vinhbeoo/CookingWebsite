@@ -16,7 +16,7 @@ namespace ProjectWebAPI.Controllers
         private IContestRepository repository = new ContestRepository();
         // GET: api/<ContestController>
         [HttpGet]
-        public ActionResult<IEnumerable<Contest>> GetProducts() => repository.GetContests();
+        public ActionResult<IEnumerable<Contest>> GetRatings() => repository.GetContests();
 
         // GET api/<ContestController>/5
         [HttpGet("{contestId}")]

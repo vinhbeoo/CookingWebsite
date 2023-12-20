@@ -1,11 +1,11 @@
 ﻿@{
-	ViewData["title"] = "Recipe";
-	Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
-	var recipes = ViewBag.Recipe as IEnumerable<ProjectLibrary.ObjectBussiness.Recipe>;
-	var IngredientGroups = ViewBag.IngredientGroup as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsGroup>;
-	var IngredientDetails = ViewBag.IngredientDetail as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsDetail>;
-	var RecipeSteps = ViewBag.RecipeStep as IEnumerable<ProjectLibrary.ObjectBussiness.RecipesStep>;
-	var Comments = ViewBag.Comment as IEnumerable<ProjectLibrary.ObjectBussiness.Comment>;
+    ViewData["title"] = "Recipe";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+    var recipes = ViewBag.Recipe as IEnumerable<ProjectLibrary.ObjectBussiness.Recipe>;
+    var IngredientGroups = ViewBag.IngredientGroup as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsGroup>;
+    var IngredientDetails = ViewBag.IngredientDetail as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsDetail>;
+    var RecipeSteps = ViewBag.RecipeStep as IEnumerable<ProjectLibrary.ObjectBussiness.RecipesStep>;
+    var Comments = ViewBag.Comment as IEnumerable<ProjectLibrary.ObjectBussiness.Comment>;
 }
 
 
@@ -17,15 +17,15 @@
             <li><a href="#" style="color: black;">Recipe</a></li>
             <li class="active">Spaghetti carbonara with rustic bread</li>
         </ol>
-        <h1 class="title">@recipes.FirstOrDefault().RecipeTitle</h1>
+        <h1 class="title">@recipes?.FirstOrDefault()?.RecipeTitle</h1>
         <div class="recipe-info">
             <div class="recipe-img">
-                <img src="@recipes.FirstOrDefault().ImageTitle">
+                <img src="@recipes?.FirstOrDefault()?.ImageTitle">
             </div>
             <div class="recipe-author">
-                <h4>By: <span>@recipes.FirstOrDefault().Creator</span></h4>
-                <h4>Updated on: <span>@recipes.FirstOrDefault().CreateDate</span></h4>
-                <p>@recipes.FirstOrDefault().Description</p>
+                <h4>By: <span>@recipes?.FirstOrDefault()?.Creator</span></h4>
+                <h4>Updated on: <span>@recipes?.FirstOrDefault()?.CreateDate</span></h4>
+                <p>@recipes?.FirstOrDefault()?.Description</p>
             </div>
         </div>
     </div>
@@ -41,7 +41,7 @@
                                 Premp
                             </div>
                             <div class="item-right">
-                                @recipes.FirstOrDefault().PrepTime mins
+                                @recipes?.FirstOrDefault()?.PrepTime mins
                             </div>
                         </li>
                         <li class="info-item">
@@ -49,7 +49,7 @@
                                 Cook Time
                             </div>
                             <div class="item-right">
-                                @recipes.FirstOrDefault().CookTime mins
+                                @recipes?.FirstOrDefault()?.CookTime mins
                             </div>
                         </li>
                         <li class="info-item">
@@ -57,7 +57,7 @@
                                 Total Time
                             </div>
                             <div class="item-right">
-                                @recipes.FirstOrDefault().TotalTime mins
+                                @recipes?.FirstOrDefault()?.TotalTime mins
                             </div>
                         </li>
                         <li class="info-item">
@@ -65,7 +65,7 @@
                                 Servings
                             </div>
                             <div class="item-right">
-                                @recipes.FirstOrDefault().Servings people
+                                @recipes?.FirstOrDefault()?.Servings people
                             </div>
                         </li>
                     </ul>
@@ -78,7 +78,7 @@
                                 Calories
                             </div>
                             <div class="item-right">
-                                @recipes.FirstOrDefault().Calories g
+                                @recipes?.FirstOrDefault()?.Calories g
                             </div>
                         </li>
                         <li class="info-item">
@@ -86,7 +86,7 @@
                                 Fat
                             </div>
                             <div class="item-right">
-                                @recipes.FirstOrDefault().Fat g
+                                @recipes?.FirstOrDefault()?.Fat g
                             </div>
                         </li>
                         <li class="info-item">
@@ -94,7 +94,7 @@
                                 Carbs
                             </div>
                             <div class="item-right">
-                                @recipes.FirstOrDefault().Carbs g
+                                @recipes?.FirstOrDefault()?.Carbs g
                             </div>
                         </li>
                         <li class="info-item">
@@ -102,7 +102,7 @@
                                 Protein
                             </div>
                             <div class="item-right">
-                                @recipes.FirstOrDefault().Protein g
+                                @recipes?.FirstOrDefault()?.Protein g
                             </div>
                         </li>
                     </ul>
@@ -125,14 +125,14 @@
                             {
                                 @if (@IngDetail.IngredientId == @IngGroup.IngredientId)
                                 {
-                                    <li>@IngDetail.Stt -- @IngDetail.Description</li>                                   
+                                    <li>@IngDetail.Stt -- @IngDetail.Description</li>
                                 }
-                                
+
                             }
-                            
+
                         </ol>
                     </li>
-                }                              
+                }
             </ul>
         </div>
     </div>
@@ -143,7 +143,8 @@
         <div class="container">
             <h1>STEP BY STEP</h1>
             <div class="step-content">
-                @foreach (var RecipeStep in RecipeSteps){
+                @foreach (var RecipeStep in RecipeSteps)
+                {
                     <div class="step-item">
                         <h3>Step: <span>@RecipeStep.Step</span></h3>
                         <div class="step-item-detail">
@@ -155,7 +156,7 @@
                             </div>
                         </div>
                     </div>
-                }                            
+                }
             </div>
         </div>
     </div>
@@ -167,7 +168,7 @@
         <div class="container">
             <div class="video-content">
                 <h1>VIDEO TUTORIAL</h1>
-                <iframe src="@recipes.FirstOrDefault().VideoUrl.ToString()" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe src="@recipes?.FirstOrDefault()?.VideoUrl?.ToString()" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -179,12 +180,13 @@
         <div class="container">
             <h1>COMMENT</h1>
             <div class="comment-content">
-                @foreach (var Comment in Comments){
+                @foreach (var Comment in Comments)
+                {
                     <div class="comment-item">
-                        <h3>@Comment.UserId -- @Comment.User.UserName</h3>
-                        <small>Date: @Comment.CreateDate</small>
+                        <h3>@Comment.UserId -- @Comment?.User?.UserName</h3>
+                        <small>Date: @Comment?.CreateDate</small>
                         <div class="user-wrap">
-                            <p>@Comment.CommentText</p>
+                            <p>@Comment?.CommentText</p>
                             <a class="" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                                 View Reply
                             </a>
@@ -196,7 +198,7 @@
                             </div>
                         </div>
                     </div>
-                }                  
+                }
                 <div class="add-comment">
                     <h3>Your comments</h3>
                     <textarea name="new-comment" id="" cols="30" rows="5">
@@ -207,4 +209,5 @@
                 </div>
             </div>
         </div>
+    </div>
 </section>

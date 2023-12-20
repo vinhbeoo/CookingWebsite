@@ -28,11 +28,6 @@ namespace ProjectLibrary.DataAccess
                 }
             }
         }
-        /// <summary>
-        /// CRUD dùng cho admin
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
         public List<User> GetUsers()
         {
             var listUsers = new List<User>();

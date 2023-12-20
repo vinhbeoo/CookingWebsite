@@ -125,8 +125,6 @@ namespace ProjectLibrary.DataAccess
 
                         // Lưu thay đổi vào cơ sở dữ liệu
                         context.SaveChanges();
-                        // Log user activity
-                        context.LogUserActivity(existingContest.OwnerUserId, "UpdateContest", $"Updated contest with ID {contest.ContestId}");
                     }
                     else
                     {
@@ -161,8 +159,6 @@ namespace ProjectLibrary.DataAccess
                     {
                         context.Contests.Remove(contestDel);
                         context.SaveChanges();
-                        // Log user activity
-                        context.LogUserActivity(contestDel.OwnerUserId, "DeleteContest", $"Deleted contest with ID {contest.ContestId}");
                     }
                 }
             }
