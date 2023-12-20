@@ -24,8 +24,18 @@
 </header>
 <div class="panel-body">
     <p>
-        @Html.ActionLink("Create new user","Create","User", null, new {@class="btn btn-danger"})
+        @Html.ActionLink("Create new user", "Create", "User", null, new { @class = "btn btn-danger" })
     </p>
+
+    <div class="text-align">
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-danger">
+
+                @TempData["Message"]
+            </div>
+        }
+    </div>
 
     <div class="form-group mb-4">
         @using (Html.BeginForm("Index", "User", FormMethod.Get))
@@ -40,83 +50,76 @@
             </div>
         }
     </div>
-    <div class="form-group">
-        <table class="table table-bordered custom-table">
-            <thead class="custom-table-header">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].UserId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].UserName)
-                    </th>
-                    @* <th>
-                    @Html.DisplayNameFor(model => model.Password)
-                    </th> *@
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].Email)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].EmailConfirmed)
-                    </th>
-                    @* <th>
-                    @Html.DisplayNameFor(model => model.EmailConfirmationToken)
-                    </th> *@
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].RoleId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].Status)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model[0].UserType)
-                    </th>
-                    <th>
-                        Feature
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="form-group">
+
+            <table class="table table-bordered custom-table">
+                <thead class="custom-table-header">
                     <tr>
-                        <td>
-                            @Html.ActionLink(item.UserId.ToString(),"Details","UserDetail",new { id = item.UserId },null)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-                        @* <td>
-                    @Html.DisplayFor(modelItem => item.Password)
-                    </td> *@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.EmailConfirmed)
-                        </td>
-                        @* <td>
-                    @Html.DisplayFor(modelItem => item.EmailConfirmationToken)
-                    </td> *@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RoleId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserType)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Sửa", "Edit", new {  id=item.UserId  },new {@class="text-danger"}) |
-                            @Html.ActionLink("Chi Tiết", "Details", new {  id=item.UserId},new {@class="text-danger" })  |
-                            @Html.ActionLink("Xóa", "Delete", new {id=item.UserId },new {@class="text-danger"})
-                        </td>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].UserId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].EmailConfirmed)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].RoleId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model[0].UserType)
+                        </th>
+                        <th>
+                            Feature
+                        </th>
                     </tr>
-                }
-            </tbody>
-        </table>
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(item.UserId.ToString(), "Details", "UserDetail", new { id = item.UserId }, null)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EmailConfirmed)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RoleId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserType)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Sửa", "Edit", new { id = item.UserId }, new { @class = "text-danger" }) |
+                                @Html.ActionLink("Chi Tiết", "Details", new { id = item.UserId }, new { @class = "text-danger" }) |
+                                @Html.ActionLink("Xóa", "Delete", new { id = item.UserId }, new { @class = "text-danger" })
+
+                                @Html.ActionLink("Hoạt động", "Index", "UserActivity", new { id = item.UserId }, new { @class = "btn btn-primary" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
         new PagedListRenderOptions
         {
         Display = PagedListDisplayMode.IfNeeded,
@@ -127,4 +130,6 @@
         LinkToNextPageFormat = ">",
         PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
         })
+        </div>
+    }
 </div>

@@ -2,6 +2,7 @@
 @{
     var user = User as ClaimsPrincipal;
     var userName = user?.FindFirstValue(ClaimTypes.Name);
+    var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -32,8 +33,11 @@
 
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="@Url.Action("Index", "UserDetail", new { area = "User" })"><i class="bi bi-person"></i> My Profile</a>
+                                <a href="@Url.Action("Details", "UserDetail", new { area = "User", id = userId })">
+                                    <i class="bi bi-person"></i> My Profile
+                                </a>
                             </li>
+
                             <li>
                                 <a href="@Url.Action("Index", "UserDetail", new { area = "User" })"><i class="bi bi-gear"></i> Account Settings</a>
                             </li>

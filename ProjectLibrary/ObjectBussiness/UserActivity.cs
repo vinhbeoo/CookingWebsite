@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectLibrary.ObjectBussiness;
 
 public partial class UserActivity
 {
+    [Key]
     public int ActivityId { get; set; }
 
     public int UserId { get; set; }
