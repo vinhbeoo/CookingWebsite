@@ -9,6 +9,8 @@ using ProjectWebMVC.Areas.App.Code;
 using ProjectLibrary.DataAccess;
 using System;
 using ProjectWebAPI.App.Code;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,8 +26,6 @@ namespace ProjectWebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetUsers() => repository.GetUsers();
 
-        
-        //
 
         [HttpGet("{input}")]
         public async Task<IActionResult> GetUserByEmailOrUserName(string input)
@@ -67,6 +67,40 @@ namespace ProjectWebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error during login: " + ex.Message);
             }
         }
+
+        /*[HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                // Đăng xuất người dùng
+                await HttpContext.SignOutAsync();
+
+                // Lấy UserId từ Claims
+                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+
+                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
+                {
+                    // Log thông tin đăng xuất
+                    LogUserActivity.LogUserLogoutActivity(userId);
+
+                    // Thực hiện các thao tác khác liên quan đến đăng xuất (nếu cần)
+
+                    return Ok(new { success = true, message = "Logout successful." });
+                }
+                else
+                {
+                    // Xử lý khi không thể lấy được UserId từ Claims
+                    return BadRequest(new { success = false, message = "Unable to retrieve UserId from Claims." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi khi đăng xuất
+                return BadRequest(new { success = false, message = "Error during logout: " + ex.Message });
+            }
+        }*/
+
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)

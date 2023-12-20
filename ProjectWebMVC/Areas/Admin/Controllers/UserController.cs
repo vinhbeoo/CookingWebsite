@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using System.Net.Http.Headers;
+using System.Numerics;
 using System.Security.Policy;
 using System.Text.Json;
+using X.PagedList;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
@@ -16,30 +18,81 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         private readonly HttpClient _httpClient;
         private string _userApiUrl = "";
 
+        private string _userUrl = "https://localhost:7269/api/User";
         public UserController()
         {
             _httpClient = new HttpClient();
             var contextType = new MediaTypeWithQualityHeaderValue("application/json");
             _userApiUrl = "https://localhost:7269/api/UserManager";
         }
-        public async Task<IActionResult> Index()
+
+        public async Task<ActionResult> Index(string input, int? page)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_userApiUrl);
-            if (response.IsSuccessStatusCode)
+            int pageSize = 5; // Set your desired page size
+
+            try
             {
-                var strData = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
+                HttpResponseMessage responseMessage;
+                List<ProjectLibrary.ObjectBussiness.User> userList;
+
+                if (!string.IsNullOrEmpty(input))
                 {
-                    PropertyNameCaseInsensitive = true,
-                };
-                List<ProjectLibrary.ObjectBussiness.User> userList = JsonSerializer.Deserialize<List<ProjectLibrary.ObjectBussiness.User>>(strData, options);
-                return View(userList);
+                    responseMessage = await _httpClient.GetAsync($"{_userUrl}/{input}");
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        var user = JsonSerializer.Deserialize<ProjectLibrary.ObjectBussiness.User>(data, options);
+
+                        // If a single user is found, create a list with that user
+                        userList = new List<ProjectLibrary.ObjectBussiness.User> { user };
+                    }
+                    else
+                    {
+                        return View(new List<ProjectLibrary.ObjectBussiness.User>());
+                    }
+                }
+                else
+                {
+                    responseMessage = await _httpClient.GetAsync(_userApiUrl);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        userList = JsonSerializer.Deserialize<List<ProjectLibrary.ObjectBussiness.User>>(data, options);
+                    }
+                    else
+                    {
+                        return View(new List<ProjectLibrary.ObjectBussiness.User>());
+                    }
+                }
+
+                // Apply pagination
+                int pageNumber = page ?? 1; // If page is null, default to page 1
+                var pagedList = userList.ToPagedList(pageNumber, pageSize);
+
+                return View(pagedList);
             }
-            else
+            catch (Exception ex)
             {
+                // Handle the exception, log, or take appropriate action
+                // For now, returning an empty list to the view
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
                 return View(new List<ProjectLibrary.ObjectBussiness.User>());
             }
         }
+
+
 
         public async Task<IActionResult> Details(int id)
         {

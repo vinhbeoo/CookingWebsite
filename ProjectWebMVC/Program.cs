@@ -5,6 +5,7 @@ using ProjectWebMVC.Services;
 var builder = WebApplication.CreateBuilder(args);
 var environment = builder.Environment;
 
+
 // Add services to the container.
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
@@ -17,6 +18,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 {
     options.LoginPath = new PathString("/Admin/Account/Login");
 });
+
 
 
 // Configuring services

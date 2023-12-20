@@ -1,0 +1,150 @@
+﻿@model IEnumerable<ProjectLibrary.ObjectBussiness.Recipe>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    @Html.ActionLink("Tạo mới","Create","Recipe", null, new {@class="btn btn-danger"})
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RecipeTitle)
+            </th>
+            @* <th>
+                @Html.DisplayNameFor(model => model.ImageTitle)
+            </th> *@
+            <th>
+                @Html.DisplayNameFor(model => model.Creator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreateDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TagId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.VideoUrl)
+            </th>
+             <th>
+                @Html.DisplayNameFor(model => model.PrepTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CookTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Servings)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Calories)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fat)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Carbs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Protein) *@
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContestId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReadFree)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipeTitle)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.ImageTitle)
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.Creator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TagId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            @* <td>
+                @Html.DisplayFor(modelItem => item.VideoUrl)
+            </td> *@
+            @* <td>
+                @Html.DisplayFor(modelItem => item.PrepTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CookTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Servings)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Calories)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fat)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Carbs)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Protein)
+            </td> *@
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContestId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReadFree)
+            </td>
+            <td>
+                    @Html.ActionLink("Edit", "Edit", new {  id=item.RecipeId  },new {@class="text-danger"}) |
+                    @Html.ActionLink("Details", "Details", new {  id=item.RecipeId  },new {@class="text-danger"}) |
+                    @Html.ActionLink("Delete", "Delete", new {  id=item.RecipeId },new {@class="text-danger"})
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

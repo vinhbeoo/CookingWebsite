@@ -41,7 +41,7 @@ public partial class Recipe
 
     public int? ContestId { get; set; }
 
-    public int Rating { get; set; }
+    public int? Rating { get; set; }
     public Boolean ReadFree { get; set; }
 
     public virtual ICollection<Comment>? Comments { get; set; }  

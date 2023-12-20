@@ -1,0 +1,145 @@
+﻿@model ProjectLibrary.ObjectBussiness.Recipe
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>Recipe</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm("Edit", "Recipe", FormMethod.Post))
+		{
+			@Html.HiddenFor(model=>model.RecipeId)
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RecipeTitle" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.RecipeTitle)
+                @Html.EditorFor(model => model.RecipeTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter RecipeTitle" } })
+                <span asp-validation-for="RecipeTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageTitle" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.ImageTitle)
+                @Html.EditorFor(model => model.ImageTitle, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter ImageTitle" } })
+                <span asp-validation-for="ImageTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Creator" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.Creator)
+                @Html.EditorFor(model => model.Creator, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Creator" } })
+                <span asp-validation-for="Creator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateDate" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.CreateDate)
+                @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter CreateDate" } })
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TagId" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.TagId)
+                @Html.EditorFor(model => model.TagId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter TagId" } })
+                <span asp-validation-for="TagId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.Description)
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Description" } })
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VideoUrl" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.VideoUrl)
+                @Html.EditorFor(model => model.VideoUrl, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter VideoUrl" } })
+                <span asp-validation-for="VideoUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrepTime" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.PrepTime)
+                @Html.EditorFor(model => model.PrepTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter PrepTime" } })
+                <span asp-validation-for="PrepTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CookTime" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.CookTime)
+                @Html.EditorFor(model => model.CookTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter CookTime" } })
+                <span asp-validation-for="CookTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalTime" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.TotalTime)
+                @Html.EditorFor(model => model.TotalTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter TotalTime" } })
+                <span asp-validation-for="TotalTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Servings" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.Servings)
+                @Html.EditorFor(model => model.Servings, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Servings" } })
+                <span asp-validation-for="Servings" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Calories" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.Calories)
+                @Html.EditorFor(model => model.Calories, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Calories" } })
+                <span asp-validation-for="Calories" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fat" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.Fat)
+                @Html.EditorFor(model => model.Fat, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Fat" } })
+                <span asp-validation-for="Fat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Carbs" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.Carbs)
+                @Html.EditorFor(model => model.Carbs, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Carbs" } })
+                <span asp-validation-for="Carbs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Protein" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.Protein)
+                @Html.EditorFor(model => model.Protein, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Protein" } })
+                <span asp-validation-for="Protein" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.CategoryId)
+                @Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter CategoryId" } })
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContestId" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.ContestId)
+                @Html.EditorFor(model => model.ContestId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter ContestId" } })
+                <span asp-validation-for="ContestId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label"></label>
+                @Html.DisplayNameFor(model => model.Rating)
+                @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Rating" } })
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    @Html.DisplayNameFor(model => model.ReadFree)
+                    @Html.CheckBoxFor(model => model.ReadFree, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Rating" } })
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        }
+    </div>
+</div>
+<div> @Html.ActionLink("Back to List","Index","Recipe",null, new {@class="btn btn-danger"}) </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
