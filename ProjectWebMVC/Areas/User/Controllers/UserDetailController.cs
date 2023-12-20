@@ -34,14 +34,27 @@ namespace ProjectWebMVC.Areas.User.Controllers
             return View(list);
         }
 
-        // GET: UserDetailController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+		// GET: UserDetailController/Details/5
+		public async Task<IActionResult> Details(int id)
+		{
+			HttpResponseMessage response = await _httpClient.GetAsync($"{UserDetailApiUrl}/{id}");
 
-        // GET: UserDetailController/Create
-        public ActionResult Create()
+			if (response.IsSuccessStatusCode)
+			{
+				var strData = await response.Content.ReadAsStringAsync();
+				var options = new JsonSerializerOptions
+				{
+					PropertyNameCaseInsensitive = true,
+				};
+				UserDetail userDetail = JsonSerializer.Deserialize<UserDetail>(strData, options);
+				return View(userDetail);
+			}
+
+			return NotFound();
+		}
+
+		// GET: UserDetailController/Create
+		public ActionResult Create()
         {
             return View();
         }

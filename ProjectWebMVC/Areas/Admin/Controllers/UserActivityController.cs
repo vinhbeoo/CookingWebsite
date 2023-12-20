@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProjectLibrary.ObjectBussiness;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -24,30 +25,48 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         }
 
         // GET: UserActivityController
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page, int? id)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_url);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var strData = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
+                HttpResponseMessage response;
+
+                if (id.HasValue)
                 {
-                    PropertyNameCaseInsensitive = true,
-                };
-                List<UserActivity> userActivityList = JsonSerializer.Deserialize<List<UserActivity>>(strData, options);
+                    response = await _httpClient.GetAsync($"{_url}/{id}");
+                }
+                else
+                {
+                    response = await _httpClient.GetAsync(_url);
+                }
 
-                // Configure the pagination
-                int pageSize = 5; // You can adjust the page size as needed
-                int pageNumber = page ?? 1;
+                if (response.IsSuccessStatusCode)
+                {
+                    var strData = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true,
+                    };
+                    List<UserActivity> userActivityList = JsonSerializer.Deserialize<List<UserActivity>>(strData, options);
 
-                // Paginate the list
-                var pagedList = userActivityList.ToPagedList(pageNumber, pageSize);
+                    // Configure the pagination
+                    int pageSize = 5; // You can adjust the page size as needed
+                    int pageNumber = page ?? 1;
 
-                return View(pagedList);
+                    // Paginate the list
+                    var pagedList = userActivityList.ToPagedList(pageNumber, pageSize);
+
+                    return View(pagedList);
+                }
+
+                return View(new List<UserActivity>()); // Return an empty list if there's an error
             }
-
-            return View(new List<UserActivity>()); // Return an empty list if there's an error
+            catch (Exception ex)
+            {
+                // Handle the exception, log, or take appropriate action
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
+                return View(new List<UserActivity>());
+            }
         }
 
 

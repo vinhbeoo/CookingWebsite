@@ -11,5 +11,6 @@ namespace ProjectLibrary.Repository
     {
         void LogActivity(UserActivity userActivity);
         List<UserActivity> GetUserActivities();
+        List<UserActivity> GetUserActivitiesById(int id);
     }
 }
