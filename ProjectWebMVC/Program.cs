@@ -25,6 +25,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+builder.Services.AddHttpClient();
 
 builder.Services.AddControllersWithViews();
 

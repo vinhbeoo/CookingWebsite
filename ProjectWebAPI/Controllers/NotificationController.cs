@@ -33,7 +33,7 @@ namespace ProjectWebAPI.Controllers
 
         // POST api/<NotificationController>
         [HttpPost]
-        public IActionResult PostNotification(NotificationDTO nDTO, int userId)
+        public IActionResult PostNotification(NotificationDTO nDTO)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace ProjectWebAPI.Controllers
                     UserId = nDTO.UserId,
                 };
 
-                _response.SaveNotification(newNotification, userId);
+                _response.SaveNotification(newNotification);
 
                 return Ok("Notification created successfully");
             }
@@ -56,7 +56,7 @@ namespace ProjectWebAPI.Controllers
 
         // PUT api/<NotificationController>/5
         [HttpPut("{id}")]
-        public IActionResult PutNotification(int id, NotificationDTO nDTO, int userId)
+        public IActionResult PutNotification(int id, NotificationDTO nDTO)
         {
             var existingNotification = _response.GetNotificationById(id);
 
@@ -71,21 +71,21 @@ namespace ProjectWebAPI.Controllers
             existingNotification.Date = nDTO.Date;
             existingNotification.UserId = nDTO.UserId;
 
-            _response.UpdateNotification(existingNotification, userId);
+            _response.UpdateNotification(existingNotification);
 
             return Ok("Notification updated successfully");
         }
 
         // DELETE api/<NotificationController>/5
         [HttpDelete("{id}")]
-        public IActionResult DeleteNotification(int id, int userId)
+        public IActionResult DeleteNotification(int id)
         {
             var temp = _response.GetNotificationById(id);
             if (temp == null)
             {
                 return NotFound();
             }
-            _response.DeleteNotification(temp, userId);
+            _response.DeleteNotification(temp);
             return Ok("Notification dalete successfully");
         }
 

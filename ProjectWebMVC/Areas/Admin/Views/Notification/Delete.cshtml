@@ -1,0 +1,55 @@
+﻿@model ProjectLibrary.ObjectBussiness.Notification
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete Notification</h1>
+
+<h3>Are you sure you want to delete this notification?</h3>
+<div>
+    <h4>Notification</h4>
+    <hr />
+    @using (Html.BeginForm("Delete", "Notification", FormMethod.Post))
+    {
+        @Html.HiddenFor(model => model.NotificationId)
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NotificationId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NotificationId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+    </dl>
+    
+    <div class="form-group">
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        @Html.ActionLink("Back to Contest List", "Index", "Notification", null, new { @class = "btn btn-secondary" })
+    </div>
+    }
+</div>

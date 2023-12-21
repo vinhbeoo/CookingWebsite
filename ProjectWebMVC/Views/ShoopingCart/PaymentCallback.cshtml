@@ -1,0 +1,12 @@
+﻿<!-- Đường dẫn: Views/ShoppingCart/PaymentCallback.cshtml -->
+@model ProjectWebMVC.Models.PaymentViewModel
+
+<h1> Thanh toán</h1>
+<h1>Kết quả thanh toán</h1>
+
+<p>Transaction ID: @Model.PaymentResponse.TransactionId</p>
+<p>Order ID: @Model.PaymentResponse.OrderId</p>
+<p>Phương thức thanh toán: @Model.PaymentResponse.PaymentMethod</p>
+<p>Nội dung thanh toán: @Model.PaymentResponse.OrderDescription</p>
+@* <p>Số tiền: @Model.PaymentInformation.Amount</p> *@
+<p>Số tiền: @Model.PaymentResponse.Amount</p>
