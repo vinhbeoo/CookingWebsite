@@ -1,0 +1,9 @@
+﻿.modal-container {
+    transform: translate(0, -50%);
+    animation: slideDown 1s forwards; /* Thêm animation slideDown */
+}
+@keyframes slideDown {
+    to {
+        top: 100%; /* Sửa giá trị top thành 100% */
+        transform: translate(0, -90%);
+    }

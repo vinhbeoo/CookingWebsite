@@ -1,0 +1,61 @@
+﻿.modal-container {
+    transform: translate(0, -50%);
+    animation: slideDown 1s forwards; /* Thêm animation slideDown */
+}
+
+@keyframes slideDown {
+    to {
+        top: 100%; /* Sửa giá trị top thành 100% */
+        transform: translate(0, -130%);
+    }
+}
+
+
+
+    @keyframes doimauchu {
+        0%
+
+{
+    color: #f1c40f;
+}
+
+10% {
+    color: rgb(26, 23, 23);
+}
+
+20% {
+    color: #e74c3c;
+}
+
+30% {
+    color: #0ed6e8;
+}
+
+40% {
+    color: #00f867;
+}
+
+50% {
+    color: #412a77;
+}
+
+60% {
+    color: #e010f3;
+}
+
+70% {
+    color: #2ecc71;
+}
+
+80% {
+    color: #f03988;
+}
+
+90% {
+    color: coral;
+}
+
+100% {
+    color: #9742a0;
+}
+    }

@@ -4,33 +4,46 @@ using ProjectWebMVC.Services;
 
 namespace ProjectWebMVC.Controllers
 {
-    public class ShoopingCartController : Controller
-    {
-        private readonly IVnPayService _vnPayService;
+	public class ShoopingCartController : Controller
+	{
+		private readonly IVnPayService _vnPayService;
 
-        public ShoopingCartController(IVnPayService vnPayService)
-        {
-            _vnPayService = vnPayService;
-        }
+		public ShoopingCartController(IVnPayService vnPayService)
+		{
+			_vnPayService = vnPayService;
+		}
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+		public IActionResult Index()
+		{
+			return View();
+		}
 
 
-        public IActionResult CreatePaymentUrl(PaymentInformationModel model)
-        {
-            var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
+		public IActionResult CreatePaymentUrl(PaymentInformationModel model)
+		{
+			var url = _vnPayService.CreatePaymentUrl(model, HttpContext);
 
-            return Redirect(url);
-        }
+			return Redirect(url);
+		}
 
-        public IActionResult PaymentCallback()
-        {
-            var response = _vnPayService.PaymentExecute(Request.Query);
+		public IActionResult PaymentCallback()
+		{
+			var response = _vnPayService.PaymentExecute(Request.Query);
 
-            return Json(response);
-        }
-    }
+			// Assume that you have the PaymentInformationModel available, you need to retrieve it based on your logic
+			var paymentInformation = new PaymentInformationModel
+			{
+				// Populate the properties based on your logic
+			};
+
+			var viewModel = new PaymentViewModel
+			{
+				PaymentResponse = response,
+				PaymentInformation = paymentInformation
+			};
+
+			return View(viewModel);
+		}
+	}
 }
+

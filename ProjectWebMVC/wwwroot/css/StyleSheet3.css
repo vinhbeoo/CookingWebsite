@@ -1,0 +1,6 @@
+﻿@keyframes fadeInDown {
+    to {
+        transform: translateY(0%);
+        opacity: 1; /* Kết thúc với opacity là 1 để hiển thị phần tử */
+    }
+}
