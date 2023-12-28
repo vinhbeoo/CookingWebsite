@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProjectLibrary.ObjectBussiness;
+using System.Security.Claims;
 
 namespace ProjectWebMVC.Controllers
 {
@@ -30,7 +31,7 @@ namespace ProjectWebMVC.Controllers
 			ViewBag.IngredientGroup = igDataJson;
 
 			//Ingredients detail
-			var idData = await client.GetAsync("https://localhost:7269/api/IngredientDetail");
+			var idData = await client.GetAsync("https://localhost:7269/api/IngredientDetail/GetByRecipeId/" + recId.ToString());
 			var idDataRead = await idData.Content.ReadAsStringAsync();
 			var idDataJson = JsonConvert.DeserializeObject<IEnumerable<IngredientsDetail>>(idDataRead);
 			ViewBag.IngredientDetail = idDataJson;
@@ -47,8 +48,40 @@ namespace ProjectWebMVC.Controllers
 			var CommDataJson = JsonConvert.DeserializeObject<IEnumerable<Comment>>(CommDataRead);
 			ViewBag.Comment = CommDataJson;
 
+			//Current User
+			var user = User as ClaimsPrincipal;
+			var userName = user?.FindFirstValue(ClaimTypes.Name);
+			var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+			ViewBag.UserName = userName;
+			ViewBag.UserId = userId;
+			ViewBag.RecipeId = recipeId;
+
 
 			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> SaveComment(Comment comm)
+		{
+			try
+			{
+				HttpClient client = new HttpClient();
+				string ApiUrl = "https://localhost:7269/api";
+
+				comm.CreateDate = DateTime.Now;
+				string strData = System.Text.Json.JsonSerializer.Serialize(comm);
+				var contentData = new StringContent(strData, System.Text.Encoding.UTF8, "application/json");
+				HttpResponseMessage res = await client.PostAsync(ApiUrl + "/Comment", contentData);
+				TempData["SuccessMessage"] = "Comment saved successfully.";
+			}
+			catch (Exception ex)
+			{
+				// Handle exceptions, set an error message, etc.
+				TempData["ErrorMessage"] = "An error occurred while saving the comment.";
+			}
+
+
+			return RedirectToAction("Index", new { recipeId = comm.RecipeId });
 		}
 	}
 }

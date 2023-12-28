@@ -14,9 +14,28 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\script.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\js\script.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Areas\User\Controllers\HomeUserController.cs" />
+    <Compile Include="Areas\User\Controllers\NotificationController.cs" />
     <Compile Include="Areas\User\Controllers\RecipeController.cs" />
     <Compile Include="Areas\User\Controllers\RecipeEditController.cs" />
     <Compile Include="Areas\User\Controllers\RecipesListController.cs" />
+    <Compile Include="Areas\User\Controllers\ShoppingCartController.cs" />
+    <Compile Include="Areas\User\Controllers\UserDetailController.cs" />
+    <Compile Include="Areas\User\Libraries\VnPayLibrary.cs" />
+    <Compile Include="Areas\User\Models\ErrorViewModel.cs" />
+    <Compile Include="Areas\User\Models\PaymentInformationModel.cs" />
+    <Compile Include="Areas\User\Models\PaymentResponseModel.cs" />
+    <Compile Include="Areas\User\Models\PaymentViewModel.cs" />
+    <Compile Include="Areas\User\Services\IVnPayService.cs" />
+    <Compile Include="Areas\User\Services\VnPayService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,9 +51,18 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="Areas\User\Views\ShoppingCart\PaymentReceipt.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Areas\User\Views\ShoppingCart\Privacy.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.14" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="5.3.2">
@@ -46,10 +74,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\User\Views\HomeUser\Index.cshtml" />
+    <None Include="Areas\User\Views\Notification\Dropdown.cshtml" />
+    <None Include="Areas\User\Views\Notification\Index.cshtml" />
     <None Include="Areas\User\Views\RecipeEdit\Index.cshtml" />
     <None Include="Areas\User\Views\RecipesList\Index.cshtml" />
     <None Include="Areas\User\Views\Recipe\Index.cshtml" />
     <None Include="Areas\User\Views\Shared\_Layout.cshtml.css" />
+    <None Include="Areas\User\Views\ShoppingCart\Index.cshtml" />
+    <None Include="Areas\User\Views\ShoppingCart\PaymentCallback.cshtml" />
+    <None Include="Areas\User\Views\UserDetail\Details.cshtml" />
+    <None Include="Areas\User\Views\UserDetail\Index.cshtml" />
     <None Include="wwwroot\Admin\assets\img\not-found.svg" />
     <None Include="wwwroot\Admin\assets\js\main.js" />
     <None Include="wwwroot\Admin\assets\vendor\apexcharts\apexcharts.amd.js" />
@@ -278,6 +313,7 @@
     <None Include="wwwroot\Admin\assets\vendor\tinymce\tinymce.js" />
     <None Include="wwwroot\Admin\assets\vendor\tinymce\tinymce.min.js" />
     <None Include="wwwroot\Admin\forms\contact.php" />
+    <None Include="wwwroot\js\script.js" />
     <None Include="wwwroot\User\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\User\fonts\fontawesome-webfont.woff2" />
     <None Include="wwwroot\User\fonts\glyphicons-halflings-regular.svg" />
@@ -301,7 +337,6 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\User\Data\" />
-    <Folder Include="Areas\User\Models\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProjectLibrary.ObjectBussiness;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -24,30 +25,73 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         }
 
         // GET: UserActivityController
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? userId, int? page)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_url);
+            int pageSize = 5;
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var strData = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
+                List<UserActivity> userList;
+
+                // Kiểm tra xem có giá trị userId không
+                if (userId.HasValue)
                 {
-                    PropertyNameCaseInsensitive = true,
-                };
-                List<UserActivity> userActivityList = JsonSerializer.Deserialize<List<UserActivity>>(strData, options);
+                    // Nếu có userId, thực hiện truy vấn tìm kiếm
+                    HttpResponseMessage responseMessage = await _httpClient.GetAsync($"{_url}/{userId}");
 
-                // Configure the pagination
-                int pageSize = 5; // You can adjust the page size as needed
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        userList = JsonSerializer.Deserialize<List<UserActivity>>(data, options);
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No user acvity found with the specified userId.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    // Nếu không có userId, thực hiện truy vấn phân trang
+                    HttpResponseMessage responseMessage = await _httpClient.GetAsync(_url);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        userList = JsonSerializer.Deserialize<List<UserActivity>>(data, options);
+                    }
+                    else
+                    {
+                        // Xử lý trường hợp không thành công nếu cần
+                        return View(new List<UserActivity>());
+                    }
+                }
+
+                // Apply pagination
                 int pageNumber = page ?? 1;
+                var pagedList = userList.ToPagedList(pageNumber, pageSize);
 
-                // Paginate the list
-                var pagedList = userActivityList.ToPagedList(pageNumber, pageSize);
+                // Lưu giữ giá trị userId để sử dụng trong phân trang
+                ViewBag.UserId = userId;
 
                 return View(pagedList);
             }
-
-            return View(new List<UserActivity>()); // Return an empty list if there's an error
+            catch (Exception ex)
+            {
+                // Handle the exception, log, or take appropriate action
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
+                return View(new List<UserActivity>());
+            }
         }
 
 

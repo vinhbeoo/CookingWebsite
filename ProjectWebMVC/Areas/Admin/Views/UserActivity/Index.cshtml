@@ -3,77 +3,119 @@
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common;
 
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "User Activity Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .custom-table-header th {
+        background-color: #012970;
+        color: white;
+    }
 
-<h1>Index</h1>
+    .custom-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model[0].ActivityId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].Action)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].Details)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model[0].LogDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+<header class="panel-heading">
+    <h2>User Activity</h2>
+</header>
+<div class="text-center">
+    @{
+        if (TempData["Message"] != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ActivityId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Action)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Details)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LogDate)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.ActivityId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.ActivityId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.ActivityId })
-                </td>
-            </tr>
+            <div id="alertMessage" class="alert alert-warning alert-dismissible fade show" role="alert">
+                @TempData["Message"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         }
-    </tbody>
-</table>
-
-<div class="pagination-container">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
-    new PagedListRenderOptions
-    {
-    Display = PagedListDisplayMode.IfNeeded,
-    UlElementClasses = new[] { "pagination" },
-    LiElementClasses = new[] { "page-item" },
-    PageClasses = new[] { "page-link" },
-    LinkToPreviousPageFormat = "<",
-    LinkToNextPageFormat = ">",
-    PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
-    })
+    }
 </div>
+<div class="panel-body">
+    <div class="form-group mb-4">
+        @using (Html.BeginForm("Index", "UserActivity", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="text" name="userId" placeholder="Enter UserId" value="@ViewBag.UserId" class="form-control" />
+                </div>
+                <div class="col-lg-3">
+                    <input type="submit" class="btn btn-danger" value="Search" />
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="form-group">
+        <table class="table table-bordered custom-table">
+            <thead class="custom-table-header">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].ActivityId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].UserId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Action)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Details)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].LogDate)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ActivityId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Action)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Details)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LogDate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-container">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, userId = ViewBag.UserId }),
+        new PagedListRenderOptions
+        {
+        Display = PagedListDisplayMode.IfNeeded,
+        UlElementClasses = new[] { "pagination" },
+        LiElementClasses = new[] { "page-item" },
+        PageClasses = new[] { "page-link" },
+        LinkToPreviousPageFormat = "<",
+        LinkToNextPageFormat = ">",
+        PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
+        })
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Ẩn thông báo sau 5 giây
+        setTimeout(function () {
+            $("#alertMessage").fadeOut("slow", function () {
+                // Xoá thông báo khỏi DOM sau khi ẩn đi
+                $(this).remove();
+            });
+        }, 5000);
+    });
+</script>

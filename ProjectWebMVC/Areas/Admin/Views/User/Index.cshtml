@@ -22,9 +22,21 @@
 <header class="panel-heading">
     <h2>User Manager</h2>
 </header>
+<div class="text-center">
+    @{
+        if (TempData["Message"] != null)
+        {
+            <div id="alertMessage" class="alert alert-warning alert-dismissible fade show" role="alert">
+                @TempData["Message"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+</div>
+
 <div class="panel-body">
     <p>
-        @Html.ActionLink("Create new user","Create","User", null, new {@class="btn btn-danger"})
+        @Html.ActionLink("Create new user", "Create", "User", null, new { @class = "btn btn-danger" })
     </p>
 
     <div class="form-group mb-4">
@@ -50,20 +62,14 @@
                     <th>
                         @Html.DisplayNameFor(model => model[0].UserName)
                     </th>
-                    @* <th>
-                    @Html.DisplayNameFor(model => model.Password)
-                    </th> *@
                     <th>
                         @Html.DisplayNameFor(model => model[0].Email)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model[0].EmailConfirmed)
                     </th>
-                    @* <th>
-                    @Html.DisplayNameFor(model => model.EmailConfirmationToken)
-                    </th> *@
                     <th>
-                        @Html.DisplayNameFor(model => model[0].RoleId)
+                        Role
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model[0].Status)
@@ -72,59 +78,110 @@
                         @Html.DisplayNameFor(model => model[0].UserType)
                     </th>
                     <th>
-                        Feature
+                        Action
                     </th>
                 </tr>
             </thead>
             <tbody>
+                @{
+                    var linkCreated = false;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
                         <td>
-                            @Html.ActionLink(item.UserId.ToString(),"Details","UserDetail",new { id = item.UserId },null)
+                            @{
+                                var detailsLink = Html.ActionLink(item.UserId.ToString(), "Details", "UserDetail", new { id = item.UserId }, null);
+                                if (detailsLink != null)
+                                {
+                                    linkCreated = true;
+                                    @detailsLink
+                                }
+                                else
+                                {
+                                    // Nếu không tạo được ActionLink, set linkCreated về false
+                                    linkCreated = false;
+                                }
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.UserName)
                         </td>
-                        @* <td>
-                    @Html.DisplayFor(modelItem => item.Password)
-                    </td> *@
                         <td>
                             @Html.DisplayFor(modelItem => item.Email)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.EmailConfirmed)
                         </td>
-                        @* <td>
-                    @Html.DisplayFor(modelItem => item.EmailConfirmationToken)
-                    </td> *@
                         <td>
-                            @Html.DisplayFor(modelItem => item.RoleId)
+                            @if (item.RoleId == 1)
+                            {
+                                <span style="color: red;">Admin</span>
+                            }
+                            else if (item.RoleId == 2)
+                            {
+                                <span style="color: green;">User</span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.UserType)
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Status)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.UserType)
+                            @if (item.UserType == 1)
+                            {
+                                <span style="color: blue">Member</span>
+                            }
+                            else if (item.UserType == 0)
+                            {
+                                <span style="color: green">Free</span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.UserType)
+                            }
                         </td>
                         <td>
-                            @Html.ActionLink("Sửa", "Edit", new {  id=item.UserId  },new {@class="text-danger"}) |
-                            @Html.ActionLink("Chi Tiết", "Details", new {  id=item.UserId},new {@class="text-danger" })  |
-                            @Html.ActionLink("Xóa", "Delete", new {id=item.UserId },new {@class="text-danger"})
+                            @Html.ActionLink("Edit", "Edit", new { id = item.UserId }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Details", "Details", new { id = item.UserId }, new { @class = "btn btn-danger details-link" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.UserId }, new { @class = "btn btn-danger delete-link" })
                         </td>
                     </tr>
                 }
             </tbody>
+            @if (!linkCreated)
+            {
+                <div class="alert alert-warning" role="alert">
+                    <strong>Thông báo:</strong> Không tìm thấy thông tin chi tiết.
+                </div>
+            }
         </table>
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
-        new PagedListRenderOptions
-        {
-        Display = PagedListDisplayMode.IfNeeded,
-        UlElementClasses = new[] { "pagination" },
-        LiElementClasses = new[] { "page-item" },
-        PageClasses = new[] { "page-link" },
-        LinkToPreviousPageFormat = "<",
-        LinkToNextPageFormat = ">",
-        PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
-        })
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions
+    {
+    Display = PagedListDisplayMode.IfNeeded,
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    LinkToPreviousPageFormat = "<",
+    LinkToNextPageFormat = ">",
+    PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
+    })
 </div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Ẩn thông báo sau 5 giây
+        setTimeout(function () {
+            $("#alertMessage").fadeOut("slow", function () {
+                // Xoá thông báo khỏi DOM sau khi ẩn đi
+                $(this).remove();
+            });
+        }, 5000);
+    });
+</script>
+

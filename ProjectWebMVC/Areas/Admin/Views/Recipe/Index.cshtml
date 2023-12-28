@@ -1,150 +1,147 @@
-﻿@model IEnumerable<ProjectLibrary.ObjectBussiness.Recipe>
-
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<ProjectLibrary.ObjectBussiness.Recipe>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .custom-table-header th {
+        background-color: #012970;
+        color: white;
+    }
 
-<h1>Index</h1>
-
-<p>
-    @Html.ActionLink("Tạo mới","Create","Recipe", null, new {@class="btn btn-danger"})
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RecipeId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecipeTitle)
-            </th>
-            @* <th>
-                @Html.DisplayNameFor(model => model.ImageTitle)
-            </th> *@
-            <th>
-                @Html.DisplayNameFor(model => model.Creator)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TagId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.VideoUrl)
-            </th>
-             <th>
-                @Html.DisplayNameFor(model => model.PrepTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CookTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TotalTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Servings)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Calories)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fat)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Carbs)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Protein) *@
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContestId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ReadFree)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecipeId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecipeTitle)
-            </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.ImageTitle)
-            </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.Creator)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TagId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            @* <td>
-                @Html.DisplayFor(modelItem => item.VideoUrl)
-            </td> *@
-            @* <td>
-                @Html.DisplayFor(modelItem => item.PrepTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CookTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Servings)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Calories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fat)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Carbs)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Protein)
-            </td> *@
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContestId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ReadFree)
-            </td>
-            <td>
-                    @Html.ActionLink("Edit", "Edit", new {  id=item.RecipeId  },new {@class="text-danger"}) |
-                    @Html.ActionLink("Details", "Details", new {  id=item.RecipeId  },new {@class="text-danger"}) |
-                    @Html.ActionLink("Delete", "Delete", new {  id=item.RecipeId },new {@class="text-danger"})
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .custom-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+<header class="panel-heading">
+    <h2>Recipe Manager</h2>
+</header>
+<div class="text-center">
+    @{
+        if (TempData["Message"] != null)
+        {
+            <div id="alertMessage" class="alert alert-warning alert-dismissible fade show" role="alert">
+                @TempData["Message"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+</div>
+<div class="panel-body">
+    <p>
+        @Html.ActionLink("Create new","Create","Recipe", null, new {@class="btn btn-danger"})
+    </p>
+    <div class="form-group mb-4">
+        @using (Html.BeginForm("Index", "Recipe", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="text" name="recipeId" placeholder="Enter recipeId" value="@Context.Request.Query["recipeId"].FirstOrDefault()" class="form-control" />
+                </div>
+                <div class="col-lg-3">
+                    <input type="submit" class="btn btn-danger" value="Search" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        <table class="table table-bordered custom-table">
+            <thead class="custom-table-header">
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].RecipeTitle)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Creator)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].CreateDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].TagId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].CategoryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].ContestId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].ReadFree)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RecipeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RecipeTitle)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Creator)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreateDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TagId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContestId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReadFree)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.RecipeId }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Details", "Details", new { id = item.RecipeId }, new { @class = "btn btn-danger details-link" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.RecipeId }, new { @class = "btn btn-danger delete-link" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions
+    {
+    Display = PagedListDisplayMode.IfNeeded,
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    LinkToPreviousPageFormat = "<",
+    LinkToNextPageFormat = ">",
+    PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
+    })
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Ẩn thông báo sau 5 giây
+        setTimeout(function () {
+            $("#alertMessage").fadeOut("slow", function () {
+                // Xoá thông báo khỏi DOM sau khi ẩn đi
+                $(this).remove();
+            });
+        }, 5000);
+    });
+</script>

@@ -1,8 +1,11 @@
 ﻿using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProjectLibrary.ObjectBussiness;
+using X.PagedList;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
@@ -22,23 +25,71 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         }
 
         // GET: ContestController
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index(int? contestId, int? page)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_url);
+            int pageSize = 5; // Set your desired page size
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var strData = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
+                HttpResponseMessage responseMessage;
+                List<Contest> contestList;
+
+                if (contestId.HasValue)
                 {
-                    PropertyNameCaseInsensitive = true,
-                };
-                List<Contest> contestList = JsonSerializer.Deserialize<List<Contest>>(strData, options);
+                    responseMessage = await _httpClient.GetAsync($"{_url}/{contestId}");
 
-                return View(contestList);
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        var contest = JsonSerializer.Deserialize<Contest>(data, options);
+
+                        // If a single user is found, create a list with that user
+                        contestList = new List<Contest> { contest };
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No contest found with the specified contestId.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    responseMessage = await _httpClient.GetAsync(_url);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        contestList = JsonSerializer.Deserialize<List<Contest>>(data, options);
+                    }
+                    else
+                    {
+                        return View(new List<Contest>());
+                    }
+                }
+
+                // Apply pagination
+                int pageNumber = page ?? 1; // If page is null, default to page 1
+                var pagedList = contestList.ToPagedList(pageNumber, pageSize);
+
+                return View(pagedList);
             }
-
-            return View(new List<Contest>()); // Trả về một danh sách trống nếu có lỗi
+            catch (Exception ex)
+            {
+                // Handle the exception, log, or take appropriate action
+                // For now, returning an empty list to the view
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
+                return View(new List<Contest>());
+            }
         }
 
         // GET: ContestController/Details/5
@@ -71,6 +122,9 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Contest contest)
         {
+            var user = User as ClaimsPrincipal;
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+            contest.OwnerUserId = int.Parse(userId.ToString());
             if (ModelState.IsValid)
             {
                 string strData = JsonSerializer.Serialize(contest);
@@ -113,6 +167,10 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Contest contest)
         {
+            var user = User as ClaimsPrincipal;
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+            contest.OwnerUserId = int.Parse(userId.ToString());
+
             var contestData = JsonSerializer.Serialize(contest);
             var content = new StringContent(contestData, System.Text.Encoding.UTF8, "application/json");
 

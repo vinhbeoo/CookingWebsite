@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using ProjectLibrary.ObjectBussiness;
 using ProjectWebAPI.Application;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using X.PagedList;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
@@ -22,21 +24,82 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             UserDetailApiUrl = "https://localhost:7269/api/UserDetail";
         }
         // GET: UserDetailController
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index(int? userId, int? page)
         {
-            HttpResponseMessage res = await _httpClient.GetAsync(UserDetailApiUrl);
-            string strData = await res.Content.ReadAsStringAsync();
-            var option = new JsonSerializerOptions
+            int pageSize = 5; // Set your desired page size
+
+            try
             {
-                PropertyNameCaseInsensitive = true,
-            };
-            List<UserDetail> list = JsonSerializer.Deserialize<List<UserDetail>>(strData, option);
-            return View(list);
+                HttpResponseMessage responseMessage;
+                List<UserDetail> userList;
+
+                if (userId.HasValue)
+                {
+                    responseMessage = await _httpClient.GetAsync($"{UserDetailApiUrl}/{userId}");
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        var user = JsonSerializer.Deserialize<UserDetail>(data, options);
+
+                        // If a single user is found, create a list with that user
+                        userList = new List<UserDetail> { user };
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No userDetail found with the specified userId.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    responseMessage = await _httpClient.GetAsync(UserDetailApiUrl);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        userList = JsonSerializer.Deserialize<List<UserDetail>>(data, options);
+                    }
+                    else
+                    {
+                        return View(new List<UserDetail>());
+                    }
+                }
+
+                // Apply pagination
+                int pageNumber = page ?? 1; // If page is null, default to page 1
+                var pagedList = userList.ToPagedList(pageNumber, pageSize);
+
+                return View(pagedList);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception, log, or take appropriate action
+                // For now, returning an empty list to the view
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
+                return View(new List<UserDetail>());
+            }
         }
 
         // GET: UserDetailController/Details/5
         public async Task<IActionResult> Details(int id)
         {
+            if (id <= 0)
+            {
+                TempData["Message"] = "Invalid UserDetail ID.";
+                return RedirectToAction("Index", "UserDetail", new { message = "invalidid" });
+            }
+
             HttpResponseMessage res = await _httpClient.GetAsync($"{UserDetailApiUrl}/{id}");
             if (res.IsSuccessStatusCode)
             {
@@ -46,10 +109,22 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     PropertyNameCaseInsensitive = true
                 };
                 UserDetail userDetail = JsonSerializer.Deserialize<UserDetail>(strData, options);
-                return View(userDetail);
+
+                if (userDetail != null)
+                {
+                    return View(userDetail);
+                }
+                else
+                {
+                    TempData["Message"] = "UserDetail not found.";
+                    return RedirectToAction("Index", "UserDetail", new { message = "notfound" });
+                }
             }
-            return View();
+
+            TempData["Message"] = "Error retrieving UserDetail.";
+            return RedirectToAction("Index", "User", new { message = "error" });
         }
+
 
         // GET: UserDetailController/Create
         public ActionResult Create()

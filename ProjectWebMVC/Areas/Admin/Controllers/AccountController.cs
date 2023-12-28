@@ -165,10 +165,8 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             // Đăng xuất người dùng
             await HttpContext.SignOutAsync();
 
-
-
             // Chuyển hướng đến trang đăng nhập hoặc trang chính
-            return RedirectToAction("Login", "Account", new { area = "Admin" }); // Thay thế bằng tên trang đăng nhập hoặc trang chính của bạn
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         public IActionResult Register()

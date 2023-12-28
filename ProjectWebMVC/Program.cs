@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ProjectWebMVC.Areas.User;
 using ProjectWebMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);

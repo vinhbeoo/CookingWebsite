@@ -59,7 +59,7 @@ namespace ProjectLibrary.DataAccess
             }
             return notification;
         }
-        public void SaveNotification(Notification notification, int userId)
+        public void SaveNotification(Notification notification)
         {
             try
             {
@@ -67,8 +67,6 @@ namespace ProjectLibrary.DataAccess
                 {
                     context.Notifications.Add(notification);
                     context.SaveChanges();
-                    // Log user activity for adding a notification
-                    context.LogUserActivity(userId, "CreateNotification", $"Created a new notification with ID {notification.NotificationId}");
                 }
             }
             catch (Exception ex)
@@ -76,7 +74,7 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception(ex.Message);
             }
         }
-        public void UpdateNotification(Notification notification, int userId)
+        public void UpdateNotification(Notification notification)
         {
             try
             {
@@ -84,8 +82,7 @@ namespace ProjectLibrary.DataAccess
                 {
                     context.Entry<Notification>(notification).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     context.SaveChanges();
-                    // Log user activity
-                    context.LogUserActivity(userId, "UpdateNotification", $"Updated notification with ID {notification.NotificationId}");
+                   
                 }
             }
             catch (Exception ex)
@@ -93,7 +90,7 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception(ex.Message);
             }
         }
-        public void DeleteNotification(Notification notification, int userId)
+        public void DeleteNotification(Notification notification)
         {
             try
             {
@@ -105,8 +102,7 @@ namespace ProjectLibrary.DataAccess
                     {
                         context.Notifications.Remove(existingNotification);
                         context.SaveChanges();
-                        // Log user activity
-                        context.LogUserActivity(userId, "DeleteNotifications", $"Deleted Notifications with ID {notification.NotificationId}");
+                      
                     }
                     else
                     {

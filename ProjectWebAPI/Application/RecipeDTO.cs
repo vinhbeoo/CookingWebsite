@@ -38,8 +38,6 @@
 
         public int? ContestId { get; set; }
 
-        public int Rating { get; set; }
-
         public Boolean ReadFree { get; set; }
     }
 }

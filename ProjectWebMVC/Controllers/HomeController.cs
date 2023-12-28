@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using ProjectWebMVC.Models;
+using ProjectWebMVC.Areas.User.Models;
 
 namespace ProjectWebMVC.Controllers
 {

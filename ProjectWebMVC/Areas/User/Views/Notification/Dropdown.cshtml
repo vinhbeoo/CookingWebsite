@@ -1,0 +1,126 @@
+﻿@model List<ProjectLibrary.ObjectBussiness.Notification>
+
+<link href="~/user/css/notificationstyle.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.18.0/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    /* Thêm CSS để ẩn mặc định nội dung notifications */
+    .notifications {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 300px; /* Điều chỉnh chiều rộng theo ý muốn */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border: 1px solid #ddd;
+        z-index: 999;
+    }
+
+    span.badge.rounded-pill.bg-primary.p-2.ms-2 {
+        background: blue;
+    }
+
+    html *:first-child {
+        margin-top: 0;
+        position: relative;
+    }
+
+    .notification-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .notification-item i {
+            margin-right: 10px;
+        }
+
+    /* Thêm CSS để tạo hiệu ứng khi hiển thị nội dung */
+    .show-notifications {
+        display: block;
+    }
+
+    /* Định dạng cho badge số thông báo */
+    .badge-number {
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(50%, -50%);
+    }
+
+    /* Thiết lập định dạng cho dropdown header */
+    .dropdown-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Thiết lập định dạng cho dropdown footer */
+    .dropdown-footer {
+        padding: 10px;
+        text-align: center;
+    }
+
+    li {
+        list-style: initial !important;
+    }
+
+        li::marker {
+            content: none !important;
+        }
+</style>
+
+@{
+    ViewData["Title"] = "Dropdown";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+
+<li class="nav-item dropdown">
+    <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="notification-icon">
+        <span class="badge bg-primary badge-number">@Model?.Count()</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+        <li class="dropdown-header">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <h4>You have @Model?.Count() new notifications</h4>
+                </div>
+                <a href="#" class="text-decoration-none">
+                    <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
+                </a>
+            </div>
+        </li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        @foreach (var notification in Model)
+        {
+            <li class="notification-item">
+                <i class="bi bi-exclamation-circle text-warning"></i>
+                <div>
+                    <h4>@notification.Title</h4>
+                    <p>@notification.Description</p>
+                    <p>@notification.Date</p>
+                </div>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+        }
+
+        @if (Model == null || !Model.Any())
+        {
+            <li class="dropdown-header">
+                <p>No new notifications</p>
+            </li>
+        }
+
+        <li class="dropdown-footer">
+            <a href="@Url.Action("Index", "Notification")">Show all notifications</a>
+        </li>
+    </ul>
+</li>

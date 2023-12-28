@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ProjectLibrary.ObjectBussiness.Comment
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
     ViewData["title"] = "Recipe";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
     var recipes = ViewBag.Recipe as IEnumerable<ProjectLibrary.ObjectBussiness.Recipe>;
@@ -6,6 +8,9 @@
     var IngredientDetails = ViewBag.IngredientDetail as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsDetail>;
     var RecipeSteps = ViewBag.RecipeStep as IEnumerable<ProjectLibrary.ObjectBussiness.RecipesStep>;
     var Comments = ViewBag.Comment as IEnumerable<ProjectLibrary.ObjectBussiness.Comment>;
+    var UserName = ViewBag.UserName;
+    var UserId = ViewBag.UserId;
+    var RecipeId = ViewBag.RecipeId;
 }
 
 
@@ -125,7 +130,7 @@
                             {
                                 @if (@IngDetail.IngredientId == @IngGroup.IngredientId)
                                 {
-                                    <li>@IngDetail.Stt -- @IngDetail.Description</li>
+                                    <pre>@IngDetail.Description</pre>
                                 }
 
                             }
@@ -152,7 +157,7 @@
                                 @RecipeStep.Description
                             </div>
                             <div class="step-img">
-                                <img src="@RecipeStep.ImageUrl" alt="">
+                                <iframe width="560" height="315" src="@RecipeStep.VideoUrl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                             </div>
                         </div>
                     </div>
@@ -179,6 +184,16 @@
     <div class="comment">
         <div class="container">
             <h1>COMMENT</h1>
+            @using (Html.BeginForm("SaveComment", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h2>@UserName</h2>
+                <textarea asp-for="@Model.CommentText" class="form-control"></textarea>
+                <input type="hidden" asp-for="@Model.CommentId" class="form-control" />
+                <input type="hidden" asp-for="@Model.UserId" class="form-control" value="@UserId" />
+                <input type="hidden" asp-for="@Model.RecipeId" class="form-control" value="@RecipeId" />
+                <input type="hidden" asp-for="@Model.CreateDate" class="form-control" />
+                <button id="addComment" class="btn btn-primary">Comment</button>
+            }
             <div class="comment-content">
                 @foreach (var Comment in Comments)
                 {
@@ -199,15 +214,9 @@
                         </div>
                     </div>
                 }
-                <div class="add-comment">
-                    <h3>Your comments</h3>
-                    <textarea name="new-comment" id="" cols="30" rows="5">
-                    </textarea>
-                    <div class="comment-btn">
-                        <button class="btn btn-primary" type="submit">Send</button>
-                    </div>
-                </div>
+
+
+
             </div>
         </div>
-    </div>
 </section>

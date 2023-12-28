@@ -17,8 +17,8 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
     {
         private readonly HttpClient _httpClient;
         private string _userApiUrl = "";
-
         private string _userUrl = "https://localhost:7269/api/User";
+        private string _userDetailUrl = "https://localhost:7269/api/UserDetail";
         public UserController()
         {
             _httpClient = new HttpClient();
@@ -54,7 +54,8 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     }
                     else
                     {
-                        return View(new List<ProjectLibrary.ObjectBussiness.User>());
+                        TempData["Message"] = "No user found with the specified input.";
+                        return RedirectToAction("Index");
                     }
                 }
                 else
@@ -197,21 +198,33 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         {
             try
             {
-                HttpResponseMessage responseMessage = await _httpClient.DeleteAsync($"{_userApiUrl}/{id}");
-                if (responseMessage.IsSuccessStatusCode)
+                // Gửi yêu cầu xóa cho UserDetail trước
+                HttpResponseMessage responseMessageUserDetail = await _httpClient.DeleteAsync($"{_userDetailUrl}/{id}");
+
+                HttpResponseMessage responseMessageUser = await _httpClient.DeleteAsync($"{_userApiUrl}/{id}");
+
+                // Kiểm tra xem yêu cầu xóa User có thành công hay không
+                if (responseMessageUser.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    return NoContent();
+                    // Xử lý trường hợp không xóa thành công User
+                    TempData["ErrorMessage"] = "Xóa User không thành công.";
+                    return RedirectToAction(nameof(Index));
                 }
+
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                // Xử lý lỗi và ghi log nếu cần
+                TempData["ErrorMessage"] = ex.Message;
+                return RedirectToAction(nameof(Index));
             }
         }
+
+
 
     }
 }

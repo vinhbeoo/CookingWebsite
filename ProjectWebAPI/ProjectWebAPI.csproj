@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <Reference Include="Logger">
-      <HintPath>..\..\CookingWebsite-master_12122023\CookingWebsite-master\ProjectWebAPI\bin\Debug\net7.0\Logger.dll</HintPath>
+      <HintPath>D:\Aptech\Đồ án tốt nghiệp(TEST)\CookingWebsite\ProjectWebAPI\bin\Debug\net7.0\Logger.dll</HintPath>
     </Reference>
   </ItemGroup>
 
