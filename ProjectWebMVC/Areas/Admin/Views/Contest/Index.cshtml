@@ -1,67 +1,133 @@
-﻿@model IEnumerable<ProjectLibrary.ObjectBussiness.Contest>
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<ProjectLibrary.ObjectBussiness.Contest>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .custom-table-header th {
+        background-color: #012970;
+        color: white;
+    }
 
-<h1>Index</h1>
-
-<p>
-    @Html.ActionLink("Tạo mới","Create","Contest", null, new {@class="btn btn-danger"})
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                ContestName
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                StartTime
-            </th>
-            <th>
-                EndTime
-            </th>
-            <th>
-                OwnerUserId
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+    .custom-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+<header class="panel-heading">
+    <h2>Contest Manager</h2>
+</header>
+<div class="text-center">
+    @{
+        if (TempData["Message"] != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ContestId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ContestName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OwnerUserId)
-                </td>
-                <td>
-                    @Html.ActionLink("Sửa", "Edit", new {  id=item.ContestId  },new {@class="text-danger"}) |
-                    @Html.ActionLink("Chi Tiết", "Details", new {  id=item.ContestId},new {@class="text-danger" })  |
-                    @Html.ActionLink("Xóa", "Delete", new {id=item.ContestId },new {@class="text-danger"})
-                </td>
-            </tr>
+            <div id="alertMessage" class="alert alert-warning alert-dismissible fade show" role="alert">
+                @TempData["Message"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         }
-    </tbody>
-</table>
+    }
+</div>
+
+<div class="panel-body">
+    <p>
+        @Html.ActionLink("Tạo mới","Create","Contest", null, new {@class="btn btn-danger"})
+    </p>
+    <div class="form-group mb-4">
+        @using (Html.BeginForm("Index", "Contest", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="text" name="contestId" placeholder="Enter contestId" value="@Context.Request.Query["contestId"].FirstOrDefault()" class="form-control" />
+                </div>
+                <div class="col-lg-3">
+                    <input type="submit" class="btn btn-danger" value="Search" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        <table class="table table-bordered custom-table">
+            <thead class="custom-table-header">
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        ContestName
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        StartTime
+                    </th>
+                    <th>
+                        EndTime
+                    </th>
+                    <th>
+                        OwnerId
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContestId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContestName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @item.StartTime.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                        <td>
+                            @item.EndTime.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OwnerUserId)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ContestId }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Details", "Details", new { id = item.ContestId }, new { @class = "btn btn-danger details-link" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ContestId }, new { @class = "btn btn-danger delete-link" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions
+    {
+    Display = PagedListDisplayMode.IfNeeded,
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    LinkToPreviousPageFormat = "<",
+    LinkToNextPageFormat = ">",
+    PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
+    })
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Ẩn thông báo sau 5 giây
+        setTimeout(function () {
+            $("#alertMessage").fadeOut("slow", function () {
+                // Xoá thông báo khỏi DOM sau khi ẩn đi
+                $(this).remove();
+            });
+        }, 5000);
+    });
+</script>

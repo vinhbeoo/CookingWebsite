@@ -8,8 +8,8 @@ public partial class RecipesStep
 {
     [Key]
     public int Step { get; set; }
-
-    public int? RecipeId { get; set; }
+	[Key]
+	public int? RecipeId { get; set; }
 
     public string? Description { get; set; }
 

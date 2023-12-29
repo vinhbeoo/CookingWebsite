@@ -41,7 +41,6 @@ public partial class Recipe
 
     public int? ContestId { get; set; }
 
-    public int? Rating { get; set; }
     public Boolean ReadFree { get; set; }
 
     public virtual ICollection<Comment>? Comments { get; set; }  
@@ -50,9 +49,11 @@ public partial class Recipe
 
     public virtual User? CreatorNavigation { get; set; }
 
-    public virtual ICollection<IngredientsGroup>? IngredientsGroups { get; set; } 
+    public virtual ICollection<IngredientsGroup>? IngredientsGroups { get; set; }
 
-    public virtual ICollection<Rating>? Ratings { get; set; }
+	public virtual ICollection<IngredientsDetail>? IngredientsDetails { get; set; }
+
+	public virtual ICollection<Rating>? Ratings { get; set; }
 
     public virtual ICollection<RecipesStep>? RecipesSteps { get; set; } 
 

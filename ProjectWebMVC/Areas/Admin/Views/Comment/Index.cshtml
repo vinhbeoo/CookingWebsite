@@ -1,60 +1,128 @@
-﻿@model IEnumerable<ProjectLibrary.ObjectBussiness.Comment>
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model X.PagedList.IPagedList<ProjectLibrary.ObjectBussiness.Comment>
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .custom-table-header th {
+        background-color: #012970;
+        color: white;
+    }
 
-<h1>Index</h1>
+    .custom-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+<header class="panel-heading">
+    <h2>Comment Manager</h2>
+</header>
+<div class="text-center">
+    @{
+        if (TempData["Message"] != null)
+        {
+            <div id="alertMessage" class="alert alert-warning alert-dismissible fade show" role="alert">
+                @TempData["Message"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    }
+</div>
 
-<p>
-    @Html.ActionLink("Tạo mới","Create","Comment", null, new {@class="btn btn-danger"})
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CommentId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecipeId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CommentText)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CommentId)
-            </td>
-            <td>
-                    @Html.ActionLink(item.UserId.ToString(),"Details","UserDetail",new { id = item.UserId },null)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecipeId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CommentText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.CommentId}) |
-                    @Html.ActionLink("Details", "Details", new { id = item.CommentId}) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.CommentId})
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="panel-body">
+    <p>
+        @Html.ActionLink("Create","Create","Comment", null, new {@class="btn btn-danger"})
+    </p>
+    <div class="form-group mb-4">
+        @using (Html.BeginForm("Index", "Comment", FormMethod.Get))
+        {
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="text" name="commentId" placeholder="Enter commentId" value="@Context.Request.Query["commentId"].FirstOrDefault()" class="form-control" />
+                </div>
+                <div class="col-lg-3">
+                    <input type="submit" class="btn btn-danger" value="Search" />
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        <table class="table table-bordered custom-table">
+            <thead class="custom-table-header">
+                <tr>
+                    <th>
+                        CommentId
+                    </th>
+                    <th>
+                        UserId
+                    </th>
+                    <th>
+                        RecipeId
+                    </th>
+                    <th>
+                        CommentText
+                    </th>
+                    <th>
+                        CreateDate
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CommentId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RecipeId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CommentText)
+                        </td>
+                        <td>
+                            @item.CreateDate.ToString("dd/MM/yyyy HH:mm")
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.CommentId, commentId = item.CommentId }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Details", "Details", new { id = item.CommentId, commentId = item.CommentId }, new { @class = "btn btn-danger details-link" })
+
+                            @Html.ActionLink("Delete", "Delete", new { id = item.CommentId }, new { @class = "btn btn-danger delete-link" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions
+    {
+    Display = PagedListDisplayMode.IfNeeded,
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    LinkToPreviousPageFormat = "<",
+    LinkToNextPageFormat = ">",
+    PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
+    })
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Ẩn thông báo sau 5 giây
+        setTimeout(function () {
+            $("#alertMessage").fadeOut("slow", function () {
+                // Xoá thông báo khỏi DOM sau khi ẩn đi
+                $(this).remove();
+            });
+        }, 5000);
+    });
+</script>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ProjectLibrary.ObjectBussiness;
 
 namespace ProjectLibrary.DataAccess
@@ -39,7 +40,7 @@ namespace ProjectLibrary.DataAccess
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    listUserDetails = context.UserDetails.ToList();
+                    listUserDetails = context.UserDetails.Include(u => u.User).ToList();
                 }
             }
             catch (Exception ex)

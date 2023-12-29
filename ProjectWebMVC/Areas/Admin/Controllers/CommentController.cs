@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Json;
 using X.PagedList;
 
@@ -24,23 +25,72 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         }
 
         // GET: CommentController
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index(int? commentId, int? page)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_url);
+            int pageSize = 5; // Set your desired page size
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var strData = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
+                HttpResponseMessage responseMessage;
+                List<Comment> commentsList;
+
+                if (commentId.HasValue)
                 {
-                    PropertyNameCaseInsensitive = true,
-                };
-                List<Comment> commentList = JsonSerializer.Deserialize<List<Comment>>(strData, options);
+                    responseMessage = await _httpClient.GetAsync($"{_url}/{commentId}");
 
-                return View(commentList);
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        var comment = JsonSerializer.Deserialize<Comment>(data, options);
+
+                        // If a single user is found, create a list with that user
+                        commentsList = new List<Comment> { comment };
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No comment found with the specified commentId.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    responseMessage = await _httpClient.GetAsync(_url);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        commentsList = JsonSerializer.Deserialize<List<Comment>>(data, options);
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No comment found with the specified commentId.";
+                        return RedirectToAction("Index");
+                    }
+                }
+
+                // Apply pagination
+                int pageNumber = page ?? 1; // If page is null, default to page 1
+                var pagedList = commentsList.ToPagedList(pageNumber, pageSize);
+
+                return View(pagedList);
             }
-
-            return View(new List<Comment>()); // Trả về một danh sách trống nếu có lỗi
+            catch (Exception ex)
+            {
+                // Handle the exception, log, or take appropriate action
+                // For now, returning an empty list to the view
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
+                return View(new List<Comment>());
+            }
         }
 
         // GET: CommentController/Details/5
@@ -59,7 +109,8 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                 return View(comment);
             }
 
-            return NotFound();
+            TempData["Message"] = "No comment found with the specified commentId.";
+            return RedirectToAction("Index");
         }
 
         // GET: CommentController/Create
@@ -75,6 +126,11 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = User as ClaimsPrincipal;
+                var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                comment.CreateDate = DateTime.Now;
+                comment.UserId = int.Parse(userId.ToString());
                 string strData = JsonSerializer.Serialize(comment);
                 var contentData = new StringContent(strData, System.Text.Encoding.UTF8, "application/json");
                 HttpResponseMessage res = await _httpClient.PostAsync(_url, contentData);
@@ -107,18 +163,25 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                 return View(comment);
             }
 
-            return NotFound();
+            TempData["Message"] = "No comment found with the specified commentId.";
+            return RedirectToAction("Index");
         }
 
         // POST: CommentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Comment comment)
+        public async Task<IActionResult> Edit(int commentId, Comment comment)
         {
+            var user = User as ClaimsPrincipal;
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            comment.CreateDate = DateTime.Now;
+            comment.UserId = int.Parse(userId.ToString());
+
             var commenttData = JsonSerializer.Serialize(comment);
             var content = new StringContent(commenttData, System.Text.Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await _httpClient.PutAsync($"{_url}/{id}", content);
+            HttpResponseMessage response = await _httpClient.PutAsync($"{_url}/{commentId}", content);
 
             if (response.IsSuccessStatusCode)
             {

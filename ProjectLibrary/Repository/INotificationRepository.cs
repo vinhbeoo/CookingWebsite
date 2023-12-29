@@ -11,8 +11,8 @@ namespace ProjectLibrary.Repository
     {
         List<Notification> GetNotifications();
         Notification GetNotificationById(int id);
-        void SaveNotification(Notification notification, int userId);
-        void UpdateNotification(Notification notification, int userId);
-        void DeleteNotification(Notification notification, int userId);
+        void SaveNotification(Notification notification);
+        void UpdateNotification(Notification notification);
+        void DeleteNotification(Notification notification);
     }
 }

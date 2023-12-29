@@ -1,78 +1,143 @@
-﻿@model IEnumerable<ProjectLibrary.ObjectBussiness.UserDetail>
+﻿@model IPagedList<ProjectLibrary.ObjectBussiness.UserDetail>
+@using X.PagedList
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<style>
+    .custom-table-header th {
+        background-color: #012970;
+        color: white;
+    }
 
+    .custom-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<header class="panel-heading">
+    <h2>UserDetails Manager</h2>
+</header>
 <div class="text-center">
     @{
-        if (@TempData["Message"] != null)
+        if (TempData["Message"] != null)
         {
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <div id="alertMessage" class="alert alert-warning alert-dismissible fade show" role="alert">
                 @TempData["Message"]
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
     }
 </div>
-<p>
-    @Html.ActionLink("Tạo mới","Create","UserDetail", null, new {@class="btn btn-danger"})
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Gender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Avatar)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+
+<div class="panel-body">
+    <p>
+        @Html.ActionLink("Create new user", "Create", "UserDetail", null, new { @class = "btn btn-danger" })
+    </p>
+
+    <div class="form-group mb-4">
+        @using (Html.BeginForm("Index", "UserDetail", FormMethod.Get))
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Gender)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Avatar)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
-                </td>
-            </tr>
+            <div class="row">
+                <div class="col-lg-6">
+                    <input type="text" name="userId" placeholder="Enter userId" value="@Context.Request.Query["userId"].FirstOrDefault()" class="form-control" />
+                </div>
+                <div class="col-lg-3">
+                    <input type="submit" class="btn btn-danger" value="Search" />
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+    <div class="form-group">
+        <table class="table table-bordered custom-table">
+            <thead class="custom-table-header">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].UserId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].FullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Gender)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Avatar)
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gender)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Avatar)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.User.Email)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.UserId }, new { @class = "btn btn-danger" }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.UserId }, new { @class = "btn btn-danger" }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.UserId }, new { @class = "btn btn-danger", onclick = "confirmDelete('@item.UserId')" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+    new PagedListRenderOptions
+    {
+    Display = PagedListDisplayMode.IfNeeded,
+    UlElementClasses = new[] { "pagination" },
+    LiElementClasses = new[] { "page-item" },
+    PageClasses = new[] { "page-link" },
+    LinkToPreviousPageFormat = "<",
+    LinkToNextPageFormat = ">",
+    PageCountAndCurrentLocationFormat = "Page {0} of {1}. Current location: {2}",
+    })
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Ẩn thông báo sau 5 giây
+        setTimeout(function () {
+            $("#alertMessage").fadeOut("slow", function () {
+                // Xoá thông báo khỏi DOM sau khi ẩn đi
+                $(this).remove();
+            });
+        }, 5000);
+    });
+</script>

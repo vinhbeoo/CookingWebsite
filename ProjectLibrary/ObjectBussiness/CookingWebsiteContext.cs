@@ -112,11 +112,10 @@ public partial class CookingWebsiteContext : DbContext
 
         modelBuilder.Entity<IngredientsDetail>(entity =>
         {
-            entity.HasKey(e => e.Stt);
+			entity.HasKey(e => new { e.IngredientId, e.RecipeId, e.Stt });
+			entity.ToTable("Ingredients_Detail");
 
-            entity.ToTable("Ingredients_Detail");
-
-            entity.Property(e => e.Stt)
+			entity.Property(e => e.Stt)
                 .ValueGeneratedNever()
                 .HasColumnName("stt");
             entity.Property(e => e.IngredientId).ValueGeneratedOnAdd();
@@ -208,9 +207,9 @@ public partial class CookingWebsiteContext : DbContext
 
         modelBuilder.Entity<RecipesStep>(entity =>
         {
-            entity.HasKey(e => e.Step);
+			entity.HasKey(e => new { e.RecipeId, e.Step });
 
-            entity.ToTable("Recipes_Step");
+			entity.ToTable("Recipes_Step");
 
             entity.Property(e => e.Step).ValueGeneratedNever();
             entity.Property(e => e.ImageUrl)

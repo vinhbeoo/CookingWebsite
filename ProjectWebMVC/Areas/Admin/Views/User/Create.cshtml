@@ -5,74 +5,92 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1 class="text-center">Create User</h1>
 
-<h4>User</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        @using (Html.BeginForm("Create", "User", FormMethod.Post))
-        {
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserName" class="control-label"></label>
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter UserName" } })
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Password" } })
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Email" } })
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <br />
-            <div class="form-group">
-                <label>
-                    @Html.DisplayNameFor(model => model.EmailConfirmed)
-                </label>
-                <div>
-                @Html.CheckBoxFor(model => model.EmailConfirmed, new { htmlAttributes = new { @class = "form-control" } })
-                <span asp-validation-for="EmailConfirmed" class="text-danger"></span>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 " >
+            @using (Html.BeginForm("Create", "User", FormMethod.Post, new { @class = "needs-validation", novalidate = "true" }))
+            {
+                <div class="row border rounded p-3 mb-3 bg-light">
+                    <div class="col-md-6">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label asp-for="UserName" class="control-label">Username:</label>
+                                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Username", required = "required" } })
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Password" class="control-label">Password:</label>
+                                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Password", required = "required", type = "password" } })
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label">Email:</label>
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Email", required = "required", type = "email" } })
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label>@Html.DisplayNameFor(model => model.EmailConfirmed)</label>
+                                <div class="form-check">
+                                    <span>@Html.CheckBoxFor(model => model.EmailConfirmed, new { htmlAttributes = new { @class = "form-control" } })</span>
+                                    <span asp-validation-for="EmailConfirmed" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+
+                            <div class="form-group">
+                                <label asp-for="EmailConfirmationToken" class="control-label">Email Confirmation Token:</label>
+                                @Html.EditorFor(model => model.EmailConfirmationToken, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Email Confirmation Token" } })
+                                <span asp-validation-for="EmailConfirmationToken" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="RoleId" class="control-label">Role ID:</label>
+                                @Html.EditorFor(model => model.RoleId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Role ID" } })
+                                <span asp-validation-for="RoleId" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Status" class="control-label">Status:</label>
+                                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Status" } })
+                                <span asp-validation-for="Status" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="UserType" class="control-label">User Type:</label>
+                                @Html.EditorFor(model => model.UserType, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter User Type" } })
+                                <span asp-validation-for="UserType" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="EmailConfirmationToken" class="control-label"></label>
-                @Html.EditorFor(model => model.EmailConfirmationToken, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter EmailConfirmationToken" }})
-                <span asp-validation-for="EmailConfirmationToken" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RoleId" class="control-label"></label>
-                @Html.EditorFor(model => model.RoleId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter RoleId" } })
-                <span asp-validation-for="RoleId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter Status" } })
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UserType" class="control-label"></label>
-                @Html.EditorFor(model => model.UserType, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter UserType" } })
-                <span asp-validation-for="UserType" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        }
+
+                <div class="text-center">
+                    <div class="form-group d-inline-block mr-2">
+                        <input type="submit" value="Create" class="btn btn-primary" />|
+                    </div>
+
+                    <div class="form-group d-inline-block">
+                        @Html.ActionLink("Back to List", "Index", "User", null, new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-
-    <div>
-        @Html.ActionLink("Back to List", "Index", "User", null, new { @class = "btn btn-danger" })
-    </div>
-
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
-    }
-
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

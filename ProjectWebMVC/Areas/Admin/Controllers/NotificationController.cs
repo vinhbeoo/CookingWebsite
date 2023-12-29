@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Security.Policy;
 using System.Text.Json;
+using X.PagedList;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
@@ -24,22 +27,91 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             NotificationUrl = "https://localhost:7269/api/Notification";
         }
         // GET: NotificationController
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index(int? id, int? page)
         {
-            HttpResponseMessage respon = await _httpClient.GetAsync(NotificationUrl);
-            var strData = await respon.Content.ReadAsStringAsync();
-            var options = new JsonSerializerOptions
+            int pageSize = 5; // Set your desired page size
+
+            try
             {
-                PropertyNameCaseInsensitive = true,
-            };
-            List<Notification> notificationlist = JsonSerializer.Deserialize<List<Notification>>(strData, options);
-            return View(notificationlist);
+                HttpResponseMessage responseMessage;
+                List<Notification> notificationsList;
+
+                if (id.HasValue)
+                {
+                    responseMessage = await _httpClient.GetAsync($"{NotificationUrl}/{id}");
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        var noti = JsonSerializer.Deserialize<Notification>(data, options);
+
+                        // If a single user is found, create a list with that user
+                        notificationsList = new List<Notification> { noti };
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No Notification found with the specified id.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    responseMessage = await _httpClient.GetAsync(NotificationUrl);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        notificationsList = JsonSerializer.Deserialize<List<Notification>>(data, options);
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No Notification found ";
+                        return RedirectToAction("Index");
+                    }
+                }
+
+                // Apply pagination
+                int pageNumber = page ?? 1; // If page is null, default to page 1
+                var pagedList = notificationsList.ToPagedList(pageNumber, pageSize);
+
+                return View(pagedList);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception, log, or take appropriate action
+                // For now, returning an empty list to the view
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
+                return View(new List<Notification>());
+            }
         }
 
         // GET: NotificationController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            HttpResponseMessage response = await _httpClient.GetAsync($"{NotificationUrl}/{id}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var strData = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+                Notification notification = JsonSerializer.Deserialize<Notification>(strData, options);
+                return View(notification);
+            }
+
+            return NotFound();
         }
 
         // GET: NotificationController/Create
@@ -51,58 +123,106 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         // POST: NotificationController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Notification n)
+        public async Task<IActionResult> Create(Notification notification)
         {
-            var screeninglist = JsonSerializer.Serialize(n);
-            var type = new StringContent(screeninglist, System.Text.Encoding.UTF8, "application/json");
-            HttpResponseMessage respon = await _httpClient.PostAsync(NotificationUrl, type);
-            if (respon.IsSuccessStatusCode)
+            var user = User as ClaimsPrincipal;
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            notification.Date = DateTime.Now;
+            notification.UserId = int.Parse(userId.ToString());
+            
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                string strData = JsonSerializer.Serialize(notification);
+                var contentData = new StringContent(strData, System.Text.Encoding.UTF8, "application/json");
+                HttpResponseMessage res = await _httpClient.PostAsync(NotificationUrl, contentData);
+                if (res.IsSuccessStatusCode)
+                {
+                    TempData["Message"] = "notification inserted successfully";
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData["Message"] = "Error while call Web API";
+                }
             }
-            return NoContent();
+            return View(notification);
         }
 
         // GET: NotificationController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            HttpResponseMessage response = await _httpClient.GetAsync($"{NotificationUrl}/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var strData = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                };
+                Notification notification = JsonSerializer.Deserialize<Notification>(strData, options);
+                return View(notification);
+            }
+
+            return NotFound();
         }
 
         // POST: NotificationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, Notification notification)
         {
-            try
+            var user = User as ClaimsPrincipal;
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            notification.Date = DateTime.Now;
+            notification.UserId = int.Parse(userId.ToString());
+
+            var notificationData = JsonSerializer.Serialize(notification);
+            var content = new StringContent(notificationData, System.Text.Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.PutAsync($"{NotificationUrl}/{id}", content);
+
+            if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(notification);
         }
 
         // GET: NotificationController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            HttpResponseMessage responseMessage = await _httpClient.GetAsync($"{NotificationUrl}/{id}");
+            var data = await responseMessage.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            Notification notification = JsonSerializer.Deserialize<Notification>(data, options);
+            return View(notification);
         }
 
         // POST: NotificationController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int id, IFormCollection collection)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                HttpResponseMessage response = await _httpClient.DeleteAsync($"{NotificationUrl}/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    TempData["Message"] = "Notification delete successfully";
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    TempData["Message"] = "Error while call Web API";
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

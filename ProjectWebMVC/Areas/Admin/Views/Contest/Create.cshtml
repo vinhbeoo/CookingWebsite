@@ -5,53 +5,57 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1 class="text-center">Create Contest</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3 ">
+            @using (Html.BeginForm("Create", "Contest", FormMethod.Post))
+            {
+                <div class="row border rounded p-3 mb-3 bg-light">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4>Contest</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        @using (Html.BeginForm("Create", "Contest", FormMethod.Post))
-        {
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ContestName" class="control-label"></label>
-                @Html.EditorFor(model => model.ContestName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter contest name" } })
-                <span asp-validation-for="ContestName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter description" } })
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter start time" } })
-                <span asp-validation-for="StartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter end time" } })
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OwnerUserId" class="control-label"></label>
-                @Html.EditorFor(model => model.OwnerUserId, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter owner user ID" } })
-                <span asp-validation-for="OwnerUserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        }
+                    <div class="form-group">
+                        <label asp-for="ContestName" class="control-label">ContestName</label>
+                        @Html.EditorFor(model => model.ContestName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter contest name" } })
+                        <span asp-validation-for="ContestName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label">Description</label>
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter description" } })
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="StartTime" class="control-label">StartTime</label>
+                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter start time" } })
+                        <span asp-validation-for="StartTime" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndTime" class="control-label">EndTime</label>
+                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter end time" } })
+                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <div class="form-group d-inline-block mr-2">
+                        <input type="submit" value="Create" class="btn btn-primary" />|
+                    </div>
+
+                    <div class="form-group d-inline-block">
+                        @Html.ActionLink("Back to List", "Index", "Contest", null, new { @class = "btn btn-danger" })
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-</div>
-
-<div>
-    @Html.ActionLink("Back to List", "Index", "Contest", null, new { @class = "btn btn-danger" })
 </div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
 }
+

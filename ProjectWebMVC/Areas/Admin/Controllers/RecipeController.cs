@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
+using System;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Json;
+using X.PagedList;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
@@ -22,23 +25,71 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             _url = "https://localhost:7269/api/Recipe";
         }
         // GET: RecipeController
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index(int? recipeId, int? page)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_url);
+            int pageSize = 5; // Set your desired page size
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var strData = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
+                HttpResponseMessage responseMessage;
+                List<Recipe> recipeList;
+
+                if (recipeId.HasValue)
                 {
-                    PropertyNameCaseInsensitive = true,
-                };
-                List<Recipe> recipesList = JsonSerializer.Deserialize<List<Recipe>>(strData, options);
+                    responseMessage = await _httpClient.GetAsync($"{_url}/{recipeId}");
 
-                return View(recipesList);
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        var recipe = JsonSerializer.Deserialize<Recipe>(data, options);
+
+                        // If a single user is found, create a list with that user
+                        recipeList = new List<Recipe> { recipe };
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No recipe found with the specified recipeId.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    responseMessage = await _httpClient.GetAsync(_url);
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        recipeList = JsonSerializer.Deserialize<List<Recipe>>(data, options);
+                    }
+                    else
+                    {
+                        return View(new List<Recipe>());
+                    }
+                }
+
+                // Apply pagination
+                int pageNumber = page ?? 1; // If page is null, default to page 1
+                var pagedList = recipeList.ToPagedList(pageNumber, pageSize);
+
+                return View(pagedList);
             }
-
-            return View(new List<Recipe>()); // Trả về một danh sách trống nếu có lỗi
+            catch (Exception ex)
+            {
+                // Handle the exception, log, or take appropriate action
+                // For now, returning an empty list to the view
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
+                return View(new List<Recipe>());
+            }
         }
 
         // GET: RecipeController/Details/5
@@ -71,8 +122,13 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Recipe recipe)
         {
-            if (ModelState.IsValid)
-            {
+            var user = User as ClaimsPrincipal;
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+            recipe.Creator = int.Parse(userId.ToString());
+
+            recipe.CreateDate = DateTime.Now;
+            /*if (ModelState.IsValid)
+            {*/
                 string strData = JsonSerializer.Serialize(recipe);
                 var contentData = new StringContent(strData, System.Text.Encoding.UTF8, "application/json");
                 HttpResponseMessage res = await _httpClient.PostAsync(_url, contentData);
@@ -85,7 +141,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                 {
                     TempData["Message"] = "Error while call Web API";
                 }
-            }
+            /*}*/
             return View(recipe);
         }
 
@@ -113,6 +169,12 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Recipe recipe)
         {
+            var user = User as ClaimsPrincipal;
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+            recipe.Creator = int.Parse(userId.ToString());
+
+            recipe.CreateDate = DateTime.Now;
+
             var contestData = JsonSerializer.Serialize(recipe);
             var content = new StringContent(contestData, System.Text.Encoding.UTF8, "application/json");
 

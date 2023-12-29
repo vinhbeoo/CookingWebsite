@@ -26,6 +26,31 @@ namespace ProjectLibrary.DataAccess
                 }
             }
         }
+
+        public List<UserActivity> FindUserActivitiesByUserId(int userId)
+        {
+            List<UserActivity> userActivities = new List<UserActivity>();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    userActivities = context.UserActivities.Where(x => x.UserId == userId).ToList();
+                }
+
+                if (userActivities.Count == 0)
+                {
+                    throw new Exception("User doesn't exists");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return userActivities;
+        }
+
+
         public List<UserActivity> GetUserActivities()
         {
             var list = new List<UserActivity>();

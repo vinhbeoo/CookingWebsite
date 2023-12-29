@@ -1,0 +1,55 @@
+﻿﻿
+ @model List<ProjectLibrary.ObjectBussiness.Notification>
+<link href="~/user/css/notificationstyle.css" rel="stylesheet" />
+
+<style>
+    /* Thêm CSS để ẩn mặc định nội dung notifications */
+
+
+    html *:first-child {
+        margin-top: 0;
+        position: relative;
+    }
+
+    .notification-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        .notification-item i {
+            margin-right: 10px;
+        }
+
+
+
+</style>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>Index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var notification in Model)
+        {
+            <tr>
+                <td>@notification.Title</td>
+                <td>@notification.Description</td>
+                <td>@notification.Date</td>
+            </tr>
+        }
+    </tbody>
+</table>

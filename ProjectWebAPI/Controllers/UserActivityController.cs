@@ -15,18 +15,18 @@ namespace ProjectWebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<UserActivity>> GetUserActivities() => repository.GetUserActivities();
 
-        // GET: api/UserActivity/id
-        [HttpGet("{id}")]
-        public ActionResult<IEnumerable<UserActivity>> GetUserActivitiesById(int id)
-        {
-            var userActivities = repository.GetUserActivitiesById(id);
 
+        [HttpGet("{id}")]
+        public ActionResult<List<UserActivity>> GetUserActivitiesById(int id)
+        {
+            var userActivities = repository.FindUserActivitiesByUserId(id);
             if (userActivities == null || userActivities.Count == 0)
             {
-                return NotFound(); // Return 404 Not Found if no user activities are found
+                return NotFound(); // Return a 404 Not Found response
             }
 
-            return Ok(userActivities);
+            return Ok(userActivities); // Wrap the user activities in an Ok result
         }
+
     }
 }

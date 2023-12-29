@@ -55,7 +55,11 @@ namespace ProjectLibrary.DataAccess
 			{
 				using (var context = new CookingWebsiteContext())
 				{
-					comments = context.Comments.Where(c => c.RecipeId == recipeId).Include(s => s.User).ToList();
+					comments = context.Comments
+						.Where(c => c.RecipeId == recipeId)
+						.Include(s => s.User)
+						.OrderByDescending(c => c.CommentId)
+						.ToList();
 				}
 			}
 			catch (Exception ex)
@@ -68,24 +72,24 @@ namespace ProjectLibrary.DataAccess
 		// get comment theo id comment
 		public Comment FindCommentById(int commentid)
         {
-            Comment comment = new Comment();
-            try
-            {
-                using (var context = new CookingWebsiteContext())
-                {
-                    comment = context.Comments.FirstOrDefault(x => x.CommentId == commentid);
-                }
-                if (comment == null)
-                {
-                    throw new Exception("Comment not found");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-            return comment;
-        }
+			Comment comment = new Comment();
+			try
+			{
+				using (var context = new CookingWebsiteContext())
+				{
+					comment = context.Comments.FirstOrDefault(x => x.CommentId == commentid);
+				}
+				if (comment == null)
+				{
+					throw new Exception("Comment not found");
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+			return comment;
+		}
 
         // insert comment 
         public void SaveComment(Comment comment)
