@@ -69,6 +69,26 @@ namespace ProjectLibrary.DataAccess
             return list;
         }
 
+        public List<UserActivity> GetUserActivitiesById(int userId)
+        {
+            var list = new List<UserActivity>();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    // Assuming there is a property named UserId in the UserActivity class
+                    list = context.UserActivities.Where(ua => ua.UserId == userId).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception and throw a new exception with a custom error message
+                throw new Exception("Error retrieving user activities: " + ex.Message);
+            }
+            return list;
+        }
+
+
         public void LogUserActivity(UserActivity userActivity)
         {
             try

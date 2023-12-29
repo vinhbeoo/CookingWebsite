@@ -14,5 +14,6 @@ namespace ProjectLibrary.Repository
         public List<UserActivity> FindUserActivitiesByUserId(int userId) => UserActivityDAO.Instance.FindUserActivitiesByUserId(userId);
         public void LogActivity(UserActivity userActivity) => UserActivityDAO.Instance.LogUserActivity(userActivity);
         public List<UserActivity> GetUserActivities() => UserActivityDAO.Instance.GetUserActivities();
+        public List<UserActivity> GetUserActivitiesById(int id) => UserActivityDAO.Instance.GetUserActivitiesById(id);
     }
 }

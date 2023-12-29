@@ -15,6 +15,7 @@ namespace ProjectWebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<UserActivity>> GetUserActivities() => repository.GetUserActivities();
 
+
         [HttpGet("{id}")]
         public ActionResult<List<UserActivity>> GetUserActivitiesById(int id)
         {

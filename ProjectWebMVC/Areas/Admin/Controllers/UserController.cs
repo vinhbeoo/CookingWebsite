@@ -51,12 +51,18 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
 
                         // If a single user is found, create a list with that user
                         userList = new List<ProjectLibrary.ObjectBussiness.User> { user };
+
+                        // Check if the user list is empty and display an error message
+                        if (userList.Count == 0)
+                        {
+                            TempData["Message"] = "Không tìm thấy";
+                            return RedirectToAction("Index"); // Redirect to the original view
+                        }
                     }
                     else
                     {
                         TempData["Message"] = "No user found with the specified input.";
                         return RedirectToAction("Index");
-                    }
                 }
                 else
                 {
@@ -71,10 +77,18 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                         };
 
                         userList = JsonSerializer.Deserialize<List<ProjectLibrary.ObjectBussiness.User>>(data, options);
+
+                        // Check if the user list is empty and display an error message
+                        if (userList.Count == 0)
+                        {
+                            TempData["Message"] = "Không tìm thấy";
+                            return RedirectToAction("Index"); // Redirect to the original view
+                        }
                     }
                     else
                     {
-                        return View(new List<ProjectLibrary.ObjectBussiness.User>());
+                        TempData["Message"] = "Không tìm thấy";
+                        return RedirectToAction("Index"); // Redirect to the original view
                     }
                 }
 

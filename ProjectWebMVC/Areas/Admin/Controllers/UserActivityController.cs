@@ -25,6 +25,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         }
 
         // GET: UserActivityController
+
         public async Task<IActionResult> Index(int? userId, int? page)
         {
             int pageSize = 5;
@@ -85,6 +86,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                 ViewBag.UserId = userId;
 
                 return View(pagedList);
+
             }
             catch (Exception ex)
             {

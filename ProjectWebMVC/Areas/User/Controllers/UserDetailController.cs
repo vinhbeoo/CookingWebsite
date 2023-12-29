@@ -53,8 +53,9 @@ namespace ProjectWebMVC.Areas.User.Controllers
             return NotFound();
         }
 
-        // GET: UserDetailController/Create
-        public ActionResult Create()
+
+		// GET: UserDetailController/Create
+		public ActionResult Create()
         {
             return View();
         }

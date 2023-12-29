@@ -76,12 +76,14 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                         TempData["Message"] = "Email chưa được xác thực.";
                         return View("NotificationEmailComfirm");
                     }
+                    ViewBag.User = user.UserId.ToString();
 
-                    var claims = new List<Claim>
+					var claims = new List<Claim>
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
                         new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()), // Assuming Id is an integer
-                    };
+                        new Claim("UserId", user.UserId.ToString()),
+                };
 
                     if (user.RoleId == 1)
                     {
@@ -103,8 +105,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                             {"claimType", "UserClaim"},
                             {"claimValue", "true"}
                         };
-                        // In ra Console để kiểm tra xác thực trạng thái
-                        Console.WriteLine($"Is Authenticated: {User.Identity.IsAuthenticated}");
+
                         return RedirectToAction("Index", "HomeAdmin", routeValues);
                     }
                     else if (user.RoleId == 2)
@@ -150,24 +151,25 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             }
         }
 
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            var user = User as ClaimsPrincipal;
-            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier);
-            // Lấy UserId từ Claims
+            //var UserIdClaim = ((ClaimsIdentity)User.Identity).FindFirst("UserId");
+            string userId = ViewBag.User;// UserIdClaim?.Value;
 
-            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
+            // Log thông tin đăng xuất
+            if (!string.IsNullOrEmpty(userId) && int.TryParse(userId, out var userIdInt))
             {
-                // Log thông tin đăng xuất
-                LogUserActivity.LogUserLogoutActivity(userId);
-
+                LogUserActivity.LogUserLogoutActivity(userIdInt);
             }
+
             // Đăng xuất người dùng
             await HttpContext.SignOutAsync();
 
             // Chuyển hướng đến trang đăng nhập hoặc trang chính
             return RedirectToAction("Index", "Home", new { area = "" });
+
         }
+
 
         public IActionResult Register()
         {
