@@ -1,6 +1,6 @@
 ﻿@using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common;
-@model X.PagedList.IPagedList<ProjectLibrary.ObjectBussiness.Contest>
+@model X.PagedList.IPagedList<ProjectLibrary.ObjectBussiness.Tag>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,7 @@
     }
 </style>
 <header class="panel-heading">
-    <h2>Contest Manager</h2>
+    <h2>Tag Manager</h2>
 </header>
 <div class="text-center">
     @{
@@ -33,14 +33,14 @@
 
 <div class="panel-body">
     <p>
-        @Html.ActionLink("Create new Contest","Create","Contest", null, new {@class="btn btn-danger"})
+        @Html.ActionLink("Tạo mới","Create","Tag", null, new {@class="btn btn-danger"})
     </p>
     <div class="form-group mb-4">
-        @using (Html.BeginForm("Index", "Contest", FormMethod.Get))
+        @using (Html.BeginForm("Index", "Tag", FormMethod.Get))
         {
             <div class="row">
                 <div class="col-lg-6">
-                    <input type="text" name="contestId" placeholder="Enter contestId" value="@Context.Request.Query["contestId"].FirstOrDefault()" class="form-control" />
+                    <input type="text" name="tagId" placeholder="Enter tagId" value="@Context.Request.Query["tagId"].FirstOrDefault()" class="form-control" />
                 </div>
                 <div class="col-lg-3">
                     <input type="submit" class="btn btn-danger" value="Search" />
@@ -53,22 +53,10 @@
             <thead class="custom-table-header">
                 <tr>
                     <th>
-                        Id
+                        TagId
                     </th>
                     <th>
-                        ContestName
-                    </th>
-                    <th>
-                        Description
-                    </th>
-                    <th>
-                        StartTime
-                    </th>
-                    <th>
-                        EndTime
-                    </th>
-                    <th>
-                        OwnerCreate
+                        TagName
                     </th>
                     <th>
                         Action
@@ -80,27 +68,15 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ContestId)
+                            @Html.DisplayFor(modelItem => item.TagId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ContestName)
+                            @Html.DisplayFor(modelItem => item.TagName)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @item.StartTime.ToString("dd/MM/yyyy HH:mm")
-                        </td>
-                        <td>
-                            @item.EndTime.ToString("dd/MM/yyyy HH:mm")
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.OwnerUser.UserName)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ContestId }, new { @class = "btn btn-danger" })
-                            @Html.ActionLink("Details", "Details", new { id = item.ContestId }, new { @class = "btn btn-danger details-link" })
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ContestId }, new { @class = "btn btn-danger delete-link" })
+                            @Html.ActionLink("Edit", "Edit", new { id = item.TagId }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Details", "Details", new { id = item.TagId }, new { @class = "btn btn-danger details-link" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.TagId }, new { @class = "btn btn-danger delete-link" })
                         </td>
                     </tr>
                 }

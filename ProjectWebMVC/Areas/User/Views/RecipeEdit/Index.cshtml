@@ -3,298 +3,325 @@
 @{
     ViewBag.Title = "UploadFile";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+    var Category = ViewBag.Category;
+    var Contest = ViewBag.Contest;
 }
-
-
-
-<div class="container">
-    <section id="recipe" class="recipe bwt-90">
-
-
-        @using (Html.BeginForm("SaveRecipe", "RecipeEdit", FormMethod.Post, new { enctype = "multipart/form-data" }))
-        {
-            <div>
-                <div class="form-group">
-                    <label asp-for="@Model.RecipeTitle" class="control-label">Recipe Title</label>
-                    <input asp-for="@Model.RecipeTitle" class="form-control" />
-                    <span asp-validation-for="@Model.RecipeTitle" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    @Html.Label("Image Title", "Image Title", new {@class = "control-label"})
-                    @Html.TextBox("file", "", new {  type= "file"}) <br />
-                </div>
-
-                <div class="form-group">
-                    <input type="hidden" asp-for="@Model.Creator" class="form-control" />
-                    <input type="hidden" asp-for="@Model.CreateDate" class="form-control" />
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="@Model.TagId" class="control-label">Tag Id</label>
-                    <input asp-for="@Model.TagId" class="form-control" />
-                    <span asp-validation-for="@Model.TagId" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="@Model.Description" class="control-label">Description</label>
-                    <input asp-for="@Model.Description" class="form-control" />
-                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="@Model.VideoUrl" class="control-label">Video Url</label>
-                    <input asp-for="@Model.VideoUrl" class="form-control" />
-                    <span asp-validation-for="@Model.VideoUrl" class="text-danger"></span>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="@Model.PrepTime" class="control-label">Prep Time</label>
-                            <input asp-for="@Model.PrepTime" class="form-control" />
-                            <span asp-validation-for="@Model.PrepTime" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="@Model.CookTime" class="control-label">Cook Time</label>
-                            <input asp-for="@Model.CookTime" class="form-control" />
-                            <span asp-validation-for="@Model.CookTime" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="@Model.TotalTime" class="control-label">Total Time</label>
-                            <input asp-for="@Model.TotalTime" class="form-control" />
-                            <span asp-validation-for="@Model.TotalTime" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="@Model.Servings" class="control-label">Servings</label>
-                            <input asp-for="@Model.Servings" class="form-control" />
-                            <span asp-validation-for="@Model.Servings" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="@Model.Calories" class="control-label">Calories</label>
-                            <input asp-for="@Model.Calories" class="form-control" />
-                            <span asp-validation-for="@Model.Calories" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="@Model.Fat" class="control-label">Fat</label>
-                            <input asp-for="@Model.Fat" class="form-control" />
-                            <span asp-validation-for="@Model.Fat" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="@Model.Carbs" class="control-label">Carbs</label>
-                            <input asp-for="@Model.Carbs" class="form-control" />
-                            <span asp-validation-for="@Model.Carbs" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label asp-for="@Model.Protein" class="control-label">Protein</label>
-                            <input asp-for="@Model.Protein" class="form-control" />
-                            <span asp-validation-for="@Model.Protein" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="form-group">
-                    <label asp-for="@Model.CategoryId" class="control-label">CategoryId</label>
-                    <input asp-for="@Model.CategoryId" class="form-control" />
-                    <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="@Model.ContestId" class="control-label">Contest Id</label>
-                    <input asp-for="@Model.ContestId" class="form-control" />
-                    <span asp-validation-for="@Model.ContestId" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <label asp-for="@Model.ReadFree" class="control-label">Read Free</label>
-                    <input asp-for="@Model.ReadFree" class="form-control" />
-                    <span asp-validation-for="@Model.ReadFree" class="text-danger"></span>
-                </div>
-                <hr>
-
-
-                <h2>Step by Step</h2>
-                <div>
-
-                    <div id="textBoxContainer" class="form-group">
-                    </div>
-                    <button id="addStepBtn" class="btn btn-primary">ADD STEP</button>
-                </div>
-
-                <hr />
-
-                <h2>Ingredients</h2>
-                <div>
-
-
-                    <div id="IngredientsContainer" class="form-group">
-                    </div>
-
-                    <button id="addIngredientsBtn" class="btn btn-primary">ADD GROUP INGREDIENT</button>
-
-
-
-                </div>
-                <hr />
-
-
-
-
-
-
-                <hr>
-                <div class="form-group">
-                    <input type="submit" value="Create Recipe" class="btn btn-primary" />
-                </div>
-
-
-
-            </div>
+<head>
+    <style>
+        .recipe-form-group {
+            margin-bottom: 15px;
+            /* Thêm các thuộc tính CSS tùy chỉnh dưới đây */
+            /* Các thuộc tính khác ... */
         }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlF5gHh/U7F+MOGz9q33ixPQ6LXRa9SM6PZzyZQGUr7Sj" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400&display=swap">
+</head>
 
+<div class="container mt-5">
+    <div class="row">
+        <section id="recipe" class="recipe bwt-90">
 
+            @using (Html.BeginForm("SaveRecipe", "RecipeEdit", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="container mt-5">
+                    <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: center; margin: 0; padding-bottom: 10px;">RECIPE INFORMATION</h3>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light p-3">
+                                <div class="recipe-form-group">
+                                    <label asp-for="@Model.RecipeTitle" class="control-label">Recipe Title</label>
+                                    <input asp-for="@Model.RecipeTitle" class="form-control" style="font-size: 16px;" />
+                                    <span asp-validation-for="@Model.RecipeTitle" class="text-danger"></span>
+                                </div>
 
+                                <div class="recipe-form-group">
+                                    <input type="hidden" asp-for="@Model.Creator" class="form-control" />
+                                    <input type="hidden" asp-for="@Model.CreateDate" class="form-control" />
+                                </div>
 
+                                <div class="recipe-form-group">
+                                    <label asp-for="@Model.TagId" class="control-label">Tag Id</label>
+                                    <input asp-for="@Model.TagId" class="form-control" style="font-size: 16px;" />
+                                    <span asp-validation-for="@Model.TagId" class="text-danger"></span>
+                                </div>
 
-    </section>
+                                <div class="recipe-form-group">
+                                    <label asp-for="@Model.VideoUrl" class="control-label">Video Url</label>
+                                    <input asp-for="@Model.VideoUrl" class="form-control" style="font-size: 16px;" />
+                                    <span asp-validation-for="@Model.VideoUrl" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 bg-light p-3">
+                                <div class="recipe-form-group">
+                                    <label asp-for="@Model.Description" class="control-label">Description</label>
+                                    <input asp-for="@Model.Description" class="form-control" style="font-size: 16px;" />
+                                    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                                </div>
 
+                                <div class="recipe-form-group">
+                                    <label asp-for="@Model.CategoryId" class="control-label">Category</label>
+                                    <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;">
+                                        <option value="">-- Select Category --</option>
+                                    </select>
+                                    <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                                </div>
 
-    @section scripts {
-        <script>
-            $(document).ready(function () {
-                var counter = 0;
+                                <div class="recipe-form-group" style="margin-bottom: 0;">
+                                    @Html.Label("Image Title", "Image Title", new { @class = "control-label" })
+                                    @Html.TextBox("file", "", new { type = "file" }) <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                $("#addStepBtn").on("click", function (e) {
-                    e.preventDefault();
-                    //$(".removeStepBtn").hide();
-                    var step = counter + 1
-                    // Tạo textbox mới và thêm vào container
-                    var newTextBox = $(
-                        '<div class="input-group mb-3">' +
+                <hr>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="recipe-wrap">
+                                <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">Info</h3>
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-action">
+                                        <strong>Prep Time:</strong>
+                                        <input asp-for="@Model.PrepTime" class="form-control" style="font-size: 16px;" placeholder="mins" />
+                                        <span asp-validation-for="@Model.PrepTime" class="text-danger"></span>
+                                        
+                                    </li>
+                                    <li class="list-group-item list-group-item-action ">
+                                        <strong>Cook Time:</strong>
+                                        <input asp-for="@Model.CookTime" class="form-control" style="font-size: 16px;" placeholder="mins" />
+                                        <span asp-validation-for="@Model.CookTime" class="text-danger"></span>
+                                    </li>
+                                    <li class="list-group-item list-group-item-action ">
+                                        <strong>Total Time:</strong>
+                                        <input asp-for="@Model.TotalTime" class="form-control" style="font-size: 16px;" placeholder="mins" />
+                                        <span asp-validation-for="@Model.TotalTime" class="text-danger"></span>
+                                    </li>
+                                    <li class="list-group-item list-group-item-action">
+                                        <strong>Servings:</strong>
+                                        <input asp-for="@Model.Servings" class="form-control" style="font-size: 16px;" placeholder="people" />
+                                        <span asp-validation-for="@Model.Servings" class="text-danger"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="recipe-wrap">
+                                <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">Nutrition Facts</h3>
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-action">
+                                        <strong>Calories:</strong>
+                                        <input asp-for="@Model.Calories" class="form-control" style="font-size: 16px;" placeholder="g" />
+                                        <span asp-validation-for="@Model.Calories" class="text-danger"></span>
+                                        
+                                    </li>
+                                    <li class="list-group-item list-group-item-action">
+                                        <strong>Fat:</strong>
+                                        <input asp-for="@Model.Fat" class="form-control" style="font-size: 16px;" placeholder="g" />
+                                        <span asp-validation-for="@Model.Fat" class="text-danger"></span>
+                                        
+                                    </li>
+                                    <li class="list-group-item list-group-item-action">
+                                        <strong>Carbs:</strong>
+                                        <input asp-for="@Model.Carbs" class="form-control" style="font-size: 16px;" placeholder="g" />
+                                        <span asp-validation-for="@Model.Carbs" class="text-danger"></span>
+                                        
+                                    </li>
+                                    <li class="list-group-item list-group-item-action ">
+                                        <strong>Protein:</strong>
+                                        <input asp-for="@Model.Protein" class="form-control" style="font-size: 16px;" placeholder="g" />
+                                        <span asp-validation-for="@Model.Protein" class="text-danger"></span>
+                                        
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                        '<div class="input-group-append">' +
-                        '<h1>Step ' + step + '</h1>' +
+                <hr>
+                <div>
+                    <div class="form-group contest-group">
+                        <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">Contest Name</h3>
+                        @* <label asp-for="@Model.ContestId" class="control-label">Contest Id</label> *@
+                        <select asp-for="@Model.ContestId" asp-items="@ViewBag.Contest" class="form-control" style="font-size: 16px; height: 40px;">
+                            <option value="">-- Select Category --</option>
+                        </select>
+                        <span asp-validation-for="@Model.ContestId" class="text-danger"></span>
+                    </div>
 
-                        '</div>' +
+                    @* <div class="form-group">
+                        <label asp-for="@Model.ReadFree" class="control-label">Read Free</label>
+                        <input asp-for="@Model.ReadFree" class="form-control" />
+                        <span asp-validation-for="@Model.ReadFree" class="text-danger"></span>
+                    </div> *@
+                </div>
+                <br />
+                <div>
+                    <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">
+                        Step by Step</h3>
+                    <div>
 
+                        <div id="textBoxContainer" class="form-group">
+                        </div>
+                        <button id="addStepBtn" class="btn btn-primary">ADD STEP</button>
+                    </div>
 
-                        '<input type="hidden" class="form-control" name="recipeStep[' + counter + '].Step" placeholder="Step" value="' + step + '" />' +
+                    <hr />
 
-                        '<div class="form-group">' +
-                        '<label class="control-label">Description:</label>' +
-                        '<input type="text" class="form-control" name="recipeStep[' + counter + '].Description" placeholder="Description" />' +
-                        '</div>' +
+                    <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">
+                        Ingredients</h3>
+                    <div>
+                        <div id="IngredientsContainer" class="form-group">
+                        </div>
+                        <button id="addIngredientsBtn" class="btn btn-primary">ADD GROUP INGREDIENT</button>
+                    </div>
+                    <hr />
+                    <hr>
+                    <div class="form-group">
+                        <input type="submit" value="Create Recipe" class="btn btn-primary" />
+                    </div>
+                </div>
+            }
 
-                        '<div class="form-group">' +
-                        '<label class="control-label">Video URL:</label>' +
-                        '<input type="text" class="form-control" name="recipeStep[' + counter + '].VideoURL" placeholder="VideoURL" />' +
-                        '</div>' +
+        </section>
 
-
-                        '<button class="btn btn-danger removeStepBtn" type="button">DELETE STEP ' + step + '</button>' +
-                        '</div>'
-                    );
-                    $("#textBoxContainer").append(newTextBox);
-
-                    counter++;
-                });
-
-
-                $("#textBoxContainer").on("click", ".removeStepBtn", function () {
-                    if (counter > 0) {
-                        var removedStep = $(this).closest('.input-group');
-                        removedStep.remove();
-                        counter--;
-
-                        if (counter >= 0) {
-                            $(".removeStepBtn").show();
-                        }
-
-                    }
-                });
-            });
-        </script>
-
-
-        <script>
-            $(document).ready(function () {
-                var counter1 = 0;
-                $("#addIngredientsBtn").on("click", function (e) {
-                    e.preventDefault();
-                    //$(".removeStepBtn").hide();
-                    var groupid = counter1 + 1
-                    // Tạo một textbox mới và thêm vào container
-                    var newTextBox = $(
-                        '<div class="input-group mb-3">' +
-
-                        '<input type="hidden" class="form-control" name="ingGroup[' + counter1 + '].IngredientId" placeholder="ID group" value="' + groupid + '" />' +
-
-                        '<div class="form-group">' +
-                        '<label class="control-label">Ingredients Group ' + groupid + ':</label>' +
-                        '<input type="text" class="form-control" name="ingGroup[' + counter1 + '].NameIngredients" placeholder="Name Ingredients Group" />' +
-                        '</div>' +
-
-                        '<input type="hidden" class="form-control" name="ingGroup[' + counter1 + '].RecipeId" placeholder="Recipe ID" value="0" />' +
-
-                        '<div class="container">' +
-                        '<input type="hidden" class="form-control" name="ingDetail[' + counter1 + '].stt" placeholder="Stt" value="' + groupid + '" />' +
-                        '<input type="hidden" class="form-control" name="ingDetail[' + counter1 + '].IngredientId" placeholder="Ingredient ID" value="' + groupid + '" />' +
-
-                        '<div class="form-group">' +
-                        '<label class="control-label">Ingredients Detail:</label>' +
-                        '<textarea class="form-control" rows="8" name="ingDetail[' + counter1 + '].Description" placeholder="Description"></textarea>' +
-                        '</div>' +
-
-                        '</div>' +
-
-
-                        '<button class="btn btn-danger removeStepBtn" type="button">DELETE GROUP</button>' +
-                        '<br>' +
-                        '</div>' +
-                        '</div>'
-                    );
-                    $("#IngredientsContainer").append(newTextBox);
-
-                    counter1++;
-                });
-
-                $("#IngredientsContainer").on("click", ".removeStepBtn", function () {
-                    if (counter1 > 0) {
-                        var removedStep = $(this).closest('.input-group');
-                        removedStep.remove();
-                        counter1--;
-
-                        if (counter1 >= 0) {
-                            $(".removeStepBtn").show();
-                        }
-
-                    }
-                });
-            });
-        </script>
-    }
+    </div>
 </div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var counter = 0;
+
+            $("#addStepBtn").on("click", function (e) {
+                e.preventDefault();
+                //$(".removeStepBtn").hide();
+                var step = counter + 1
+                // Tạo textbox mới và thêm vào container
+                var newTextBox = $(
+                    '<div class="input-group mb-3">' +
+
+                    '<div class="input-group-append">' +
+                    '<h1>Step ' + step + '</h1>' +
+
+                    '</div>' +
+
+
+                    '<input type="hidden" class="form-control" name="recipeStep[' + counter + '].Step" placeholder="Step" value="' + step + '" />' +
+
+                    '<div class="form-group">' +
+                    '<label class="control-label">Description:</label>' +
+                    '<input type="text" class="form-control" name="recipeStep[' + counter + '].Description" placeholder="Description" style="font-size: 16px;"/>' +
+                    '</div>' +
+
+                    '<div class="form-group">' +
+                    '<label class="control-label">Video URL:</label>' +
+                    '<input type="text" class="form-control" name="recipeStep[' + counter + '].VideoURL" placeholder="VideoURL" style="font-size: 16px;"/>' +
+                    '</div>' +
+
+
+                    '<button class="btn btn-danger removeStepBtn" type="button">DELETE STEP ' + step + '</button>' +
+                    '</div>'
+                );
+                $("#textBoxContainer").append(newTextBox);
+
+                counter++;
+            });
+
+
+            $("#textBoxContainer").on("click", ".removeStepBtn", function () {
+                if (counter > 0) {
+                    var removedStep = $(this).closest('.input-group');
+                    removedStep.remove();
+                    counter--;
+
+                    if (counter >= 0) {
+                        $(".removeStepBtn").show();
+                    }
+
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            var counter1 = 0;
+            $("#addIngredientsBtn").on("click", function (e) {
+                e.preventDefault();
+                //$(".removeStepBtn").hide();
+                var groupid = counter1 + 1
+                // Tạo một textbox mới và thêm vào container
+                var newTextBox = $(
+                    '<div class="input-group mb-3">' +
+
+                    '<input type="hidden" class="form-control" name="ingGroup[' + counter1 + '].IngredientId" placeholder="ID group" value="' + groupid + '" />' +
+
+                    '<div class="form-group">' +
+                    '<label class="control-label">Ingredients Group ' + groupid + ':</label>' +
+                    '<input type="text" class="form-control" name="ingGroup[' + counter1 + '].NameIngredients" placeholder="Name Ingredients Group" />' +
+                    '</div>' +
+
+                    '<input type="hidden" class="form-control" name="ingGroup[' + counter1 + '].RecipeId" placeholder="Recipe ID" value="0" />' +
+
+                    '<div class="container">' +
+
+                    '<div class="form-group">' +
+                    '<label class="control-label">Ingredients Detail:</label>' +
+                    '<textarea class="form-control" rows="8" name="ingGroup[' + counter1 + '].Description" placeholder="Description"></textarea>' +
+                    '</div>' +
+                    '<button class="btn btn-danger removeStepBtn" type="button">DELETE GROUP</button>' +
+
+                    '</div>' +
+
+
+
+                    '<br>' +
+                    '</div>' +
+                    '</div>'
+                );
+                $("#IngredientsContainer").append(newTextBox);
+
+                counter1++;
+            });
+
+            $("#IngredientsContainer").on("click", ".removeStepBtn", function () {
+                if (counter1 > 0) {
+                    var removedStep = $(this).closest('.input-group');
+                    removedStep.remove();
+                    counter1--;
+
+                    if (counter1 >= 0) {
+                        $(".removeStepBtn").show();
+                    }
+
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Lắng nghe sự kiện khi giá trị của CategoryId thay đổi
+            $('#CategoryId').change(function () {
+                // Lấy giá trị của CategoryId
+                var categoryId = $(this).val();
+
+                // Ẩn/hiện phần tử ContestId tùy thuộc vào giá trị của CategoryId
+                if (categoryId === '2') {
+                    $('.contest-group').show();
+                } else {
+                    $('.contest-group').hide();
+                    $('#ContestId').val('');
+                }
+
+            });
+
+            // Kiểm tra giá trị ban đầu của CategoryId khi trang được tải
+            $('#CategoryId').trigger('change');
+        });
+    </script>
+        }

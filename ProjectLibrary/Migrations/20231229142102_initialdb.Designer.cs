@@ -12,8 +12,8 @@ using ProjectLibrary.ObjectBussiness;
 namespace ProjectLibrary.Migrations
 {
     [DbContext(typeof(CookingWebsiteContext))]
-    [Migration("20231209145651_Initial")]
-    partial class Initial
+    [Migration("20231229142102_initialdb")]
+    partial class initialdb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,10 +57,13 @@ namespace ProjectLibrary.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<int?>("RecipeId")
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RecipeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("CommentId");
@@ -92,7 +95,7 @@ namespace ProjectLibrary.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("OwnerUserId")
+                    b.Property<int>("OwnerUserId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartTime")
@@ -109,43 +112,23 @@ namespace ProjectLibrary.Migrations
                     b.ToTable("Contests");
                 });
 
-            modelBuilder.Entity("ProjectLibrary.ObjectBussiness.IngredientsDetail", b =>
+            modelBuilder.Entity("ProjectLibrary.ObjectBussiness.IngredientsGroup", b =>
                 {
-                    b.Property<int>("Stt")
-                        .HasColumnType("int")
-                        .HasColumnName("stt");
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IngredientId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.HasKey("Stt");
-
-                    b.HasIndex("IngredientId");
-
-                    b.ToTable("Ingredients_Detail", (string)null);
-                });
-
-            modelBuilder.Entity("ProjectLibrary.ObjectBussiness.IngredientsGroup", b =>
-                {
-                    b.Property<int>("IngredientId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IngredientId"));
-
                     b.Property<string>("NameIngredients")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("IngredientId")
+                    b.HasKey("IngredientId", "RecipeId")
                         .HasName("PK__Ingredie__BEAEB25A7C2114F2");
 
                     b.HasIndex("RecipeId");
@@ -245,7 +228,7 @@ namespace ProjectLibrary.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("Creator")
+                    b.Property<int>("Creator")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -269,9 +252,6 @@ namespace ProjectLibrary.Migrations
                     b.Property<string>("Protein")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
 
                     b.Property<bool>("ReadFree")
                         .HasColumnType("bit");
@@ -315,6 +295,9 @@ namespace ProjectLibrary.Migrations
 
             modelBuilder.Entity("ProjectLibrary.ObjectBussiness.RecipesStep", b =>
                 {
+                    b.Property<int?>("RecipeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Step")
                         .HasColumnType("int");
 
@@ -326,17 +309,12 @@ namespace ProjectLibrary.Migrations
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("ImageURL");
 
-                    b.Property<int?>("RecipeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("VideoUrl")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("VideoURL");
 
-                    b.HasKey("Step");
-
-                    b.HasIndex("RecipeId");
+                    b.HasKey("RecipeId", "Step");
 
                     b.ToTable("Recipes_Step", (string)null);
                 });
@@ -485,9 +463,8 @@ namespace ProjectLibrary.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Gender")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<bool>("Gender")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(20)
@@ -572,11 +549,13 @@ namespace ProjectLibrary.Migrations
                     b.HasOne("ProjectLibrary.ObjectBussiness.Recipe", "Recipe")
                         .WithMany("Comments")
                         .HasForeignKey("RecipeId")
+                        .IsRequired()
                         .HasConstraintName("FK_Comment_Recipes");
 
                     b.HasOne("ProjectLibrary.ObjectBussiness.User", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
+                        .IsRequired()
                         .HasConstraintName("FK_Comment_Users");
 
                     b.Navigation("Recipe");
@@ -589,20 +568,11 @@ namespace ProjectLibrary.Migrations
                     b.HasOne("ProjectLibrary.ObjectBussiness.User", "OwnerUser")
                         .WithMany("Contests")
                         .HasForeignKey("OwnerUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK__Contests__OwnerU__6383C8BA");
 
                     b.Navigation("OwnerUser");
-                });
-
-            modelBuilder.Entity("ProjectLibrary.ObjectBussiness.IngredientsDetail", b =>
-                {
-                    b.HasOne("ProjectLibrary.ObjectBussiness.IngredientsGroup", "Ingredient")
-                        .WithMany("IngredientsDetails")
-                        .HasForeignKey("IngredientId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Ingredients_Detail_Ingredients_Group");
-
-                    b.Navigation("Ingredient");
                 });
 
             modelBuilder.Entity("ProjectLibrary.ObjectBussiness.IngredientsGroup", b =>
@@ -610,6 +580,8 @@ namespace ProjectLibrary.Migrations
                     b.HasOne("ProjectLibrary.ObjectBussiness.Recipe", "Recipe")
                         .WithMany("IngredientsGroups")
                         .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK__Ingredien__Recip__73BA3083");
 
                     b.Navigation("Recipe");
@@ -657,6 +629,8 @@ namespace ProjectLibrary.Migrations
                     b.HasOne("ProjectLibrary.ObjectBussiness.User", "CreatorNavigation")
                         .WithMany("Recipes")
                         .HasForeignKey("Creator")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK__Recipes__CreateU__6EF57B66");
 
                     b.HasOne("ProjectLibrary.ObjectBussiness.Tag", "Tag")
@@ -679,6 +653,8 @@ namespace ProjectLibrary.Migrations
                     b.HasOne("ProjectLibrary.ObjectBussiness.Recipe", "Recipe")
                         .WithMany("RecipesSteps")
                         .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_Recipes_Step_Recipes");
 
                     b.Navigation("Recipe");
@@ -753,11 +729,6 @@ namespace ProjectLibrary.Migrations
                     b.Navigation("Recipes");
 
                     b.Navigation("WinnerInfos");
-                });
-
-            modelBuilder.Entity("ProjectLibrary.ObjectBussiness.IngredientsGroup", b =>
-                {
-                    b.Navigation("IngredientsDetails");
                 });
 
             modelBuilder.Entity("ProjectLibrary.ObjectBussiness.Recipe", b =>

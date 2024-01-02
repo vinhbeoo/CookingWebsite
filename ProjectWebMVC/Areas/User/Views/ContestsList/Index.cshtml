@@ -1,0 +1,93 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+
+@{
+    ViewData["title"] = "ContestsList";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+    var contests = ViewBag.Contest;
+    var recipesCount = ViewBag.Contest.Count;
+}
+<head>
+    <style>
+        .form-box form {
+            display: flex;
+            align-items: center;
+            margin-left: 20%;
+        }
+
+        .form-box input[type="text"] {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            width: 60%; /* Đặt chiều rộng mong muốn cho ô nhập liệu */
+            padding: 10px; /* Đặt padding cho ô nhập liệu */
+            font-size: 16px; /* Đặt kích thước chữ cho ô nhập liệu */
+            color: black;
+        }
+
+        .form-box button {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlF5gHh/U7F+MOGz9q33ixPQ6LXRa9SM6PZzyZQGUr7Sj" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400&display=swap">
+</head>
+<body id="page-top">
+
+    <section id="recipesList" class="recipesList bwt-90">
+        <h1 style="font-family: 'Dancing Script', cursive; font-size: 80px;color: #0d1b75; text-align: center; margin: 0; padding: 20px; ">Contests List Information</h1>
+        <div class="container text-center">
+
+            @*Search Begin_____________*@
+            <div class="form-box">
+                <form action="ContestsList" method="post">
+                    <input type="text" placeholder="Search your Contest...." name="searchString" required class="form-control">
+                    <input type="submit" value="Search" class="btn btn-primary btn-lg">
+                </form>
+            </div>
+            @*Search End_______________*@
+
+            <br />
+
+            @*List Recipe Begin_____________*@
+            <div class="row">
+                @foreach (var contest in contests)
+                {
+                    <div class="col-sm-12 col-md-12 text-sm-left text-md-left text-lg-left bwt-offset-top-20" style="border: 1px solid #ccc; padding: 20px;">
+                        <div class="row">
+                            <div class="col-sm-8 col-md-9">
+                                @{
+                                    //string linkrec = @recipe.RecipeId.ToString();
+                                    string conTitle = @contest.ContestName;
+                                    DateTime currentDate = DateTime.Now;
+                                }
+                                <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px;color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px; ">
+                                    @Html.ActionLink(conTitle, "Index", "ContestRecipeList", new { contestId = @contest.ContestId }, null)
+                                </h3>
+                                <p>@contest.Description</p>
+                                <p>From: @contest.StartTime.ToString("dd/MM/yyyy") To: @contest.EndTime.ToString("dd/MM/yyyy")</p>
+                                <p>Creator: @contest.OwnerUser.UserName</p>
+                                @if (currentDate >= @contest.StartTime && currentDate <= @contest.EndTime)
+                                {
+                                    @Html.ActionLink("Create recipes for Contest", "Index", "RecipeEdit", new { contestId = @contest.ContestId, categoryId = 2 }, new { @class = "btn btn-primary" })
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-danger" disabled>The contest has ended</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+               
+            </div>
+            <br />
+            @*Pagination Begin*@
+            @Html.PagedListPager((IPagedList)contests, page => Url.Action("Index", new { page = page }))
+            @*Pagination End*@
+            @*List Recipe End_____________*@
+        </div>
+
+
+    </section>
+</body>

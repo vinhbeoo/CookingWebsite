@@ -221,7 +221,7 @@ html input[type="text"], html input[type="email"] {
     padding: 0 10px;
     box-sizing: border-box;
     width: 100%;
-    color: #999;
+    color: black;
 }
 
 fieldset {
@@ -354,6 +354,7 @@ th {
 
 html *:first-child {
     margin-top: 0;
+}
 }
 
 html *:last-child {
@@ -595,8 +596,8 @@ textarea {
 }
 
 .bwt-90 {
-    padding-top: 90px;
-    padding-bottom: 90px;
+    padding-top: 60px;
+    padding-bottom: 60px;
 }
 
 .bwt-95 {

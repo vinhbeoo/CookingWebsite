@@ -34,7 +34,14 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             {
                 HttpResponseMessage responseMessage;
                 List<ProjectLibrary.ObjectBussiness.User> userList;
+                if (1==2)
+                {
 
+                }   
+                else
+                {
+
+                }
                 if (!string.IsNullOrEmpty(input))
                 {
                     responseMessage = await _httpClient.GetAsync($"{_userUrl}/{input}");
@@ -63,6 +70,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                     {
                         TempData["Message"] = "No user found with the specified input.";
                         return RedirectToAction("Index");
+                    }
                 }
                 else
                 {

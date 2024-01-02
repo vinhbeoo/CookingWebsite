@@ -63,7 +63,7 @@ namespace ProjectLibrary.DataAccess
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    userDetail = context.UserDetails.FirstOrDefault(x => x.UserId == userId);
+                    userDetail = context.UserDetails.Include(u => u.User).FirstOrDefault(x => x.UserId == userId);
                 }
                 if (userDetail == null)
                 {
