@@ -1,16 +1,18 @@
-﻿using System;
+﻿using ProjectLibrary.ObjectBussiness;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using ProjectLibrary.ObjectBussiness;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ProjectLibrary.DataAccess
 {
-    public class CategoryDAO
+    public class WinnerInfoDAO
     {
-        private static CategoryDAO instance = null;
+        private static WinnerInfoDAO instance = null;
         private static readonly object instanceLock = new object();
 
-        public static CategoryDAO Instance
+        public static WinnerInfoDAO Instance
         {
             get
             {
@@ -18,66 +20,64 @@ namespace ProjectLibrary.DataAccess
                 {
                     if (instance == null)
                     {
-                        instance = new CategoryDAO();
+                        instance = new WinnerInfoDAO();
                     }
                     return instance;
                 }
             }
         }
 
-        public List<Category> GetCategories()
-        
+        public List<WinnerInfo> GetWinnerInfos()
         {
-            var categories = new List<Category>();
+            var list = new List<WinnerInfo>();
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    categories = context.Categories.ToList();
+                    list = context.WinnerInfos.ToList();
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error retrieving category list: " + ex.Message);
+                throw new Exception("Error retrieving WinnerInfos list: " + ex.Message);
             }
-            return categories;
+            return list;
         }
 
-        public Category FindCategoryById(int categoryId)
+        public WinnerInfo GetWinnerInfoById(int id)
         {
-            Category category = new Category();
+            WinnerInfo winner = new WinnerInfo();
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    category = context.Categories.FirstOrDefault(x => x.CategoryId == categoryId);
+                    winner = context.WinnerInfos.FirstOrDefault(x => x.WinnerId == id);
                 }
-                if (category == null)
+                if (winner == null)
                 {
-                    throw new Exception("Category not found");
+                    throw new Exception("winner doesn't exist");
                 }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            return category;
+            return winner;
         }
 
-        public void SaveCategory(Category category)
+        public void SaveWinnerInfo(WinnerInfo winner)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    // Check for duplicates before adding new
-                    var existingCategory = context.Categories.FirstOrDefault(x => x.CategoryId == category.CategoryId);
-                    if (existingCategory != null)
+                    var existingWinnerInfo = context.WinnerInfos.FirstOrDefault(x => x.WinnerId == winner.WinnerId);
+                    if (existingWinnerInfo != null)
                     {
-                        throw new Exception("Category already exists");
+                        throw new Exception("Tag already exists");
                     }
 
-                    context.Categories.Add(category);
+                    context.WinnerInfos.Add(winner);
                     context.SaveChanges();
                 }
             }
@@ -87,22 +87,22 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
-        public void UpdateCategory(Category category)
+        public void UpdateWinnerInfo(WinnerInfo winner)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    var existingCategory = context.Categories.FirstOrDefault(x => x.CategoryId == category.CategoryId);
+                    var existingWinnerInfo = context.WinnerInfos.FirstOrDefault(x => x.WinnerId == winner.WinnerId);
 
-                    if (existingCategory != null)
+                    if (existingWinnerInfo != null)
                     {
-                        context.Entry(existingCategory).CurrentValues.SetValues(category);
+                        context.Entry(existingWinnerInfo).CurrentValues.SetValues(winner);
                         context.SaveChanges();
                     }
                     else
                     {
-                        throw new Exception("Category not found");
+                        throw new Exception("Tag not found");
                     }
                 }
             }
@@ -112,20 +112,20 @@ namespace ProjectLibrary.DataAccess
             }
         }
 
-        public void DeleteCategory(Category category)
+        public void DeleteWinnerInfo(WinnerInfo winner)
         {
             try
             {
                 using (var context = new CookingWebsiteContext())
                 {
-                    var categoryToDelete = context.Categories.FirstOrDefault(x => x.CategoryId == category.CategoryId);
-                    if (categoryToDelete == null)
+                    var WinnerInfoToDelete = context.WinnerInfos.FirstOrDefault(x => x.WinnerId == winner.WinnerId);
+                    if (WinnerInfoToDelete == null)
                     {
-                        throw new Exception("Category not found");
+                        throw new Exception("Tag is null");
                     }
                     else
                     {
-                        context.Categories.Remove(categoryToDelete);
+                        context.WinnerInfos.Remove(WinnerInfoToDelete);
                         context.SaveChanges();
                     }
                 }

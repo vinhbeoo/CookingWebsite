@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectLibrary.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initialdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -85,7 +85,7 @@ namespace ProjectLibrary.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime", nullable: false),
-                    OwnerUserId = table.Column<int>(type: "int", nullable: true)
+                    OwnerUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,7 +94,8 @@ namespace ProjectLibrary.Migrations
                         name: "FK__Contests__OwnerU__6383C8BA",
                         column: x => x.OwnerUserId,
                         principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -145,7 +146,7 @@ namespace ProjectLibrary.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Gender = table.Column<bool>(type: "bit", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
@@ -191,7 +192,7 @@ namespace ProjectLibrary.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RecipeTitle = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     ImageTitle = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Creator = table.Column<int>(type: "int", nullable: true),
+                    Creator = table.Column<int>(type: "int", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     TagId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -206,7 +207,6 @@ namespace ProjectLibrary.Migrations
                     Protein = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
                     ContestId = table.Column<int>(type: "int", nullable: true),
-                    Rating = table.Column<int>(type: "int", nullable: false),
                     ReadFree = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -226,7 +226,8 @@ namespace ProjectLibrary.Migrations
                         name: "FK__Recipes__CreateU__6EF57B66",
                         column: x => x.Creator,
                         principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK__Recipes__IdTags__6FE99F9F",
                         column: x => x.TagId,
@@ -267,9 +268,10 @@ namespace ProjectLibrary.Migrations
                 {
                     CommentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    RecipeId = table.Column<int>(type: "int", nullable: true),
-                    CommentText = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RecipeId = table.Column<int>(type: "int", nullable: false),
+                    CommentText = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -290,19 +292,20 @@ namespace ProjectLibrary.Migrations
                 name: "Ingredients_Group",
                 columns: table => new
                 {
-                    IngredientId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IngredientId = table.Column<int>(type: "int", nullable: false),
+                    RecipeId = table.Column<int>(type: "int", nullable: false),
                     NameIngredients = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    RecipeId = table.Column<int>(type: "int", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Ingredie__BEAEB25A7C2114F2", x => x.IngredientId);
+                    table.PrimaryKey("PK__Ingredie__BEAEB25A7C2114F2", x => new { x.IngredientId, x.RecipeId });
                     table.ForeignKey(
                         name: "FK__Ingredien__Recip__73BA3083",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
-                        principalColumn: "RecipeId");
+                        principalColumn: "RecipeId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -335,37 +338,20 @@ namespace ProjectLibrary.Migrations
                 columns: table => new
                 {
                     Step = table.Column<int>(type: "int", nullable: false),
-                    RecipeId = table.Column<int>(type: "int", nullable: true),
+                    RecipeId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageURL = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     VideoURL = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Recipes_Step", x => x.Step);
+                    table.PrimaryKey("PK_Recipes_Step", x => new { x.RecipeId, x.Step });
                     table.ForeignKey(
                         name: "FK_Recipes_Step_Recipes",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
-                        principalColumn: "RecipeId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Ingredients_Detail",
-                columns: table => new
-                {
-                    stt = table.Column<int>(type: "int", nullable: false),
-                    IngredientId = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ingredients_Detail", x => x.stt);
-                    table.ForeignKey(
-                        name: "FK_Ingredients_Detail_Ingredients_Group",
-                        column: x => x.IngredientId,
-                        principalTable: "Ingredients_Group",
-                        principalColumn: "IngredientId");
+                        principalColumn: "RecipeId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -388,11 +374,6 @@ namespace ProjectLibrary.Migrations
                 table: "Contests",
                 columns: new[] { "StartTime", "EndTime" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ingredients_Detail_IngredientId",
-                table: "Ingredients_Detail",
-                column: "IngredientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ingredients_Group_RecipeId",
@@ -435,11 +416,6 @@ namespace ProjectLibrary.Migrations
                 name: "IX_Recipes_TagId",
                 table: "Recipes",
                 column: "TagId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Recipes_Step_RecipeId",
-                table: "Recipes_Step",
-                column: "RecipeId");
 
             migrationBuilder.CreateIndex(
                 name: "UQ__Roles__8A2B61604B25B500",
@@ -500,7 +476,7 @@ namespace ProjectLibrary.Migrations
                 name: "Comment");
 
             migrationBuilder.DropTable(
-                name: "Ingredients_Detail");
+                name: "Ingredients_Group");
 
             migrationBuilder.DropTable(
                 name: "Notification");
@@ -522,9 +498,6 @@ namespace ProjectLibrary.Migrations
 
             migrationBuilder.DropTable(
                 name: "WinnerInfo");
-
-            migrationBuilder.DropTable(
-                name: "Ingredients_Group");
 
             migrationBuilder.DropTable(
                 name: "Recipes");

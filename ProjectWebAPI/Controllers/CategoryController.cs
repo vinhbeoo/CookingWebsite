@@ -16,6 +16,9 @@ namespace ProjectWebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Category>> GetCategories() => repository.GetCategories();
 
+
+       
+
         // GET api/<CategoryController>/5
         [HttpGet("{categoryId}")]
         public ActionResult<Category> GetCategoryById(int categoryId)

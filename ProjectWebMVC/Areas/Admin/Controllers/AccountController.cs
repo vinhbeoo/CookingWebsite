@@ -151,7 +151,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             }
         }
 
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
             //var UserIdClaim = ((ClaimsIdentity)User.Identity).FindFirst("UserId");
             string userId = ViewBag.User;// UserIdClaim?.Value;

@@ -13,7 +13,7 @@ public partial class IngredientsGroup
 
     public int? RecipeId { get; set; }
 
-    public virtual ICollection<IngredientsDetail>? IngredientsDetails { get; set; }
+    public string Description { get; set; } = null!;
 
     public virtual Recipe? Recipe { get; set; }
 }
