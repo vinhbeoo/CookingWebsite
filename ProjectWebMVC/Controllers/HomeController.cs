@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectWebMVC.Areas.User.Models;
 
+
 namespace ProjectWebMVC.Controllers
 {
     public class HomeController : Controller

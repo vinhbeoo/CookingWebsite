@@ -37,11 +37,12 @@ namespace ProjectWebMVC.Areas.User.Controllers
                     PropertyNameCaseInsensitive = true,
                 };
                 List<Notification> userList = JsonSerializer.Deserialize<List<Notification>>(strData, options);
+                ViewBag.Notifications = userList;
                 return View(userList);
             }
             else
             {
-                return View(new List<Notification>());
+                return PartialView("_NotificationDropdown", new List<Notification>());
             }
         }
 
@@ -57,6 +58,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
                 };
                 List<Notification> notifications = JsonSerializer.Deserialize<List<Notification>>(strData, options);
 
+                ViewBag.Notifications = notifications;
                 // Lấy 4 thông báo mới nhất
                 List<Notification> top4Notifications = notifications.OrderByDescending(n => n.Date).Take(4).ToList();
 
@@ -67,5 +69,6 @@ namespace ProjectWebMVC.Areas.User.Controllers
                 return View("Dropdown", new List<Notification>());
             }
         }
+
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectWebAPI.Application;
+using ProjectWebMVC.Areas.User.Services;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text.Json;
@@ -15,19 +16,22 @@ namespace ProjectWebMVC.Areas.User.Controllers
     public class UserDetailController : Controller
     {
         private readonly HttpClient _httpClient = null;
+        private readonly INotificationService notificationService;
         private string UserDetailApiUrl = "";
         private string _userApiUrl = "https://localhost:7269/api/UserManager";
 
-        public UserDetailController()
+        public UserDetailController(INotificationService notificationService)
         {
             _httpClient = new HttpClient();
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
             UserDetailApiUrl = "https://localhost:7269/api/UserDetail";
+            this.notificationService = notificationService;
         }
         // GET: UserDetailController/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            ViewBag.Notifications = await this.notificationService.GetAsync();
             return View();
         }
 
@@ -86,8 +90,8 @@ namespace ProjectWebMVC.Areas.User.Controllers
                 {
                     TempData["Message"] = $"An error occurred: {ex.Message}";
                 }
-            
 
+            ViewBag.Notifications = await notificationService.GetAsync();
             return View(userDetailDTO);
         }
 
@@ -109,7 +113,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
                 {
                     // Lưu giữ giá trị Avatar vào TempData
                     TempData["CurrentAvatar"] = userDetail.Avatar;
-
+                    ViewBag.Notifications = await notificationService.GetAsync();
                     return View(userDetail);
                 }
                 else
@@ -172,7 +176,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
                     TempData["Message"] = "Error while calling Web API";
                 }
             }
-
+            ViewBag.Notifications = await notificationService.GetAsync();
             return View(userDetailDTO);
         }
 

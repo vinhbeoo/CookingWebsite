@@ -1,4 +1,6 @@
-﻿﻿@using System.Security.Claims;
+﻿
+@using System.Security.Claims;
+@using ProjectLibrary.ObjectBussiness
 @{
     var user = User as ClaimsPrincipal;
     var userName = user?.FindFirstValue(ClaimTypes.Name);
@@ -120,7 +122,6 @@
                 {
                     <li class="dropdown">
                         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-toggle="dropdown">
-                            @* <img alt="" class="profile-img" src="@Url.Content("~/Admin/assets/img/profile-img.jpg")"> *@
                             <span class="dropdown-toggle ps-2">@userName <b class="caret"></b></span>
                         </a>
 
@@ -131,7 +132,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Index", "ShoppingCart", new { area = "User" })"><i class="bi bi-gear"></i> Payment</a>
+                                <a href="@Url.Action("Index", "ShoopingCart", new { area = "User" })"><i class="bi bi-gear"></i> Payment</a>
                             </li>
 
                             <li>
@@ -143,16 +144,17 @@
                             </li>
                         </ul>
                     </li>
-                    @*<li>
+                    <!-- Thêm mã HTML để hiển thị thông báo -->
+                    <li>
                         <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="notification-icon">
                             <i class="fa fa-bell"></i>
-                            <span class="badge bg-primary badge-number">@Model?.Count</span>
+                            <span class="badge bg-primary badge-number">@((ViewBag.Notifications as List<ProjectLibrary.ObjectBussiness.Notification>)?.Count)</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                             <li class="dropdown-header">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4>You have @Model?.Count notifications</h4>
+                                        <h4>You have @((ViewBag.Notifications as List<ProjectLibrary.ObjectBussiness.Notification>)?.Count) notifications</h4>
                                     </div>
                                     <a href="#" class="text-decoration-none">
                                         <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
@@ -162,9 +164,9 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            @if (Model is List<ProjectLibrary.ObjectBussiness.Notification> notifications)
+                            @if (ViewBag.Notifications is List<ProjectLibrary.ObjectBussiness.Notification> notifications && notifications.Count > 0)
                             {
-                                @foreach (var notification in notifications.Take(4))
+                                foreach (var notification in notifications.Take(4))
                                 {
                                     <li class="notification-item">
                                         <i class="bi bi-exclamation-circle text-warning"></i>
@@ -186,11 +188,13 @@
                                 </li>
                             }
 
+
                             <li class="dropdown-footer">
                                 <a href="@Url.Action("Index", "Notification")">Show all notifications</a>
                             </li>
                         </ul>
-                    </li> *@
+                    </li>
+
                 }
                 else
                 {
@@ -216,6 +220,15 @@
     </div>
 </nav>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- _Header.cshtml -->
+<!-- ... (Các đoạn mã khác) ... -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var notificationIcon = document.querySelector(".notification-icon");
@@ -245,7 +258,7 @@
             badgeNumber.textContent = "0"; // Thay số thông báo thực tế vào đây
         });
     });
-
+    
 
     $(document).ready(function () {
         // Lấy đường dẫn của trang hiện tại

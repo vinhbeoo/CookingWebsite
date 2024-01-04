@@ -72,7 +72,8 @@
         <span id="modalClose" class="modal-close">&times;</span>
         <img src="~/img/logo.svg" />
         <div class="table-responsive">
-            <form action="CreatePaymentUrl" id="frmCreateOrder" method="POST">
+            @using (Html.BeginForm("CreatePaymentUrl", "ShoopingCart", FormMethod.Post))
+            {
                 <div class="form-group">
                     <label for="ordertype">Loại Đăng Kí </label>
                     <select name="OrderType" id="ordertype" class="form-control">
@@ -109,7 +110,10 @@
                 </div>
                 <br />
                 <button type="submit" class="btn btn-primary">Thanh toán (Checkout)</button>
-            </form>
+            }
+            @* <form action="CreatePaymentUrl" id="frmCreateOrder" method="POST">
+                
+            </form> *@
         </div>
     </div>
 </div>

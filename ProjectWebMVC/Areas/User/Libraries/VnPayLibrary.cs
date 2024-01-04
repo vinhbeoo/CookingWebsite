@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using ProjectWebMVC.Areas.User.Models;
 
-namespace ProjectWebMVC.Areas.User
+namespace ProjectWebMVC.Areas.User.Libraries
 {
     public class VnPayLibrary
     {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProjectWebMVC.Areas.User.Services;
 
 namespace ProjectWebMVC.Areas.User.Controllers
 {
@@ -8,8 +9,15 @@ namespace ProjectWebMVC.Areas.User.Controllers
     [Authorize(AuthenticationSchemes = "User")]
     public class HomeUserController : Controller
     {
-        public IActionResult Index()
+        private readonly INotificationService notificationService;
+
+        public HomeUserController(INotificationService notificationService)
         {
+            this.notificationService = notificationService;
+        }
+        public async Task<IActionResult> Index()
+        {
+            ViewBag.Notifications = await notificationService.GetAsync();
             return View();
         }
     }

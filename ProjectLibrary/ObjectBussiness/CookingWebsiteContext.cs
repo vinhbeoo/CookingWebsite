@@ -37,6 +37,7 @@ public partial class CookingWebsiteContext : DbContext
     public virtual DbSet<Tag> Tags { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+    public virtual DbSet<UserPaymentHistory> UserPaymentHistories { get; set; }
 
     public virtual DbSet<UserActivity> UserActivities { get; set; }
 

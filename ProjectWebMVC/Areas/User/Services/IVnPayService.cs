@@ -1,10 +1,11 @@
-﻿using ProjectWebMVC.Areas.User.Models;
+﻿
+using ProjectWebMVC.Areas.User.Models;
 
-namespace ProjectWebMVC.Areas.User
+namespace ProjectWebMVC.Areas.User.Services
 {
     public interface IVnPayService
     {
-        string CreatePaymentUrl(PaymentInformationModel model, HttpContext context);
+        (string PaymmentUrl, string TransactionRef) CreatePaymentUrl(PaymentInformationModel model, HttpContext context);
         PaymentResponseModel PaymentExecute(IQueryCollection collections);
     }
 }
