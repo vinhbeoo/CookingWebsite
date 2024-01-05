@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using ProjectWebAPI.Application;
 using ProjectWebMVC.Areas.User.Services;
+
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text.Json;
 
 namespace ProjectWebMVC.Areas.User.Controllers
@@ -33,10 +35,14 @@ namespace ProjectWebMVC.Areas.User.Controllers
             return View();
         }
 
-        // GET: UserDetailController/Details/5
-        public async Task<IActionResult> Details(int id)
+        // POST: UserDetailController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(IFormFile file, UserDetailDTO userDetailDTO)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync($"{UserDetailApiUrl}/{id}");
+            var user = User as ClaimsPrincipal;
+            var userName = user?.FindFirstValue(ClaimTypes.Name);
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
 
             
                 try
@@ -125,39 +131,53 @@ namespace ProjectWebMVC.Areas.User.Controllers
         // POST: UserDetailController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(IFormFile file, int id, UserDetailDTO userDetailDTO)
         {
-            try
+            // Kiểm tra xem TempData có giữ giá trị Avatar không
+            if (TempData.TryGetValue("CurrentAvatar", out object currentAvatarObj))
             {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+                string currentAvatar = currentAvatarObj as string;
 
-        // GET: UserDetailController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+                // Kiểm tra xem người dùng có chọn ảnh mới hay không
+                if (file != null && file.Length > 0)
+                {
+                    // Lưu ảnh mới
+                    Random rnd = new Random();
+                    string imageName = rnd.Next().ToString() + Path.GetExtension(file.FileName);
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/User/images", imageName);
 
-        // POST: UserDetailController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    // Cập nhật đường dẫn ảnh mới vào userDetailDTO
+                    userDetailDTO.Avatar = "/User/images/" + imageName;
+                }
+                else
+                {
+                    // Nếu không có ảnh mới, giữ nguyên giá trị hiện tại của Avatar
+                    userDetailDTO.Avatar = currentAvatar;
+                }
+
+                // Thực hiện cập nhật thông tin userDetailDTO vào API
+                string strData = JsonSerializer.Serialize(userDetailDTO);
+                var contentData = new StringContent(strData, System.Text.Encoding.UTF8, "application/json");
+                HttpResponseMessage res = await _httpClient.PutAsync($"{UserDetailApiUrl}/{id}", contentData);
+
+                if (res.IsSuccessStatusCode)
+                {
+                    TempData["Message"] = "UserDetail updated successfully";
+                    return RedirectToAction(nameof(Edit), new { id = id });
+                }
+                else
+                {
+                    TempData["Message"] = "Error while calling Web API";
+                }
             }
 
             return View(userDetailDTO);
         }
+
     }
 }

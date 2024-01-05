@@ -68,39 +68,6 @@ namespace ProjectWebAPI.Controllers
             }
         }
 
-        /*[HttpPost("logout")]
-        public async Task<IActionResult> Logout()
-        {
-            try
-            {
-                // Đăng xuất người dùng
-                await HttpContext.SignOutAsync();
-
-                // Lấy UserId từ Claims
-                var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-
-                if (userIdClaim != null && int.TryParse(userIdClaim.Value, out var userId))
-                {
-                    // Log thông tin đăng xuất
-                    LogUserActivity.LogUserLogoutActivity(userId);
-
-                    // Thực hiện các thao tác khác liên quan đến đăng xuất (nếu cần)
-
-                    return Ok(new { success = true, message = "Logout successful." });
-                }
-                else
-                {
-                    // Xử lý khi không thể lấy được UserId từ Claims
-                    return BadRequest(new { success = false, message = "Unable to retrieve UserId from Claims." });
-                }
-            }
-            catch (Exception ex)
-            {
-                // Xử lý lỗi khi đăng xuất
-                return BadRequest(new { success = false, message = "Error during logout: " + ex.Message });
-            }
-        }*/
-
 
         [HttpPost("register")]
         public async Task<IActionResult> RegisterUser(RegisterViewModel model)
@@ -137,7 +104,9 @@ namespace ProjectWebAPI.Controllers
                         EmailConfirmed = false,
                         EmailConfirmationToken = Guid.NewGuid().ToString(),
                         RoleId = 2, // Mặc định giá trị cho RoleId
-                        Status = "Hoạt động" // Mặc định giá trị cho Status
+                        Status = "Hoạt động", // Mặc định giá trị cho Status
+                        UserType = 1
+
                     };
 
                     repository.SaveUser(user);

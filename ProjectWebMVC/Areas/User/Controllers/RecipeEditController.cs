@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
+using Newtonsoft.Json;
 using ProjectLibrary.ObjectBussiness;
 using System.Security.Claims;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjectWebMVC.Areas.User.Services;
+
 
 
 namespace ProjectWebMVC.Controllers
@@ -30,7 +33,7 @@ namespace ProjectWebMVC.Controllers
         }
 
 		[HttpPost]
-		public async Task<IActionResult> SaveRecipe(IFormFile file, Recipe rec, List<RecipesStep> recipeStep, List<IngredientsGroup> ingGroup, List<IngredientsDetail> ingDetail)
+		public async Task<IActionResult> SaveRecipe(IFormFile file, Recipe rec, List<RecipesStep> recipeStep, List<IngredientsGroup> ingGroup)
 		{
 			// kiểm tra hình ảnh
 			if (file == null || file.Length == 0)
@@ -56,6 +59,7 @@ namespace ProjectWebMVC.Controllers
 
 			rec.Creator = int.Parse(userName.ToString());
 			rec.CreateDate = DateTime.Now;
+			rec.ReadFree = false;
             // add vào bảng recipe
             string strData = JsonSerializer.Serialize(rec);
 			var contentData = new StringContent(strData, System.Text.Encoding.UTF8, "application/json");
@@ -114,6 +118,13 @@ namespace ProjectWebMVC.Controllers
 			}
 		}
 
+
+		public async Task<IActionResult> Index( int contestId, int categoryId)
+		{
+			//get list Category
+            var apiUrl = "https://localhost:7269/api/Category";
+            var client = new HttpClient();
+            var response = await client.GetAsync(apiUrl);
 
             if (response.IsSuccessStatusCode)
             {

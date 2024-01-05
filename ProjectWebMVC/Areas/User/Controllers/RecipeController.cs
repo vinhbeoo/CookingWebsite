@@ -38,12 +38,6 @@ namespace ProjectWebMVC.Controllers
 			var igDataJson = JsonConvert.DeserializeObject<IEnumerable<IngredientsGroup>>(igDataRead);
 			ViewBag.IngredientGroup = igDataJson;
 
-			//Ingredients detail
-			var idData = await client.GetAsync("https://localhost:7269/api/IngredientDetail/GetByRecipeId/" + recId.ToString());
-			var idDataRead = await idData.Content.ReadAsStringAsync();
-			var idDataJson = JsonConvert.DeserializeObject<IEnumerable<IngredientsDetail>>(idDataRead);
-			ViewBag.IngredientDetail = idDataJson;
-
 			//Recipe Step
 			var recStepData = await client.GetAsync("https://localhost:7269/api/RecipesStep/List/" + recId.ToString());
 			var recStepDataRead = await recStepData.Content.ReadAsStringAsync();

@@ -39,16 +39,6 @@
         @Html.ActionLink("Create new user", "Create", "User", null, new { @class = "btn btn-danger" })
     </p>
 
-    <div class="text-align">
-        @if (TempData["Message"] != null)
-        {
-            <div class="alert alert-danger">
-
-                @TempData["Message"]
-            </div>
-        }
-    </div>
-
     <div class="form-group mb-4">
         @using (Html.BeginForm("Index", "User", FormMethod.Get))
         {

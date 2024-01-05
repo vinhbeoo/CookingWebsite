@@ -51,8 +51,6 @@ public partial class Recipe
 
     public virtual ICollection<IngredientsGroup>? IngredientsGroups { get; set; }
 
-	public virtual ICollection<IngredientsDetail>? IngredientsDetails { get; set; }
-
 	public virtual ICollection<Rating>? Ratings { get; set; }
 
     public virtual ICollection<RecipesStep>? RecipesSteps { get; set; } 

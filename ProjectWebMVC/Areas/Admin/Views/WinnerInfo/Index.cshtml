@@ -1,6 +1,6 @@
 ﻿@using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common;
-@model X.PagedList.IPagedList<ProjectLibrary.ObjectBussiness.Contest>
+@model X.PagedList.IPagedList<ProjectLibrary.ObjectBussiness.WinnerInfo>
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +17,7 @@
     }
 </style>
 <header class="panel-heading">
-    <h2>Contest Manager</h2>
+    <h2>WinnerInfo Manager</h2>
 </header>
 <div class="text-center">
     @{
@@ -32,15 +32,15 @@
 </div>
 
 <div class="panel-body">
-    <p>
-        @Html.ActionLink("Create new Contest","Create","Contest", null, new {@class="btn btn-danger"})
-    </p>
+    @* <p>
+        @Html.ActionLink("Create new WinnerInfo","Create","WinnerInfo", null, new {@class="btn btn-danger"})
+    </p> *@
     <div class="form-group mb-4">
-        @using (Html.BeginForm("Index", "Contest", FormMethod.Get))
+        @using (Html.BeginForm("Index", "WinnerInfo", FormMethod.Get))
         {
             <div class="row">
                 <div class="col-lg-6">
-                    <input type="text" name="contestId" placeholder="Enter contestId" value="@Context.Request.Query["contestId"].FirstOrDefault()" class="form-control" />
+                    <input type="text" name="winnerId" placeholder="Enter winnerId" value="@Context.Request.Query["winnerId"].FirstOrDefault()" class="form-control" />
                 </div>
                 <div class="col-lg-3">
                     <input type="submit" class="btn btn-danger" value="Search" />
@@ -56,19 +56,19 @@
                         Id
                     </th>
                     <th>
-                        ContestName
+                        ContestId
                     </th>
                     <th>
-                        Description
+                        WinnerUserId
                     </th>
                     <th>
-                        StartTime
+                        WinningDate
                     </th>
                     <th>
-                        EndTime
+                        Prize
                     </th>
                     <th>
-                        OwnerCreate
+                        Vote
                     </th>
                     <th>
                         Action
@@ -80,27 +80,27 @@
                 {
                     <tr>
                         <td>
+                            @Html.DisplayFor(modelItem => item.WinnerId)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.ContestId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ContestName)
+                            @Html.DisplayFor(modelItem => item.WinnerUserId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Description)
+                            @Html.DisplayFor(modelItem => item.WinningDate)
                         </td>
                         <td>
-                            @item.StartTime.ToString("dd/MM/yyyy HH:mm")
+                            @Html.DisplayFor(modelItem => item.Prize)
                         </td>
                         <td>
-                            @item.EndTime.ToString("dd/MM/yyyy HH:mm")
+                            @Html.DisplayFor(modelItem => item.Vote)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.OwnerUser.UserName)
-                        </td>
-                        <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ContestId }, new { @class = "btn btn-danger" })
-                            @Html.ActionLink("Details", "Details", new { id = item.ContestId }, new { @class = "btn btn-danger details-link" })
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ContestId }, new { @class = "btn btn-danger delete-link" })
+                            @Html.ActionLink("Edit", "Edit", new { id = item.WinnerId }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Details", "Details", new { id = item.WinnerId }, new { @class = "btn btn-danger details-link" })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.WinnerId }, new { @class = "btn btn-danger delete-link" })
                         </td>
                     </tr>
                 }

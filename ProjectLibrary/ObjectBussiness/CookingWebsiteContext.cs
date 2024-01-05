@@ -22,8 +22,6 @@ public partial class CookingWebsiteContext : DbContext
 
     public virtual DbSet<Contest> Contests { get; set; }
 
-    public virtual DbSet<IngredientsDetail> IngredientsDetails { get; set; }
-
     public virtual DbSet<IngredientsGroup> IngredientsGroups { get; set; }
 
     public virtual DbSet<Notification> Notifications { get; set; }
@@ -90,10 +88,11 @@ public partial class CookingWebsiteContext : DbContext
 
             entity.HasOne(d => d.Recipe).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.RecipeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Comment_Recipes");
-
             entity.HasOne(d => d.User).WithMany(p => p.Comments)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Comment_Users");
         });
 
@@ -112,26 +111,11 @@ public partial class CookingWebsiteContext : DbContext
                 .HasConstraintName("FK__Contests__OwnerU__6383C8BA");
         });
 
-        modelBuilder.Entity<IngredientsDetail>(entity =>
-        {
-			entity.HasKey(e => new { e.IngredientId, e.RecipeId, e.Stt });
-			entity.ToTable("Ingredients_Detail");
-
-			entity.Property(e => e.Stt)
-                .ValueGeneratedNever()
-                .HasColumnName("stt");
-            entity.Property(e => e.IngredientId).ValueGeneratedOnAdd();
-
-            entity.HasOne(d => d.Ingredient).WithMany(p => p.IngredientsDetails)
-                .HasForeignKey(d => d.IngredientId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Ingredients_Detail_Ingredients_Group");
-        });
 
         modelBuilder.Entity<IngredientsGroup>(entity =>
         {
-            entity.HasKey(e => e.IngredientId).HasName("PK__Ingredie__BEAEB25A7C2114F2");
-
+            //entity.HasKey(e => e.IngredientId, entity.).HasName("PK__Ingredie__BEAEB25A7C2114F2");
+            entity.HasKey(e => new { e.IngredientId, e.RecipeId}).HasName("PK__Ingredie__BEAEB25A7C2114F2"); ;
             entity.ToTable("Ingredients_Group");
 
             entity.Property(e => e.NameIngredients).HasMaxLength(255);

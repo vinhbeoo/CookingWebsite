@@ -45,8 +45,9 @@ namespace ProjectWebAPI.Controllers
 			{
 				IngredientId = ingredientsGroupDTO.IngredientId,
 				NameIngredients = ingredientsGroupDTO.NameIngredients,
-				RecipeId = ingredientsGroupDTO.RecipeId
-			};
+				RecipeId = ingredientsGroupDTO.RecipeId,
+                Description = ingredientsGroupDTO.Description
+            };
 
 			// Gọi dịch vụ để thêm cuộc thi vào cơ sở dữ liệu
 			repository.SaveIngredientsGroup(newIngredientsGroup);
@@ -73,7 +74,7 @@ namespace ProjectWebAPI.Controllers
 
 			// Cập nhật thông tin cuộc thi từ DTO
 			existingIngredientsGroup.NameIngredients = updatedIngredientsGroupDTO.NameIngredients;
-			existingIngredientsGroup.RecipeId = updatedIngredientsGroupDTO.RecipeId;
+			existingIngredientsGroup.Description = updatedIngredientsGroupDTO.Description;
 
 
 			// Gọi dịch vụ để lưu thay đổi vào cơ sở dữ liệu
