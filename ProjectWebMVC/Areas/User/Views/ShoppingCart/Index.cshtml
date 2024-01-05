@@ -64,10 +64,6 @@
 </style>
 <link href="~/css/stylesheet1.css" rel="stylesheet" />
 
-@* <div class="text-center">
-    <h1 class="display-4">Thanh toán VnPay tại <a href="https://code-mega.com">Code Mega</a></h1>
-    <p>Learn about <a href="https://code-mega.com">building Web apps with ASP.NET Core</a>.</p>
-</div> *@
 
 
 <div id="modalContainer" class="modal-container">
@@ -76,7 +72,8 @@
         <span id="modalClose" class="modal-close">&times;</span>
         <img src="~/User/images/logo.svg" />
         <div class="table-responsive">
-            <form action="CreatePaymentUrl" id="frmCreateOrder" method="POST">
+            @using (Html.BeginForm("CreatePaymentUrl", "ShoppingCart", FormMethod.Post))
+            {
                 <div class="form-group">
                     <label for="ordertype">Loại Đăng Kí </label>
                     <select name="OrderType" id="ordertype" class="form-control">
@@ -113,7 +110,10 @@
                 </div>
                 <br />
                 <button type="submit" class="btn btn-primary">Thanh toán (Checkout)</button>
-            </form>
+            }
+            @* <form action="CreatePaymentUrl" id="frmCreateOrder" method="POST">
+
+            </form> *@
         </div>
     </div>
 </div>

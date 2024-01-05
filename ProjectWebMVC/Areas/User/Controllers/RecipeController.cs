@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProjectLibrary.ObjectBussiness;
+using ProjectWebMVC.Areas.User.Services;
 using System.Security.Claims;
 
 namespace ProjectWebMVC.Controllers
@@ -11,7 +12,14 @@ namespace ProjectWebMVC.Controllers
     [Authorize(AuthenticationSchemes = "User")]
     public class RecipeController : Controller
 	{
-		[Route("Recipe/{recipeId?}")]
+        private readonly INotificationService notificationService;
+
+        public RecipeController(INotificationService notificationService)
+        {
+            this.notificationService = notificationService;
+        }
+
+        [Route("Recipe/{recipeId?}")]
 		public async Task<IActionResult> Index(int? recipeId)
 		{
 			int recId = recipeId ?? 14;
@@ -56,8 +64,10 @@ namespace ProjectWebMVC.Controllers
 			ViewBag.UserId = userId;
 			ViewBag.RecipeId = recipeId;
 
+			//
+            ViewBag.Notifications = await this.notificationService.GetAsync();
 
-			return View();
+            return View();
 		}
 
 		[HttpPost]

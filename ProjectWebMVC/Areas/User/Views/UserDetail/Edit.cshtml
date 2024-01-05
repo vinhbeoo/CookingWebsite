@@ -1,0 +1,140 @@
+﻿@model ProjectLibrary.ObjectBussiness.UserDetail
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <style>
+        .custom-form {
+            max-width: 100px; /* Đặt chiều rộng tối đa cho form */
+            margin: 0 auto; /* Căn giữa theo chiều ngang */
+        }
+
+        .custom-btn {
+            width: 100%; /* Chiều rộng 100% để căn giữa trong form */
+        }
+
+        .gender-label {
+            display: flex;
+            align-items: center;
+        }
+
+            .gender-label .form-check {
+                margin-right: 15px; /* Điều chỉnh khoảng cách giữa các radio button */
+            }
+
+        .form-control {
+            color: black;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400&display=swap">
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Sử dụng cột đầy đủ -->
+            @using (Html.BeginForm("Edit", "UserDetail", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <h1 style="font-family: 'Dancing Script', cursive; font-size: 60px;color: #0d1b75; text-align: center; margin: 0; padding: 20px; ">
+                    Welcome to @Html.DisplayFor(model => model.User.UserName)
+                </h1>
+                <div class="card border rounded p-3 mb-3 bg-light">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- Cột Avatar -->
+                            <div class="form-group">
+                                <label asp-for="Avatar" class="control-label">Avatar</label>
+                                <div class="mb-3" style="width: 120px; height: 120px; margin: auto;">
+                                    <div class="rounded-circle overflow-hidden" style="width: 100%; height: 100%;">
+                                        <img id="avatarPreview" src="@Model.Avatar" alt="Avatar" class="img-responsive img-circle" style="object-fit: cover; width: 100%; height: 100%;" />
+                                    </div>
+                                </div>
+                                <br />
+                                <input type="file" name="file" class="form-control" style="width: 300px; padding: 10px; font-size: 14px; border: none;" onchange="previewAvatar(this)" />
+                                <span asp-validation-for="Avatar" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <!-- Cột thông tin -->
+                            @Html.HiddenFor(model => model.UserId)
+                            <div class="form-group">
+                                <label asp-for="FullName" class="control-label">FullName</label>
+                                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 16px;" , @placeholder = "Fullname" } })
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Phone" class="control-label">Phone</label>
+                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 16px;", @placeholder = "Phone" } })
+                                <span asp-validation-for="Phone" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">@Html.DisplayNameFor(model => model.Gender)</label>
+                                <div class="col-sm-10 gender-label">
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(model => model.Gender, true, new { id = "nam", @class = "form-check-input" })
+                                        <label for="nam" class="form-check-label">Nam</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        @Html.RadioButtonFor(model => model.Gender, false, new { id = "nu", @class = "form-check-input" })
+                                        <label for="nu" class="form-check-label">Nữ</label>
+                                    </div>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label">Address</label>
+                                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 16px;", @placeholder = "Address" } })
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+
+                             @* <div class="form-group">
+                                <label asp-for="Email" class="control-label">Email</label>
+                                @Html.EditorFor(model => model.User.Email, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 16px;", @placeholder = "Email" } })
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>  *@
+                        </div>
+
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary btn-sm custom-btn" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function previewAvatar(input) {
+            var preview = document.getElementById('avatarPreview');
+            var file = input.files[0];
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+}
+

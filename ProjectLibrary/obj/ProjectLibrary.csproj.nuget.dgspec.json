@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj": {}
+    "C:\\Users\\84988\\Desktop\\Test\\CookingWebsite_30_12_2023\\CookingWebsite_29_12_2023\\ProjectLibrary\\ProjectLibrary.csproj": {}
   },
   "projects": {
-    "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj": {
+    "C:\\Users\\84988\\Desktop\\Test\\CookingWebsite_30_12_2023\\CookingWebsite_29_12_2023\\ProjectLibrary\\ProjectLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj",
+        "projectUniqueName": "C:\\Users\\84988\\Desktop\\Test\\CookingWebsite_30_12_2023\\CookingWebsite_29_12_2023\\ProjectLibrary\\ProjectLibrary.csproj",
         "projectName": "ProjectLibrary",
-        "projectPath": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj",
+        "projectPath": "C:\\Users\\84988\\Desktop\\Test\\CookingWebsite_30_12_2023\\CookingWebsite_29_12_2023\\ProjectLibrary\\ProjectLibrary.csproj",
         "packagesPath": "C:\\Users\\84988\\.nuget\\packages\\",
-        "outputPath": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\obj\\",
+        "outputPath": "C:\\Users\\84988\\Desktop\\Test\\CookingWebsite_30_12_2023\\CookingWebsite_29_12_2023\\ProjectLibrary\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\84988\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -22,6 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Areas\User\Controllers\ContestRecipeListController.cs" />
+    <Compile Include="Areas\User\Controllers\ContestsListController.cs" />
     <Compile Include="Areas\User\Controllers\HomeUserController.cs" />
     <Compile Include="Areas\User\Controllers\NotificationController.cs" />
     <Compile Include="Areas\User\Controllers\RecipeController.cs" />
@@ -34,7 +36,9 @@
     <Compile Include="Areas\User\Models\PaymentInformationModel.cs" />
     <Compile Include="Areas\User\Models\PaymentResponseModel.cs" />
     <Compile Include="Areas\User\Models\PaymentViewModel.cs" />
+    <Compile Include="Areas\User\Services\INotificationService.cs" />
     <Compile Include="Areas\User\Services\IVnPayService.cs" />
+    <Compile Include="Areas\User\Services\NotificationService.cs" />
     <Compile Include="Areas\User\Services\VnPayService.cs" />
   </ItemGroup>
 
@@ -74,6 +78,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\User\Views\ContestRecipeList\Index.cshtml" />
+    <None Include="Areas\User\Views\ContestsList\Index.cshtml" />
     <None Include="Areas\User\Views\HomeUser\Index.cshtml" />
     <None Include="Areas\User\Views\Notification\Dropdown.cshtml" />
     <None Include="Areas\User\Views\Notification\Index.cshtml" />
@@ -81,10 +87,13 @@
     <None Include="Areas\User\Views\RecipesList\Index.cshtml" />
     <None Include="Areas\User\Views\Recipe\Index.cshtml" />
     <None Include="Areas\User\Views\Shared\_Layout.cshtml.css" />
+    <None Include="Areas\User\Views\Shared\_ValidationScriptsPartial.cshtml" />
     <None Include="Areas\User\Views\ShoppingCart\Index.cshtml" />
     <None Include="Areas\User\Views\ShoppingCart\PaymentCallback.cshtml" />
-    <None Include="Areas\User\Views\UserDetail\Details.cshtml" />
-    <None Include="Areas\User\Views\UserDetail\Index.cshtml" />
+    <None Include="Areas\User\Views\UserDetail\Create.cshtml" />
+    <None Include="Areas\User\Views\UserDetail\Edit.cshtml" />
+    <None Include="Areas\User\Views\_ViewImports.cshtml" />
+    <None Include="Areas\User\Views\_ViewStart.cshtml" />
     <None Include="wwwroot\Admin\assets\img\not-found.svg" />
     <None Include="wwwroot\Admin\assets\js\main.js" />
     <None Include="wwwroot\Admin\assets\vendor\apexcharts\apexcharts.amd.js" />

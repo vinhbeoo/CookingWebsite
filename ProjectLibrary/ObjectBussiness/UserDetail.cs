@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectLibrary.ObjectBussiness;
 
@@ -19,5 +20,6 @@ public partial class UserDetail
 
     public string? Avatar { get; set; }
 
+    [ForeignKey("UserId")]
     public virtual User User { get; set; } = null!;
 }
