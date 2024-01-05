@@ -4,7 +4,7 @@ namespace ProjectWebMVC.Areas.User
 {
     public interface IVnPayService
     {
-        string CreatePaymentUrl(PaymentInformationModel model, HttpContext context);
+        (string PaymmentUrl, string TransactionRef) CreatePaymentUrl(PaymentInformationModel model, HttpContext context);
         PaymentResponseModel PaymentExecute(IQueryCollection collections);
     }
 }

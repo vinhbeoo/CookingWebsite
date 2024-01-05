@@ -3,6 +3,7 @@ using ProjectLibrary.ObjectBussiness;
 using Newtonsoft.Json;
 using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
+using ProjectWebMVC.Areas.User.Services;
 
 namespace ProjectWebMVC.Areas.User.Controllers
 {
@@ -12,6 +13,13 @@ namespace ProjectWebMVC.Areas.User.Controllers
     [Authorize(AuthenticationSchemes = "User")]
     public class RecipesListController : Controller
     {
+        private readonly INotificationService notificationService;
+
+        public RecipesListController(INotificationService notificationService)
+        {
+            this.notificationService = notificationService;
+        }
+
         //private readonly HttpClient _httpClient;
         //private string _userApiUrl = "";
         public async Task<IActionResult> Index(string? searchString, int? page)
@@ -36,7 +44,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
             //Send to view
             ViewBag.Recipe = recipeDataJson.Where(x => x.RecipeTitle.Contains(Search)).ToList().ToPagedList(pageNumber, 6);
             ViewBag.Category = categoryDataJson;
-
+            ViewBag.Notifications = await this.notificationService.GetAsync();
             return View();
         }
     }

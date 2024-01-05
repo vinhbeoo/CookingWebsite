@@ -1,7 +1,9 @@
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using ProjectLibrary.ObjectBussiness;
 using ProjectWebMVC.Areas.User;
-using ProjectWebMVC.Services;
+using ProjectWebMVC.Areas.User.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var environment = builder.Environment;
@@ -19,13 +21,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 {
     options.LoginPath = new PathString("/Admin/Account/Login");
 });
-
+builder.Services.AddDbContext<CookingWebsiteContext>(options =>
+{
+    options.UseSqlServer("server=VINHBEOO\\SQLEXPRESS; uid=; pwd=; Database=CookingWebsiteDB1;TrustServerCertificate=true;Trusted_Connection=SSPI;Encrypt=false;");
+});
 
 
 // Configuring services
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 builder.Services.AddScoped<IVnPayService, VnPayService>();
+
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 builder.Services.AddControllersWithViews();
 

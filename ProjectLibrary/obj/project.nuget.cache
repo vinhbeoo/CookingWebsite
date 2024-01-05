@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5aizGB8o2iDmjNsYAbjnPQWe5MnvtO9fq0wrmSjpBXWaIGxwUuH1GsWojj74svtkoT+WtkJTL5dfsWTy9IoQ5w==",
+  "dgSpecHash": "vKO3CE69tflHInA+5Le4VWuwR0VlyF1l4ZE62LBdXCLpOGvZbWswfL/c7v/a6iUmaLYmaT2FIdYj+u8eqLirmQ==",
   "success": true,
-  "projectFilePath": "D:\\Aptech\\Đồ án tốt nghiệp(TEST)\\CookingWebsite\\ProjectLibrary\\ProjectLibrary.csproj",
+  "projectFilePath": "C:\\Users\\84988\\Desktop\\Test\\CookingWebsite_30_12_2023\\CookingWebsite_29_12_2023\\ProjectLibrary\\ProjectLibrary.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\84988\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\84988\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

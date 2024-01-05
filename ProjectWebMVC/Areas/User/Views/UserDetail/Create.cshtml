@@ -1,4 +1,6 @@
-﻿@using System.Security.Claims;
+
+@using System.Security.Claims;
+
 @model ProjectLibrary.ObjectBussiness.UserDetail
 
 @{
@@ -76,7 +78,8 @@
                             @Html.HiddenFor(model => model.UserId)
                             <div class="form-group">
                                 <label asp-for="FullName" class="control-label">FullName</label>
-                                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 16px;" , @placeholder = "Fullname" } })
+                                @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control", @style = "font-size: 16px;", @placeholder = "Fullname" } })
+
                                 <span asp-validation-for="FullName" class="text-danger"></span>
                             </div>
 
@@ -125,7 +128,10 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
 
     <script>
         function previewAvatar(input) {

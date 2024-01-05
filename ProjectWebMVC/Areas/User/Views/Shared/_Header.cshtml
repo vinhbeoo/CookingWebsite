@@ -143,16 +143,18 @@
                             </li>
                         </ul>
                     </li>
-                    @*<li>
+                    <!-- Thêm mã HTML để hiển thị thông báo -->
+                    <li>
+
                         <a href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" class="notification-icon">
                             <i class="fa fa-bell"></i>
-                            <span class="badge bg-primary badge-number">@Model?.Count</span>
+                            <span class="badge bg-primary badge-number">@((ViewBag.Notifications as List<ProjectLibrary.ObjectBussiness.Notification>)?.Count)</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                             <li class="dropdown-header">
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <h4>You have @Model?.Count notifications</h4>
+                                        <h4>You have @((ViewBag.Notifications as List<ProjectLibrary.ObjectBussiness.Notification>)?.Count) notifications</h4>
                                     </div>
                                     <a href="#" class="text-decoration-none">
                                         <span class="badge rounded-pill bg-primary p-2 ms-2">View all</span>
@@ -162,9 +164,9 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            @if (Model is List<ProjectLibrary.ObjectBussiness.Notification> notifications)
+                            @if (ViewBag.Notifications is List<ProjectLibrary.ObjectBussiness.Notification> notifications && notifications.Count > 0)
                             {
-                                @foreach (var notification in notifications.Take(4))
+                                foreach (var notification in notifications.Take(4))
                                 {
                                     <li class="notification-item">
                                         <i class="bi bi-exclamation-circle text-warning"></i>
@@ -185,6 +187,7 @@
                                     <p>No new notifications</p>
                                 </li>
                             }
+
 
                             <li class="dropdown-footer">
                                 <a href="@Url.Action("Index", "Notification")">Show all notifications</a>

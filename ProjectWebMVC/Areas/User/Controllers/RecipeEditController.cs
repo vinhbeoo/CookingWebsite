@@ -7,6 +7,9 @@ using System.Security.Claims;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProjectWebMVC.Areas.User.Services;
+
+
 
 namespace ProjectWebMVC.Controllers
 {
@@ -16,16 +19,18 @@ namespace ProjectWebMVC.Controllers
 	public class RecipeEditController : Controller
 	{
 		private readonly HttpClient client = null;
-		private string ApiUrl = "";
+        private readonly INotificationService notificationService;
+        private string ApiUrl = "";
 		private string RecipeApiUrl = "https://localhost:7269/api/Recipe";
 
-        public RecipeEditController()
+        public RecipeEditController(INotificationService notificationService)
 		{
 			client = new HttpClient();
 			//var contentType = new MediaTypeWithQualityHeaderValue("application/json");
 			//client.DefaultRequestHeaders.Accept.Add(contentType);
 			ApiUrl = "https://localhost:7269/api";
-		}
+            this.notificationService = notificationService;
+        }
 
 		[HttpPost]
 		public async Task<IActionResult> SaveRecipe(IFormFile file, Recipe rec, List<RecipesStep> recipeStep, List<IngredientsGroup> ingGroup)
