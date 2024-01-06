@@ -69,12 +69,13 @@
                                 <p>Creator: @contest.OwnerUser.UserName</p>
                                 @if (currentDate >= @contest.StartTime && currentDate <= @contest.EndTime)
                                 {
-                                    @Html.ActionLink("Create recipes for Contest", "Index", "RecipeEdit", new { contestId = @contest.ContestId, categoryId = 2 }, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink("Create recipes for Contest", "Index", "RecipeEdit", new { contestId = @contest.ContestId, categoryId = 2 }, new { @class = "btn btn-primary", target = "_blank" })
                                 }
                                 else
                                 {
                                     <button type="button" class="btn btn-danger" disabled>The contest has ended</button>
                                 }
+                                @Html.ActionLink("List of recipes by contest", "Index", "ContestRecipeList", new { contestId = @contest.ContestId}, new { @class = "btn btn-primary", target = "_blank" })
                             </div>
                         </div>
                     </div>

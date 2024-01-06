@@ -59,7 +59,7 @@
                                     string recTitle = @recipe.RecipeTitle;
                                 }
                                 <h1 style="color: white; font-size: 24px;">
-                                    @Html.ActionLink(recTitle, "Index", "Recipe", new { recipeId = @recipe.RecipeId }, new { style = "color: white; text-decoration: none;" })
+                                    @Html.ActionLink(recTitle, "Index", "Recipe", new { recipeId = @recipe.RecipeId }, new { style = "color: white; text-decoration: none;", target = "_blank" })
                                 </h1>
                                 <p>@Truncate(recipe.Description, 50)</p>
                             </div>
