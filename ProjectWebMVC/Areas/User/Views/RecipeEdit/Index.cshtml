@@ -5,6 +5,9 @@
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
     var Category = ViewBag.Category;
     var Contest = ViewBag.Contest;
+
+    var CurContestId = ViewBag.CurContestId;
+    var CurCategoryId = ViewBag.CurCategoryId;
 }
 <head>
     <style>
@@ -64,9 +67,19 @@
 
                                 <div class="recipe-form-group">
                                     <label asp-for="@Model.CategoryId" class="control-label">Category</label>
-                                    <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;">
-                                        <option value="">-- Select Category --</option>
-                                    </select>
+                                    @if (@CurContestId == 0)
+                                    {
+                                        <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;">
+                                            <option value="">-- Select Category --</option>
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;" disabled>
+                                            <option value="">-- Select Category --</option>
+                                        </select>
+                                    }
+
                                     <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
                                 </div>
 
@@ -149,9 +162,19 @@
                     <div class="form-group contest-group">
                         <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">Contest Name</h3>
                         @* <label asp-for="@Model.ContestId" class="control-label">Contest Id</label> *@
-                        <select asp-for="@Model.ContestId" asp-items="@ViewBag.Contest" class="form-control" style="font-size: 16px; height: 40px;">
-                            <option value="">-- Select Category --</option>
-                        </select>
+                        @if (@CurContestId == 0)
+                        {
+                            <select asp-for="@Model.ContestId" asp-items="@ViewBag.Contest" class="form-control" style="font-size: 16px; height: 40px;">
+                                <option value="">-- Select Category --</option>
+                            </select>
+                        }
+                        else
+                        {
+                            <select asp-for="@Model.ContestId" asp-items="@ViewBag.Contest" class="form-control" style="font-size: 16px; height: 40px;" disabled>
+                                <option value="">-- Select Category --</option>
+                            </select>
+                        }
+                        
                         <span asp-validation-for="@Model.ContestId" class="text-danger"></span>
                     </div>
 

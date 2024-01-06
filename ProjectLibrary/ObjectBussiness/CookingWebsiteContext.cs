@@ -100,7 +100,8 @@ public partial class CookingWebsiteContext : DbContext
         {
             entity.HasKey(e => e.ContestId).HasName("PK__Contests__87DE0B1A63E36EED");
 
-            entity.HasIndex(e => new { e.StartTime, e.EndTime }, "UC_ContestDates").IsUnique();
+            //bỏ, cùng 1 thời điểm có thể tổ chức nhiều cuộc thi
+            //entity.HasIndex(e => new { e.StartTime, e.EndTime }, "UC_ContestDates").IsUnique();
 
             entity.Property(e => e.ContestName).HasMaxLength(100);
             entity.Property(e => e.EndTime).HasColumnType("datetime");

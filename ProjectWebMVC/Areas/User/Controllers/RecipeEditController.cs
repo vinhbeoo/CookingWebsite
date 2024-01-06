@@ -180,7 +180,8 @@ namespace ProjectWebMVC.Controllers
                 ViewBag.Contest = new List<SelectListItem>(); // hoặc null tùy thuộc vào yêu cầu của bạn
             }
 
-
+			ViewBag.CurContestId = contestId;
+			ViewBag.CurCategoryId = categoryId;
             return View();
 		}
 	}

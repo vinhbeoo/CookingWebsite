@@ -96,5 +96,19 @@ namespace ProjectWebAPI.Controllers
 
             return Ok("Rating Delete successfully");
         }
+
+        // DELETE by user and recid
+        [HttpDelete("{user}/{recipeId}")]
+        public IActionResult DeleteRatingByUserAndRecipeId(int user, int recipeId)
+        {
+            var rating = repository.GetRatingByUserAndRecipeId(user, recipeId);
+            if (rating == null)
+            {
+                return NotFound();
+            }
+            repository.DeleteRating(rating);
+
+            return Ok("Rating Delete successfully");
+        }
     }
 }

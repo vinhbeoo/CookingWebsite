@@ -5,8 +5,10 @@
 	ViewData["title"] = "ContestRecipesList";
 	Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
 	var recipes = ViewBag.Recipe;
-	var categories = ViewBag.Category;
-	var recipesCount = ViewBag.Recipe.Count;
+	var recipe4Page = ViewBag.Recipe4Page;
+	var UserName = ViewBag.UserName;
+	var UserId = ViewBag.UserId;
+	var ContestId = ViewBag.ContestId;
 }
 
 
@@ -14,6 +16,7 @@
 
 
 <body id="page-top">
+
 
 	<section id="recipesList" class="recipesList bwt-90">
 		<div class="container text-center">
@@ -42,22 +45,44 @@
 							<div class="col-sm-4 col-md-3"><img src="@recipe.ImageTitle" class="img-responsive img-square"></div>
 							<div class="col-sm-8 col-md-9">
 								@{
-									//string linkrec = @recipe.RecipeId.ToString();
 									string recTitle = @recipe.RecipeTitle;
 								}
 								<h1>
-									@Html.ActionLink(recTitle, "Index", "Recipe", new { recipeId = @recipe.RecipeId }, null)
+									@Html.ActionLink(recTitle, "Index", "Recipe", new { recipeId = @recipe.RecipeId }, new { target = "_blank" })
 								</h1>
 								<p>@recipe.Description</p>
-								<p>Vote:000 <button type="button" class="btn btn-danger" disabled>Vote</button></p>
-								
+
+								@*Xử lý button vote_____________*@
+								@using (Html.BeginForm("VoteRecipe", "ContestRecipeList", FormMethod.Post))
+								{
+									@if (UserId.ToString() != recipe.Voted?.ToString())
+									{
+										<button type="submit" class="vote-btn btn btn-success" onclick="toggleVote(this, @recipe.RecipeId)">
+											<span class="glyphicon glyphicon-thumbs-up"></span> <span>Vote:</span> <span id="voteCount_@recipe.RecipeId">@recipe.TotalVote</span>
+										</button>
+										<input type="hidden" name="recipeId" value="@recipe.RecipeId" />
+										<input type="hidden" name="vote" value="1" />
+										<input type="hidden" name="contestId" value="@ContestId" />
+									}
+									else
+									{
+										<button type="submit" class="vote-btn btn btn-danger" onclick="toggleVote(this, @recipe.RecipeId)">
+											<span class="glyphicon glyphicon-thumbs-down"></span> <span>Unvote:</span> <span id="voteCount_@recipe.RecipeId">@recipe.TotalVote</span>
+										</button>
+										<input type="hidden" name="recipeId" value="@recipe.RecipeId" />
+										<input type="hidden" name="unvote" value="0" />
+										<input type="hidden" name="contestId" value="@ContestId" />
+									}
+
+								}
+
 							</div>
 						</div>
 					</div>
 				}
 				<br />
 				@*Pagination Begin*@
-				@Html.PagedListPager((IPagedList)recipes, page => Url.Action("Index", new { page = page }))
+				@Html.PagedListPager((IPagedList)recipe4Page, page => Url.Action("Index", new { page = page }))
 				@*Pagination End*@
 			</div>
 			@*List Recipe End_____________*@
@@ -65,4 +90,34 @@
 
 
 	</section>
+
+	@*Xử lý vote/Unvote*@
+	<script>
+		function toggleVote(button, recipeId) {
+			//event.preventDefault();
+			var voteCountSpan = document.getElementById('voteCount_' + recipeId);
+			var currentText = button.innerHTML;
+			var currentVoteCount = parseInt(voteCountSpan.textContent);
+			var idButton = 'voteCount_' + recipeId
+
+			if (currentText.includes("Vote")) {
+				// Vote action
+				button.innerHTML = '<span class="glyphicon glyphicon-thumbs-down"></span> <span>Unvote:</span> <span id="' + idButton + '">' + (currentVoteCount + 1) + '</span>';
+				button.className = "vote-btn btn btn-danger";
+				button.type = "submit";
+				voteCountSpan.textContent = currentVoteCount + 1; // Update vote count
+			} else {
+				// Unvote action
+				button.innerHTML = '<span class="glyphicon glyphicon-thumbs-up"></span> <span>Vote:</span> <span id="' + idButton + '">' + (currentVoteCount - 1) + '</span>';
+				button.className = "vote-btn btn btn-success";
+				button.type = "submit";
+				voteCountSpan.textContent = currentVoteCount - 1; // Update vote count
+			}
+			return false; // Ngăn chặn sự kiện submit mặc định
+			// Add your logic for handling the vote/unvote action here
+		}
+	</script>
+
+
+
 </body>
