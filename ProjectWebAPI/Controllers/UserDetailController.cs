@@ -81,7 +81,7 @@ namespace ProjectWebAPI.Controllers
         {
             var userDetail = repository.GetUserDetailById(userId);
             if (userDetail == null)
-                return NotFound();
+                return BadRequest("Invalid input data. Please check your request.");
 
             repository.DeleteUserDetail(userDetail);
             return Ok("UserDetail Delete successfully");

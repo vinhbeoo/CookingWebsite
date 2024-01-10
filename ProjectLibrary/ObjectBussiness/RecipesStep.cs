@@ -13,8 +13,6 @@ public partial class RecipesStep
 
     public string? Description { get; set; }
 
-    public string? ImageUrl { get; set; }
-
     public string? VideoUrl { get; set; }
 
     public virtual Recipe? Recipe { get; set; }

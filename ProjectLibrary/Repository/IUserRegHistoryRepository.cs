@@ -9,9 +9,9 @@ namespace ProjectLibrary.Repository
 {
     public interface IUserRegHistoryRepository
     {
-        void SaveUserRegHistory(UserRegHistory userRegHistory, int userId);
+        List<UserRegHistory> GetUserRegHistories();
+        List<UserRegHistory> GetUserRegHistoriesByUserId(int userId);
         UserRegHistory GetUserRegHistoryById(int id);
-        void DeleteUserRegHistory(UserRegHistory userRegHistory, int userId);
-        void UpdateUserRegHistory(UserRegHistory userRegHistory, int userId);
+      
     }
 }

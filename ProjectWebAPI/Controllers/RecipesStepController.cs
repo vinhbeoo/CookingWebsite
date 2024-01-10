@@ -47,7 +47,6 @@ namespace ProjectWebAPI.Controllers
 				Step = recipesStepDTO.Step,
 				RecipeId = recipesStepDTO.RecipeId,
 				Description = recipesStepDTO.Description,
-				ImageUrl = recipesStepDTO.ImageUrl,
 				VideoUrl = recipesStepDTO.VideoUrl
 
 			};
@@ -68,7 +67,6 @@ namespace ProjectWebAPI.Controllers
 				return BadRequest("Invalid Recipe Step data");
 			}
 
-			// Kiểm tra xem cuộc thi có tồn tại không
 			var existingRecipesStep = repository.GetRecipesStepById(id);
 			if (existingRecipesStep == null)
 			{
@@ -79,7 +77,6 @@ namespace ProjectWebAPI.Controllers
 			existingRecipesStep.Step = updatedRecipesStepDTO.Step;
 			existingRecipesStep.RecipeId = updatedRecipesStepDTO.RecipeId;
 			existingRecipesStep.Description = updatedRecipesStepDTO.Description;
-			existingRecipesStep.ImageUrl = updatedRecipesStepDTO.ImageUrl;
 			existingRecipesStep.VideoUrl = updatedRecipesStepDTO.VideoUrl;
 
 

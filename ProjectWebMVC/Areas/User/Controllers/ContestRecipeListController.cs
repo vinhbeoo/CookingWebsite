@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using System.Security.Claims;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using ProjectWebMVC.Areas.User.Services;
 
 namespace ProjectWebMVC.Areas.User.Controllers
 {
@@ -16,9 +17,13 @@ namespace ProjectWebMVC.Areas.User.Controllers
 	[Authorize(AuthenticationSchemes = "User")]
 	public class ContestRecipeListController : Controller
 	{
-		//private readonly HttpClient _httpClient;
-		//private string _userApiUrl = "";
-		public async Task<IActionResult> Index(string? searchString, int? page, int contestId)
+        private readonly INotificationService notificationService;
+
+        public ContestRecipeListController(INotificationService notificationService)
+        {
+            this.notificationService = notificationService;
+        }
+        public async Task<IActionResult> Index(string? searchString, int? page, int contestId)
 		{
 
             HttpClient client = new HttpClient();
@@ -92,19 +97,16 @@ namespace ProjectWebMVC.Areas.User.Controllers
             string RecipeDataJson = JsonConvert.SerializeObject(RecipeData);
             var RecipeDataList = JsonConvert.DeserializeObject<List<object>>(RecipeDataJson);
 
-
-
-
-
-
-
             //Send to view
             ViewBag.Recipe = RecipeDataList;
             ViewBag.Recipe4Page = recipeList;
             ViewBag.UserName = userName;
             ViewBag.UserId = userId;
             ViewBag.ContestId = contestId;
+
+            ViewBag.Notifications = await this.notificationService.GetAsync();
             return View();
+
         }
 
 

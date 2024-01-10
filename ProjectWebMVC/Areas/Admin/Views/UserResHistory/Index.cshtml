@@ -1,10 +1,10 @@
-﻿@model IPagedList<ProjectLibrary.ObjectBussiness.Rating>
+﻿@model IPagedList<ProjectLibrary.ObjectBussiness.UserRegHistory>
 @using X.PagedList
 @using X.PagedList.Mvc.Core;
 @using X.PagedList.Web.Common;
 
 @{
-    ViewData["Title"] = "Rating Index";
+    ViewData["Title"] = "User resgiter history Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <style>
@@ -19,7 +19,7 @@
 </style>
 
 <header class="panel-heading">
-    <h2>Rating</h2>
+    <h2>User Activity</h2>
 </header>
 <div class="text-center">
     @{
@@ -34,11 +34,11 @@
 </div>
 <div class="panel-body">
     <div class="form-group mb-4">
-        @using (Html.BeginForm("Index", "Rating", FormMethod.Get))
+        @using (Html.BeginForm("Index", "UserRegHistory", FormMethod.Get))
         {
             <div class="row">
                 <div class="col-lg-6">
-                    <input type="text" name="RecipeId" placeholder="Enter RecipeId" value="@ViewBag.RecipeId" class="form-control" />
+                    <input type="text" name="userId" placeholder="Enter userId" value="@ViewBag.userId" class="form-control" />
                 </div>
                 <div class="col-lg-3">
                     <input type="submit" class="btn btn-danger" value="Search" />
@@ -52,16 +52,25 @@
             <thead class="custom-table-header">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model[0].RatingId)
+                        @Html.DisplayNameFor(model => model[0].RegistrationId)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model[0].UserId)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model[0].RecipeId)
+                        @Html.DisplayNameFor(model => model[0].SubscriptionType)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model[0].Vote)
+                        @Html.DisplayNameFor(model => model[0].StartDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].EndDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].MemberType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model[0].Amount)
                     </th>
                 </tr>
             </thead>
@@ -70,16 +79,25 @@
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RatingId)
+                            @Html.DisplayFor(modelItem => item.RegistrationId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.UserId)
+                            @Html.ActionLink(item.UserId.ToString(), "Details", "UserDetail", new { id = item.UserId }, null)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RecipeId)
+                            @Html.DisplayFor(modelItem => item.SubscriptionType)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Vote)
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.MemberType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
                         </td>
                     </tr>
                 }
@@ -88,7 +106,7 @@
     </div>
 
     <div class="pagination-container">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, RecipeId = ViewBag.RecipeId }),
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, id = ViewBag.id }),
         new PagedListRenderOptions
         {
         Display = PagedListDisplayMode.IfNeeded,

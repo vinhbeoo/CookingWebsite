@@ -17,6 +17,19 @@ namespace ProjectWebAPI.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Rating>> GetRatings() => repository.GetRatings();
 
+
+        [HttpGet("rating/{recipeId}")]
+        public ActionResult<List<Rating>> GetRatingByRecipeId(int recipeId)
+        {
+            var rating = repository.GetRatingByRecipeId(recipeId);
+            if (rating == null)
+            {
+                return NotFound(); // Return a 404 Not Found response
+            }
+
+            return Ok(rating); // Wrap the user activities in an Ok result
+        }
+
         // GET api/<RatingController>/5
         [HttpGet("{id}")]
         public ActionResult<Rating> GetRatingById(int id)

@@ -11,9 +11,8 @@ namespace ProjectLibrary.Repository
     public class UserRegHistoryRepository : IUserRegHistoryRepository
     {
         public List<UserRegHistory> GetUserRegHistories() => UserRegHistoryDAO.Instance.GetUserRegHistories();
-        public void SaveUserRegHistory(UserRegHistory userRegHistory, int userId) => UserRegHistoryDAO.Instance.SaveUserRegHistory(userRegHistory, userId);
+        public List<UserRegHistory> GetUserRegHistoriesByUserId(int userId) => UserRegHistoryDAO.Instance.GetUserRegHistoriesByUserId(userId);
         public UserRegHistory GetUserRegHistoryById(int id) => UserRegHistoryDAO.Instance.FindUserRegHistoryById(id);
-        public void DeleteUserRegHistory(UserRegHistory userRegHistory, int userId) => UserRegHistoryDAO.Instance.DeleteUserRegHistory(userRegHistory, userId);
-        public void UpdateUserRegHistory(UserRegHistory userRegHistory, int userId) => UserRegHistoryDAO.Instance.UpdateUserRegHistory(userRegHistory, userId);
+        
     }
 }

@@ -19,6 +19,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
         private string _userApiUrl = "";
         private string _userUrl = "https://localhost:7269/api/User";
         private string _userDetailUrl = "https://localhost:7269/api/UserDetail";
+        private string _userActi = "https://localhost:7269/api/UserActivity";
         public UserController()
         {
             _httpClient = new HttpClient();
@@ -222,6 +223,8 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             {
                 // Gửi yêu cầu xóa cho UserDetail trước
                 HttpResponseMessage responseMessageUserDetail = await _httpClient.DeleteAsync($"{_userDetailUrl}/{id}");
+
+                HttpResponseMessage responseMessageUserActi = await _httpClient.DeleteAsync($"{_userActi}/{id}");
 
                 HttpResponseMessage responseMessageUser = await _httpClient.DeleteAsync($"{_userApiUrl}/{id}");
 

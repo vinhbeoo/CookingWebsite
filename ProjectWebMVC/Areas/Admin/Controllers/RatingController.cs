@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProjectLibrary.ObjectBussiness;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using X.PagedList;
 
 namespace ProjectWebMVC.Areas.Admin.Controllers
 {
@@ -21,25 +22,76 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             _url = "https://localhost:7269/api/Rating";
         }
-        // GET: RatingController
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? recipeId, int? page)
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_url);
+            int pageSize = 5;
 
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var strData = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
+                List<Rating> ratingList;
+
+                // Kiểm tra xem có giá trị recipeId không
+                if (recipeId.HasValue)
                 {
-                    PropertyNameCaseInsensitive = true,
-                };
-                List<Rating> ratingList = JsonSerializer.Deserialize<List<Rating>>(strData, options);
+                    // Nếu có recipeId, thực hiện truy vấn tìm kiếm
+                    HttpResponseMessage responseMessage = await _httpClient.GetAsync($"{_url}/rating/{recipeId}");
 
-                return View(ratingList);
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        ratingList = JsonSerializer.Deserialize<List<Rating>>(data, options);
+                    }
+                    else
+                    {
+                        TempData["Message"] = "No Rating found with the specified recipeId.";
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    // Nếu không có recipeId, thực hiện truy vấn phân trang
+                    HttpResponseMessage responseMessage = await _httpClient.GetAsync($"{_url}");
+
+                    if (responseMessage.IsSuccessStatusCode)
+                    {
+                        var data = await responseMessage.Content.ReadAsStringAsync();
+                        var options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                        };
+
+                        ratingList = JsonSerializer.Deserialize<List<Rating>>(data, options);
+                    }
+                    else
+                    {
+                        // Xử lý trường hợp không thành công nếu cần
+                        return View(new List<Rating>());
+                    }
+                }
+
+                // Apply pagination
+                int pageNumber = page ?? 1;
+                var pagedList = ratingList.ToPagedList(pageNumber, pageSize);
+
+                // Lưu giữ giá trị recipeId để sử dụng trong phân trang
+                ViewBag.RecipeId = recipeId;
+
+                return View(pagedList);
+
             }
-
-            return View(new List<Rating>()); // Trả về một danh sách trống nếu có lỗi
+            catch (Exception ex)
+            {
+                // Handle the exception, log, or take appropriate action
+                ViewBag.ErrorMessage = "An unexpected error occurred: " + ex.Message;
+                return View(new List<Rating>());
+            }
         }
+
 
         // GET: RatingController/Details/5
         public ActionResult Details(int id)

@@ -1,13 +1,17 @@
-﻿@model ProjectLibrary.ObjectBussiness.Recipe
+﻿@using ProjectLibrary.ObjectBussiness;
+@model ProjectLibrary.ObjectBussiness.Recipe
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewBag.Title = "UploadFile";
+    ViewData["title"] = "EditRecipe";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
-    var Category = ViewBag.Category;
-    var Contest = ViewBag.Contest;
-
-    var CurContestId = ViewBag.CurContestId;
-    var CurCategoryId = ViewBag.CurCategoryId;
+    var recipes = ViewBag.Recipe as IEnumerable<ProjectLibrary.ObjectBussiness.Recipe>;
+    var IngredientGroups = ViewBag.IngredientGroup as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsGroup>;
+    //var IngredientDetails = ViewBag.IngredientDetail as IEnumerable<ProjectLibrary.ObjectBussiness.IngredientsDetail>;
+    var RecipeSteps = ViewBag.RecipeStep as IEnumerable<ProjectLibrary.ObjectBussiness.RecipesStep>;
+    var Comments = ViewBag.Comment as IEnumerable<ProjectLibrary.ObjectBussiness.Comment>;
+    var UserName = ViewBag.UserName;
+    var UserId = ViewBag.UserId;
+    var RecipeId = ViewBag.RecipeId;
 }
 <head>
     <style>
@@ -39,10 +43,16 @@
 </head>
 
 <div class="container mt-5">
+
     <div class="row">
+        <ol class="breadcrumb bg-light p-3 rounded-0">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index", "HomeUser", new { area = "User" })" class="text-dark">Home</a></li>
+            <li class="breadcrumb-item"><a href="@Url.Action("UserIndex", "RecipesList", new { area = "User" })" class="text-dark">Recipe</a></li>
+            <li class="breadcrumb-item active">@recipes?.FirstOrDefault()?.RecipeTitle</li>
+        </ol>
         <section id="recipe" class="recipe bwt-90">
 
-            @using (Html.BeginForm("SaveRecipe", "RecipeEdit", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("EditRecipe", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="container mt-5">
                     <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: center; margin: 0; padding-bottom: 10px;">RECIPE INFORMATION</h3>
@@ -52,9 +62,10 @@
                             <div class="card border-0 bg-light p-3">
                                 <div class="recipe-form-group">
                                     <label asp-for="@Model.RecipeTitle" class="control-label">Recipe Title</label>
-                                    <input asp-for="@Model.RecipeTitle" class="form-control" style="font-size: 16px;" />
+                                    <input asp-for="@Model.RecipeTitle" class="form-control" style="font-size: 16px;" value="@recipes?.FirstOrDefault()?.RecipeTitle" />
                                     <span asp-validation-for="@Model.RecipeTitle" class="text-danger"></span>
                                 </div>
+
 
                                 <div class="recipe-form-group">
                                     <input type="hidden" asp-for="@Model.Creator" class="form-control" />
@@ -63,13 +74,13 @@
 
                                 <div class="recipe-form-group">
                                     <label asp-for="@Model.TagId" class="control-label">Tag Id</label>
-                                    <input asp-for="@Model.TagId" class="form-control" style="font-size: 16px;" />
+                                    <input asp-for="@Model.TagId" class="form-control" style="font-size: 16px;" value="@recipes?.FirstOrDefault()?.TagId" />
                                     <span asp-validation-for="@Model.TagId" class="text-danger"></span>
                                 </div>
 
                                 <div class="recipe-form-group">
                                     <label asp-for="@Model.VideoUrl" class="control-label">Video Url</label>
-                                    <input asp-for="@Model.VideoUrl" class="form-control" style="font-size: 16px;" />
+                                    <input asp-for="@Model.VideoUrl" class="form-control" style="font-size: 16px;" value="@recipes?.FirstOrDefault()?.VideoUrl" />
                                     <span asp-validation-for="@Model.VideoUrl" class="text-danger"></span>
                                 </div>
                             </div>
@@ -78,35 +89,39 @@
                             <div class="card border-0 bg-light p-3">
                                 <div class="recipe-form-group">
                                     <label asp-for="@Model.Description" class="control-label">Description</label>
-                                    <input asp-for="@Model.Description" class="form-control" style="font-size: 16px;" />
+                                    <input asp-for="@Model.Description" class="form-control" style="font-size: 16px;" value="@recipes?.FirstOrDefault()?.Description" />
                                     <span asp-validation-for="@Model.Description" class="text-danger"></span>
                                 </div>
 
-                                <div class="recipe-form-group">
-                                    <label asp-for="@Model.CategoryId" class="control-label">Category</label>
-                                    @if (@CurContestId == 0)
-                                    {
-                                        <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;">
-                                            <option value="">-- Select Category --</option>
-                                        </select>
-                                    }
-                                    else
-                                    {
-                                        <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;" disabled>
-                                            <option value="">-- Select Category --</option>
-                                        </select>
-                                    }
+                                @* <div class="recipe-form-group">
+                            <label asp-for="@Model.CategoryId" class="control-label">Category</label>
+                            @if (@CurContestId == 0)
+                            {
+                            <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;">
+                            <option value="">-- Select Category --</option>
+                            </select>
+                            }
+                            else
+                            {
+                            <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;" disabled>
+                            <option value="">-- Select Category --</option>
+                            </select>
+                            }
 
-                                    <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
-                                </div>
+                            <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
+                            </div> *@
 
                                 <div class="recipe-form-group" style="margin-bottom: 0;">
                                     @Html.Label("Image Title", "Image Title", new { @class = "control-label" })
                                     <div class="avatar-container">
-                                        <img id="avatarPreview" src="" alt="Preview" class="img-responsive img-thumbnail" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                                        @if (!string.IsNullOrEmpty(recipes?.FirstOrDefault()?.ImageTitle))
+                                        {
+                                            <img id="avatarPreview" src="@recipes?.FirstOrDefault()?.ImageTitle" alt="Preview" class="img-responsive img-thumbnail" style="max-width: 300px; max-height: 300px; margin-top: 10px;" />
+                                        }
                                     </div>
                                     @Html.TextBox("file", "", new { type = "file", @onchange = "previewImage(this)" }) <br />
                                 </div>
+
 
                             </div>
                         </div>
@@ -122,23 +137,23 @@
                                 <ul class="list-group">
                                     <li class="list-group-item list-group-item-action">
                                         <strong>Prep Time:</strong>
-                                        <input asp-for="@Model.PrepTime" class="form-control" style="font-size: 16px;" placeholder="mins" />
+                                        <input asp-for="@Model.PrepTime" class="form-control" style="font-size: 16px;" placeholder="mins" value="@recipes?.FirstOrDefault()?.PrepTime" />
                                         <span asp-validation-for="@Model.PrepTime" class="text-danger"></span>
-                                        
+
                                     </li>
                                     <li class="list-group-item list-group-item-action ">
                                         <strong>Cook Time:</strong>
-                                        <input asp-for="@Model.CookTime" class="form-control" style="font-size: 16px;" placeholder="mins" />
+                                        <input asp-for="@Model.CookTime" class="form-control" style="font-size: 16px;" placeholder="mins" value="@recipes?.FirstOrDefault()?.CookTime" />
                                         <span asp-validation-for="@Model.CookTime" class="text-danger"></span>
                                     </li>
                                     <li class="list-group-item list-group-item-action ">
                                         <strong>Total Time:</strong>
-                                        <input asp-for="@Model.TotalTime" class="form-control" style="font-size: 16px;" placeholder="mins" />
+                                        <input asp-for="@Model.TotalTime" class="form-control" style="font-size: 16px;" placeholder="mins" value="@recipes?.FirstOrDefault()?.TotalTime" />
                                         <span asp-validation-for="@Model.TotalTime" class="text-danger"></span>
                                     </li>
                                     <li class="list-group-item list-group-item-action">
                                         <strong>Servings:</strong>
-                                        <input asp-for="@Model.Servings" class="form-control" style="font-size: 16px;" placeholder="people" />
+                                        <input asp-for="@Model.Servings" class="form-control" style="font-size: 16px;" placeholder="people" value="@recipes?.FirstOrDefault()?.Servings" />
                                         <span asp-validation-for="@Model.Servings" class="text-danger"></span>
                                     </li>
                                 </ul>
@@ -150,27 +165,26 @@
                                 <ul class="list-group">
                                     <li class="list-group-item list-group-item-action">
                                         <strong>Calories:</strong>
-                                        <input asp-for="@Model.Calories" class="form-control" style="font-size: 16px;" placeholder="g" />
+                                        <input asp-for="@Model.Calories" class="form-control" style="font-size: 16px;" placeholder="g" value="@recipes?.FirstOrDefault()?.Calories" />
                                         <span asp-validation-for="@Model.Calories" class="text-danger"></span>
-                                        
+
                                     </li>
                                     <li class="list-group-item list-group-item-action">
                                         <strong>Fat:</strong>
-                                        <input asp-for="@Model.Fat" class="form-control" style="font-size: 16px;" placeholder="g" />
+                                        <input asp-for="@Model.Fat" class="form-control" style="font-size: 16px;" placeholder="g" value="@recipes?.FirstOrDefault()?.Fat" />
                                         <span asp-validation-for="@Model.Fat" class="text-danger"></span>
-                                        
+
                                     </li>
                                     <li class="list-group-item list-group-item-action">
                                         <strong>Carbs:</strong>
-                                        <input asp-for="@Model.Carbs" class="form-control" style="font-size: 16px;" placeholder="g" />
+                                        <input asp-for="@Model.Carbs" class="form-control" style="font-size: 16px;" placeholder="g" value="@recipes?.FirstOrDefault()?.Carbs" />
                                         <span asp-validation-for="@Model.Carbs" class="text-danger"></span>
-                                        
+
                                     </li>
                                     <li class="list-group-item list-group-item-action ">
                                         <strong>Protein:</strong>
-                                        <input asp-for="@Model.Protein" class="form-control" style="font-size: 16px;" placeholder="g" />
+                                        <input asp-for="@Model.Protein" class="form-control" style="font-size: 16px;" placeholder="g" value="@recipes?.FirstOrDefault()?.Protein" />
                                         <span asp-validation-for="@Model.Protein" class="text-danger"></span>
-                                        
                                     </li>
                                 </ul>
                             </div>
@@ -179,37 +193,33 @@
                 </div>
 
                 <hr>
-                <div>
-                    <div class="form-group contest-group">
-                        <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">Contest Name</h3>
-                        @* <label asp-for="@Model.ContestId" class="control-label">Contest Id</label> *@
-                        @if (@CurContestId == 0)
-                        {
-                            <select asp-for="@Model.ContestId" asp-items="@ViewBag.Contest" class="form-control" style="font-size: 16px; height: 40px;">
-                                <option value="">-- Select Category --</option>
-                            </select>
-                        }
-                        else
-                        {
-                            <select asp-for="@Model.ContestId" asp-items="@ViewBag.Contest" class="form-control" style="font-size: 16px; height: 40px;" disabled>
-                                <option value="">-- Select Category --</option>
-                            </select>
-                        }
-                        
-                        <span asp-validation-for="@Model.ContestId" class="text-danger"></span>
-                    </div>
-
-                    @* <div class="form-group">
-                        <label asp-for="@Model.ReadFree" class="control-label">Read Free</label>
-                        <input asp-for="@Model.ReadFree" class="form-control" />
-                        <span asp-validation-for="@Model.ReadFree" class="text-danger"></span>
-                    </div> *@
-                </div>
                 <br />
                 <div>
                     <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">
-                        Step by Step</h3>
+                        Step by Step
+                    </h3>
                     <div>
+                        <ul class="list-group">
+                            @foreach (var RecipeStep in RecipeSteps)
+                            {
+                                <li class="ingredients-content">
+                                    <h2 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 20px;color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">Step: <span>@RecipeStep.Step</span></h2>
+                                    <ul class="list-group">
+                                        <li class="list-group-item list-group-item-action">
+                                            <strong>Description:</strong>
+                                            <input asp-for="@RecipeStep.Description" class="form-control" style="font-size: 16px;" placeholder="Description" />
+                                            <span asp-validation-for="@RecipeStep.Description" class="text-danger"></span>
+                                        </li>
+                                        <li class="list-group-item list-group-item-action">
+                                            <strong>VideoUrl:</strong>
+                                            <input asp-for="@RecipeStep.VideoUrl" class="form-control" style="font-size: 16px;" placeholder="VideoUrl" />
+                                            <span asp-validation-for="@RecipeStep.VideoUrl" class="text-danger"></span>
+                                        </li>
+                                    </ul>
+                                    <button class="btn btn-danger deleteStepBtn" type="button" data-step="@RecipeStep.Step">Delete Step</button>
+                                </li>
+                            }
+                        </ul>
 
                         <div id="textBoxContainer" class="form-group">
                         </div>
@@ -218,13 +228,30 @@
 
                     <hr />
 
-                    <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">
-                        Ingredients</h3>
-                    <div>
-                        <div id="IngredientsContainer" class="form-group">
-                        </div>
-                        <button id="addIngredientsBtn" class="btn btn-primary">ADD GROUP INGREDIENT</button>
+                    <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px; color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">Ingredients</h3>
+                    <ul class="list-group">
+                        @foreach (var IngGroup in IngredientGroups)
+                        {
+                            <li class="ingredients-content">
+                                    <div class="form-group">
+                                    <label asp-for="@IngGroup.NameIngredients" class="control-label"></label>
+                                    <input asp-for="@IngGroup.NameIngredients" class="form-control" style="font-size: 16px;" value="@IngGroup?.NameIngredients" />
+                                    <span asp-validation-for="@Model.RecipeTitle" class="text-danger"></span>
+                                    </div>
+                                <h2 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 20px;color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px;">@IngGroup.NameIngredients</h2>
+                                <ul class="list-group">
+                                    <li class="list-group-item list-group-item-action">
+                                        <strong>Description:</strong>
+                                        <textarea asp-for="@IngGroup.Description" class="form-control" rows="7" style="font-size: 16px;"></textarea>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-danger deleteIngredientsBtn" type="button" data-groupid="@IngGroup.IngredientId">Delete Group</button>
+                            </li>
+                        }
+                    </ul>
+                    <div id="IngredientsContainer" class="form-group">
                     </div>
+                    <button id="addIngredientsBtn" class="btn btn-primary">ADD GROUP INGREDIENT</button>
                     <hr />
                     <hr>
                     <div class="form-group">
@@ -238,37 +265,29 @@
     </div>
 </div>
 @section scripts {
+
     <script>
         $(document).ready(function () {
-            var counter = 0;
+            var counter = @RecipeSteps?.FirstOrDefault()?.Step; // Set counter to the number of existing steps
 
             $("#addStepBtn").on("click", function (e) {
                 e.preventDefault();
-                //$(".removeStepBtn").hide();
-                var step = counter + 1
+                var step = counter + 1;
                 // Tạo textbox mới và thêm vào container
                 var newTextBox = $(
                     '<div class="input-group mb-3">' +
-
                     '<div class="input-group-append">' +
                     '<h1>Step ' + step + '</h1>' +
-
                     '</div>' +
-
-
                     '<input type="hidden" class="form-control" name="recipeStep[' + counter + '].Step" placeholder="Step" value="' + step + '" />' +
-
                     '<div class="form-group">' +
                     '<label class="control-label">Description:</label>' +
-                    '<input type="text" class="form-control" name="recipeStep[' + counter + '].Description" placeholder="Description" style="font-size: 16px;"/>' +
+                    '<input type="text" class="form-control" name="recipeStep[' + counter + '].Description" placeholder="Description" style="font-size: 16px;" />' +
                     '</div>' +
-
                     '<div class="form-group">' +
                     '<label class="control-label">Video URL:</label>' +
-                    '<input type="text" class="form-control" name="recipeStep[' + counter + '].VideoURL" placeholder="VideoURL" style="font-size: 16px;"/>' +
+                    '<input type="text" class="form-control" name="recipeStep[' + counter + '].VideoURL" placeholder="VideoURL" style="font-size: 16px;" />' +
                     '</div>' +
-
-
                     '<button class="btn btn-danger removeStepBtn" type="button">DELETE STEP ' + step + '</button>' +
                     '</div>'
                 );
@@ -276,7 +295,6 @@
 
                 counter++;
             });
-
 
             $("#textBoxContainer").on("click", ".removeStepBtn", function () {
                 if (counter > 0) {
@@ -287,12 +305,73 @@
                     if (counter >= 0) {
                         $(".removeStepBtn").show();
                     }
-
                 }
+            });
+
+
+            $(".deleteStepBtn").on("click", function () {
+                var step = $(this).data("step");
+                // Xóa thông tin bước có số thứ tự là step trong RecipeSteps
+                var existingStep = @Json.Serialize(RecipeSteps.FirstOrDefault(step => RecipeSteps.FirstOrDefault() == step));
+                // Thực hiện xóa bước ở phía server nếu cần
+                // ...
+
+                // Xóa HTML hiển thị của bước
+                $(this).closest('.ingredients-content').remove();
             });
         });
     </script>
     <script>
+        $(document).ready(function () {
+            var counter1 = @IngredientGroups?.Count() ?? 0;
+
+            $("#addIngredientsBtn").on("click", function (e) {
+                e.preventDefault();
+                var groupid = counter1 + 1;
+
+                // Tạo một textbox mới và thêm vào container
+                var newTextBox = $(
+                    '<div class="input-group mb-3">' +
+                    '<input type="hidden" class="form-control" name="ingGroup[' + counter1 + '].IngredientId" placeholder="ID group" value="' + groupid + '" />' +
+                    '<div class="form-group">' +
+                    '<label class="control-label">Ingredients Group ' + groupid + ':</label>' +
+                    '<input type="text" class="form-control" name="ingGroup[' + counter1 + '].NameIngredients" placeholder="Name Ingredients Group" style="font-size: 16px;" />' +
+                    '</div>' +
+                    '<input type="hidden" class="form-control" name="ingGroup[' + counter1 + '].RecipeId" placeholder="Recipe ID" value="0" />' +
+                    '<div class="container">' +
+                    '<div class="form-group">' +
+                    '<label class="control-label">Ingredients Detail:</label>' +
+                    '<textarea class="form-control" rows="8" name="ingGroup[' + counter1 + '].Description" placeholder="Description" style="font-size: 16px;"></textarea>' +
+                    '</div>' +
+                    '<button class="btn btn-danger deleteIngredientsBtn" type="button" data-groupid="' + groupid + '">DELETE GROUP</button>' +
+                    '</div>' +
+                    '<br>' +
+                    '</div>'
+                );
+                $("#IngredientsContainer").append(newTextBox);
+
+                counter1++;
+            });
+
+            $("#IngredientsContainer").on("click", ".deleteIngredientsBtn", function () {
+                if (counter1 > 0) {
+                    var groupid = $(this).data("groupid");
+
+                    // Thực hiện xóa nhóm nguyên liệu ở phía server nếu cần
+                    // ...
+
+                    // Xóa HTML hiển thị của nhóm nguyên liệu
+                    $(this).closest('.input-group').remove();
+                    counter1--;
+
+                    if (counter1 >= 0) {
+                        $(".deleteIngredientsBtn").show();
+                    }
+                }
+            });
+        });
+    </script>
+    @* <script>
         $(document).ready(function () {
             var counter1 = 0;
             $("#addIngredientsBtn").on("click", function (e) {
@@ -307,7 +386,7 @@
 
                     '<div class="form-group">' +
                     '<label class="control-label">Ingredients Group ' + groupid + ':</label>' +
-                    '<input type="text" class="form-control" name="ingGroup[' + counter1 + '].NameIngredients" placeholder="Name Ingredients Group" />' +
+                    '<input type="text" class="form-control" name="ingGroup[' + counter1 + '].NameIngredients" placeholder="Name Ingredients Group" style="font-size: 16px;" /> ' +
                     '</div>' +
 
                     '<input type="hidden" class="form-control" name="ingGroup[' + counter1 + '].RecipeId" placeholder="Recipe ID" value="0" />' +
@@ -316,7 +395,7 @@
 
                     '<div class="form-group">' +
                     '<label class="control-label">Ingredients Detail:</label>' +
-                    '<textarea class="form-control" rows="8" name="ingGroup[' + counter1 + '].Description" placeholder="Description"></textarea>' +
+                    '<textarea class="form-control" rows="8" name="ingGroup[' + counter1 + '].Description" placeholder="Description" style="font-size: 16px;"></textarea>' +
                     '</div>' +
                     '<button class="btn btn-danger removeStepBtn" type="button">DELETE GROUP</button>' +
 
@@ -346,7 +425,7 @@
                 }
             });
         });
-    </script>
+    </script> *@
     <script>
         $(document).ready(function () {
             // Lắng nghe sự kiện khi giá trị của CategoryId thay đổi

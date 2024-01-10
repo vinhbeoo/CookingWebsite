@@ -199,9 +199,6 @@ public partial class CookingWebsiteContext : DbContext
 			entity.ToTable("Recipes_Step");
 
             entity.Property(e => e.Step).ValueGeneratedNever();
-            entity.Property(e => e.ImageUrl)
-                .HasMaxLength(255)
-                .HasColumnName("ImageURL");
             entity.Property(e => e.VideoUrl)
                 .HasMaxLength(255)
                 .HasColumnName("VideoURL");

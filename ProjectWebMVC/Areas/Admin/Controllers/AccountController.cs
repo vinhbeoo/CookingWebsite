@@ -106,6 +106,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                             {"claimValue", "true"}
                         };
 
+                        LogUserActivity.LogUserLoginActivity(user.UserId);
                         return RedirectToAction("Index", "HomeAdmin", routeValues);
                     }
                     else if (user.RoleId == 2)
@@ -128,6 +129,7 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                             {"claimValue", "true"}
                         };
                         // Redirect to a view for regular users
+                        LogUserActivity.LogUserLoginActivity(user.UserId);
                         return RedirectToAction("Index", "HomeUser", routeValues);
                     }
                     else
@@ -196,13 +198,17 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                 {
                     // Xử lý lỗi, đọc đối tượng JSON từ response
                     string errorData = await response.Content.ReadAsStringAsync();
-                    var error = JsonSerializer.Deserialize<ErrorResponseModel>(errorData);
+                    if (string.IsNullOrEmpty(errorData))
+                    {
+                        return BadRequest("Object null");
+                    }
+                    /*var error = JsonSerializer.Deserialize<ErrorResponseModel>(errorData);*/
 
                     // Lưu thông báo lỗi vào TempData
-                    TempData["ErrorMessage"] = error?.Message;
+                    ViewData["ErrorMessage"] = errorData;
 
                     // Redirect về view NotificationEmailConfirm
-                    return View("NotificationEmailConfirm");
+                    return View("Register");
                 }
             }
             catch (Exception ex)

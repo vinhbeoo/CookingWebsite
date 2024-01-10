@@ -64,11 +64,12 @@ namespace ProjectLibrary.DataAccess
                 using (var context = new CookingWebsiteContext())
                 {
                     userDetail = context.UserDetails.Include(u => u.User).FirstOrDefault(x => x.UserId == userId);
+                    if (userDetail == null)
+                    {
+                        return null;
+                    }
                 }
-                if (userDetail == null)
-                {
-                    throw new Exception("UserDetail doesn't exists");
-                }
+                
             }
             catch (Exception e)
             {
