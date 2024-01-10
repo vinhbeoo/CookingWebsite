@@ -21,6 +21,19 @@ namespace ProjectWebAPI.Controllers
         [HttpGet("List/{recipeId}")]
         public ActionResult<IEnumerable<Recipe>> GetRecipeListById(int recipeId) => repository.GetRecipeListById(recipeId);
 
+        [HttpGet("List/ByUserId/{userId}")]
+        public ActionResult<IEnumerable<Recipe>> GetRecipeListByUserId(int userId)
+        {
+            var recipeList = repository.GetRecipeListByUserId(userId);
+
+            if (recipeList == null || !recipeList.Any())
+            {
+                return NotFound(); // Trả về 404 Not Found nếu không tìm thấy công thức nấu ăn
+            }
+
+            return Ok(recipeList); // Trả về danh sách công thức nấu ăn nếu tìm thấy
+        }
+
         // GET api/<RecipeController>/5
         [HttpGet("{recipeId}")]
         public ActionResult<Recipe> GetRecipeById(int recipeId)

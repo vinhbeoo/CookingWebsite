@@ -59,7 +59,7 @@ namespace ProjectWebAPI.Controllers
                 {
                     return Unauthorized("Invalid credentials.");
                 }
-                LogUserActivity.LogUserLoginActivity(user.UserId);
+                /*LogUserActivity.LogUserLoginActivity(user.UserId);*/
                 return Ok(user);
             }
             catch (Exception ex)
@@ -76,8 +76,24 @@ namespace ProjectWebAPI.Controllers
             {
                 return BadRequest("Password and confirmation password do not match.");
             }
+			if (string.IsNullOrWhiteSpace(model.UserName))
+			{
+                return BadRequest("UserName is null");
+			}
+			if (string.IsNullOrWhiteSpace(model.Email))
+			{
+				return BadRequest("Email is null");
+			}
+			if (string.IsNullOrWhiteSpace(model.Password))
+			{
+				return BadRequest("Password is null");
+			}
+			if (string.IsNullOrWhiteSpace(model.ConfirmPassword))
+			{
+				return BadRequest("ConfirmPassword is null");
+			}
 
-            try
+			try
             {
                 using (var context = new CookingWebsiteContext())
                 {

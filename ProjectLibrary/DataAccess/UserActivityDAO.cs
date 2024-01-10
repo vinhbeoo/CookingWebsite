@@ -104,5 +104,32 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception("Error logging user activity: " + ex.Message);
             }
         }
+
+        public List<UserActivity> DeleteUserActivitiesByUserId(int userId)
+        {
+            List<UserActivity> userActivities = new List<UserActivity>();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    userActivities = context.UserActivities.Where(x => x.UserId == userId).ToList();
+                    if (userActivities == null || (!userActivities.Any() && userActivities.Count == 0))
+                    {
+                        throw new Exception("User doesn't exists");
+                    }
+
+                    context.UserActivities.RemoveRange(userActivities);
+                    context.SaveChanges();
+                }                
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return userActivities;
+        }
+
+
     }
 }

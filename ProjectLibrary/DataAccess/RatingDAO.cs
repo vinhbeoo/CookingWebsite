@@ -48,6 +48,23 @@ namespace ProjectLibrary.DataAccess
             return list;
         }
 
+        public List<Rating> GetRatingByRecipeId(int recipeId)
+        {
+            var list = new List<Rating>();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    list = context.Ratings.Where(x => x.RecipeId == recipeId).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving user registration histories: " + ex.Message);
+            }
+            return list;
+        }
+
         public Rating FindRatingById(int ratingId)
         {
             Rating rating = new Rating();

@@ -1,10 +1,14 @@
-﻿﻿@{
+﻿@using System.Security.Claims;
+﻿@{
 	ViewData["title"] = "HomeUser";
 	Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
 }
-
+@{
+	var user = User as ClaimsPrincipal;
+	var userName = user?.FindFirstValue(ClaimTypes.Name);
+	var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+}
 <!doctype html>
-
 <body id="page-top">
 
 	<section id="home" class="home">
@@ -402,3 +406,6 @@
 
 </body>
 </html>
+
+
+

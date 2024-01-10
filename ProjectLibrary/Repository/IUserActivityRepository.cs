@@ -13,5 +13,6 @@ namespace ProjectLibrary.Repository
         List<UserActivity> FindUserActivitiesByUserId(int userId);
         List<UserActivity> GetUserActivities();
         List<UserActivity> GetUserActivitiesById(int id);
+        List<UserActivity> DeleteUserActivitiesByUserId(int userId);
     }
 }

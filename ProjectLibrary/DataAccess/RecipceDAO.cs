@@ -65,7 +65,29 @@ namespace ProjectLibrary.DataAccess
 			return list;
 		}
 
-		public Recipe GetRecipeById(int id)
+        public List<Recipe> GetRecipeListByUserId(int userId)
+        {
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    // Truy vấn cơ sở dữ liệu để lấy danh sách công thức theo userId
+                    var list = context.Recipes
+                        .Where(x => x.Creator == userId)
+                        .ToList();
+
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving recipes list by userId: " + ex.Message);
+            }
+        }
+
+
+
+        public Recipe GetRecipeById(int id)
         {
 			Recipe recipe = new Recipe();
 			try

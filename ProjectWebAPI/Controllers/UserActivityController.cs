@@ -28,5 +28,15 @@ namespace ProjectWebAPI.Controllers
             return Ok(userActivities); // Wrap the user activities in an Ok result
         }
 
+        [HttpDelete("{userId}")]
+        public ActionResult<List<UserActivity>> DeleteUserActivity(int userId)
+        {
+            var user = repository.FindUserActivitiesByUserId(userId);
+            if (user == null)
+                return NotFound("User not found");
+
+            repository.DeleteUserActivitiesByUserId(userId);
+            return Ok("Delete User successfully");
+        }
     }
 }

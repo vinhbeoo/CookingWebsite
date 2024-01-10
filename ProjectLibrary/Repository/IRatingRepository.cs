@@ -10,6 +10,7 @@ namespace ProjectLibrary.Repository
     public interface IRatingRepository
     {
         List<Rating> GetRatings();
+        List<Rating> GetRatingByRecipeId(int recipeId);
         void SaveRating(Rating r);
         Rating GetRatingById(int id);
         Rating GetRatingByUserAndRecipeId(int user, int recipeId);
