@@ -23,7 +23,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
         {
             this.notificationService = notificationService;
         }
-        public async Task<IActionResult> Index(string? searchString, int? page, int contestId)
+        public async Task<IActionResult> Index(string? searchString, int? page, int contestId, int end)
 		{
 
             HttpClient client = new HttpClient();
@@ -91,8 +91,8 @@ namespace ProjectWebMVC.Areas.User.Controllers
                           Description = recipe.Description,
                           TotalVote = recipe.TotalVote,
                           Voted = rating?.Any(r => r.UserId == int.Parse(userId)) == true ? userId : ""
-                      })
-                .OrderByDescending(r => r.TotalVote);
+                      });
+                //.OrderByDescending(r => r.TotalVote);
 
             string RecipeDataJson = JsonConvert.SerializeObject(RecipeData);
             var RecipeDataList = JsonConvert.DeserializeObject<List<object>>(RecipeDataJson);
@@ -103,6 +103,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
             ViewBag.UserName = userName;
             ViewBag.UserId = userId;
             ViewBag.ContestId = contestId;
+            ViewBag.End = end;
 
             ViewBag.Notifications = await this.notificationService.GetAsync();
             return View();

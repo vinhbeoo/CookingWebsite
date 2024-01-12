@@ -9,6 +9,7 @@
 	var UserName = ViewBag.UserName;
 	var UserId = ViewBag.UserId;
 	var ContestId = ViewBag.ContestId;
+	var End = ViewBag.End;
 }
 
 
@@ -53,29 +54,43 @@
 								<p>@recipe.Description</p>
 
 								@*Xử lý button vote_____________*@
+								@if (End == 1) 
+								{
+									<button class="vote-btn btn btn-success btn-lg">
+										<span class="glyphicon glyphicon-thumbs-up"></span>
+										<span>Total Vote:</span>
+										<span id="voteCount_@recipe.RecipeId">@recipe.TotalVote</span>
+									</button>
+								}
+								else
+								{
 								@using (Html.BeginForm("VoteRecipe", "ContestRecipeList", FormMethod.Post))
 								{
 									@if (UserId.ToString() != recipe.Voted?.ToString())
 									{
-										<button type="submit" class="vote-btn btn btn-success" onclick="toggleVote(this, @recipe.RecipeId)">
-											<span class="glyphicon glyphicon-thumbs-up"></span> <span>Vote:</span> <span id="voteCount_@recipe.RecipeId">@recipe.TotalVote</span>
-										</button>
+											<button type="submit" class="vote-btn btn btn-success btn-lg" onclick="toggleVote(this, @recipe.RecipeId)">
+												<span class="glyphicon glyphicon-thumbs-up"></span>
+												<span>Vote:</span>
+												<span id="voteCount_@recipe.RecipeId">@recipe.TotalVote</span>
+											</button>
 										<input type="hidden" name="recipeId" value="@recipe.RecipeId" />
 										<input type="hidden" name="vote" value="1" />
 										<input type="hidden" name="contestId" value="@ContestId" />
 									}
 									else
 									{
-										<button type="submit" class="vote-btn btn btn-danger" onclick="toggleVote(this, @recipe.RecipeId)">
-											<span class="glyphicon glyphicon-thumbs-down"></span> <span>Unvote:</span> <span id="voteCount_@recipe.RecipeId">@recipe.TotalVote</span>
-										</button>
+											<button type="submit" class="vote-btn btn btn-danger btn-lg" onclick="toggleVote(this, @recipe.RecipeId)">
+												<span class="glyphicon glyphicon-thumbs-down"></span>
+												<span>Unvote:</span>
+												<span id="voteCount_@recipe.RecipeId">@recipe.TotalVote</span>
+											</button>
 										<input type="hidden" name="recipeId" value="@recipe.RecipeId" />
 										<input type="hidden" name="unvote" value="0" />
 										<input type="hidden" name="contestId" value="@ContestId" />
 									}
 
 								}
-
+								}
 							</div>
 						</div>
 					</div>
