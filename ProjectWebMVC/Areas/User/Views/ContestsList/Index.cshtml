@@ -5,6 +5,7 @@
     ViewData["title"] = "ContestsList";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
     var contests = ViewBag.Contest;
+    var recipeList = ViewBag.RecipeList;
     var recipesCount = ViewBag.Contest.Count;
 }
 <head>
@@ -60,6 +61,8 @@
                                     //string linkrec = @recipe.RecipeId.ToString();
                                     string conTitle = @contest.ContestName;
                                     DateTime currentDate = DateTime.Now;
+                                    var check = 0;
+                                    var end = 0;
                                 }
                                 <h3 class="text-white" style="font-family: 'Dancing Script', cursive; font-size: 26px;color: #0d1b75; text-align: left; margin: 0; padding-bottom: 10px; ">
                                     @Html.ActionLink(conTitle, "Index", "ContestRecipeList", new { contestId = @contest.ContestId }, null)
@@ -67,15 +70,43 @@
                                 <p>@contest.Description</p>
                                 <p>From: @contest.StartTime.ToString("dd/MM/yyyy") To: @contest.EndTime.ToString("dd/MM/yyyy")</p>
                                 <p>Creator: @contest.OwnerUser.UserName</p>
+                                <p><strong class="text-info">The recipe with <u>the most votes</u> wins first prize. In the event of a tie, the <u>earliest-posted</u> recipe wins.</strong></p>
                                 @if (currentDate >= @contest.StartTime && currentDate <= @contest.EndTime)
                                 {
-                                    @Html.ActionLink("Create recipes for Contest", "Index", "RecipeEdit", new { contestId = @contest.ContestId, categoryId = 2 }, new { @class = "btn btn-primary", target = "_blank" })
+                                    @foreach (var rec in recipeList)
+                                    {
+                                        @if (@contest.ContestId == rec.ContestId)
+                                        {
+                                            @Html.ActionLink("Your Recipe", "ViewRecipe", "ContestsList", new { contestId = @contest.ContestId,}, new { @class = "btn btn-success", target = "_blank" })
+                                            check = 1;
+                                            break;
+                                        }
+                                    }
+                                    if (check == 0)
+                                    {
+                                        @Html.ActionLink("Create recipes for Contest", "Index", "RecipeEdit", new { contestId = @contest.ContestId, categoryId = 2 }, new { @class = "btn btn-info", target = "_blank" })
+                                    }
+                                   
                                 }
                                 else
                                 {
                                     <button type="button" class="btn btn-danger" disabled>The contest has ended</button>
+                                    @Html.ActionLink("1st Recipe", "FirstRecipe", "ContestsList", new { contestId = @contest.ContestId,}, new { @class = "btn btn-success", target = "_blank" })
+
                                 }
-                                @Html.ActionLink("List of recipes by contest", "Index", "ContestRecipeList", new { contestId = @contest.ContestId}, new { @class = "btn btn-primary", target = "_blank" })
+                                 @if (currentDate >= @contest.StartTime && currentDate <= @contest.EndTime)
+                                {
+                                    <span>
+                                        @Html.ActionLink("Recipes of this contest", "Index", "ContestRecipeList", new { contestId = @contest.ContestId, end = 0}, new { @class = "btn btn-primary", target = "_blank" })
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>
+                                        @Html.ActionLink("Recipes of this contest", "Index", "ContestRecipeList", new { contestId = @contest.ContestId, end = 1}, new { @class = "btn btn-primary", target = "_blank" })
+                                    </span>
+                                }
+
                             </div>
                         </div>
                     </div>
