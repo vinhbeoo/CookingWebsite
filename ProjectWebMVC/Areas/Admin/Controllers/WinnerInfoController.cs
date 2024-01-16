@@ -89,5 +89,38 @@ namespace ProjectWebMVC.Areas.Admin.Controllers
                 return View(new List<WinnerInfo>());
             }
         }
+
+        public async Task<IActionResult> Details(int contestId)
+        {
+            if (contestId <= 0)
+            {
+                TempData["Message"] = "Invalid Winner Info ID.";
+                return RedirectToAction("Index", "WinnerInfo", new { message = "invalidid" });
+            }
+
+            HttpResponseMessage res = await _httpClient.GetAsync($"{_url}/Recipe/{contestId}");
+            if (res.IsSuccessStatusCode)
+            {
+                string strData = await res.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                WinnerInfo winnerInfo = JsonSerializer.Deserialize<WinnerInfo>(strData, options);
+
+                if (winnerInfo != null)
+                {
+                    return View(winnerInfo);
+                }
+                else
+                {
+                    TempData["Message"] = "WinnerInfo not found.";
+                    return RedirectToAction("Index", "WinnerInfo", new { message = "notfound" });
+                }
+            }
+
+            TempData["Message"] = "Error retrieving WinnerInfo.";
+            return RedirectToAction("Index", "Contest", new { message = "error" });
+        }
     }
 }

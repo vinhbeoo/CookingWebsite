@@ -11,6 +11,8 @@ public partial class WinnerInfo
 
     public int? ContestId { get; set; }
 
+    public int? RecipeId { get; set; }
+
     public int? WinnerUserId { get; set; }
 
     public DateTime? WinningDate { get; set; }
@@ -20,6 +22,8 @@ public partial class WinnerInfo
     public int? Vote { get; set; }
 
     public virtual Contest? Contest { get; set; }
+
+    public virtual Recipe? Recipe { get; set; }
 
     public virtual User? WinnerUser { get; set; }
 }

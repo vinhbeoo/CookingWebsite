@@ -185,5 +185,21 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception(ex.Message);
             }
         }
+        public List<Rating> GetRatingByContestId(int contestId)
+        {
+            var list = new List<Rating>();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    list = context.Ratings.Where(x => x.ContestId == contestId).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving user registration histories: " + ex.Message);
+            }
+            return list;
+        }
     }
 }

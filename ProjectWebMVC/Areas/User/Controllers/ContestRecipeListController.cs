@@ -73,6 +73,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
                       (recipe, rating) => new
                       {
                           RecipeId = recipe.RecipeId,
+                          ContestId = contestId,
                           RecipeTitle = recipe.RecipeTitle,
                           ImageTitle = recipe.ImageTitle,
                           Description = recipe.Description,
@@ -86,7 +87,8 @@ namespace ProjectWebMVC.Areas.User.Controllers
                       (recipe, rating) => new
                       {
                           RecipeId = recipe.RecipeId,
-                          RecipeTitle = recipe.RecipeTitle,
+						  ContestId = contestId,
+						  RecipeTitle = recipe.RecipeTitle,
                           ImageTitle = recipe.ImageTitle,
                           Description = recipe.Description,
                           TotalVote = recipe.TotalVote,
@@ -107,9 +109,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
 
             ViewBag.Notifications = await this.notificationService.GetAsync();
             return View();
-
         }
-
 
         //Vote Contest Recipe
         [HttpPost]
@@ -121,7 +121,6 @@ namespace ProjectWebMVC.Areas.User.Controllers
             var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
             HttpClient client = new HttpClient();
             string ApiUrl = "https://localhost:7269/api/Rating";
-
             if (vote == 1)
             {
                 var ratingList = new List<Rating>();
@@ -130,6 +129,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
                     RatingId = 0,
                     UserId = int.Parse(userId.ToString()),
                     RecipeId = recipeId,
+                    ContestId = contestId,
                     Vote = vote
                 });
                 foreach (var rate in ratingList)
@@ -138,18 +138,13 @@ namespace ProjectWebMVC.Areas.User.Controllers
                     var contentData = new StringContent(strData, System.Text.Encoding.UTF8, "application/json");
                     HttpResponseMessage res = await client.PostAsync(ApiUrl, contentData);
                 }
-
-
             }
             else
             {
                 string recId = recipeId.ToString();
                 HttpResponseMessage res = await client.DeleteAsync(ApiUrl + "/" + userId + "/" + recId);
             }
-
             return RedirectToAction("Index", "ContestRecipeList", new { contestId = contestId });
-
-
         }
     }
 }

@@ -6,6 +6,8 @@
 
         public int? ContestId { get; set; }
 
+        public int? RecipeId { get; set; }
+
         public int? WinnerUserId { get; set; }
 
         public DateTime? WinningDate { get; set; }

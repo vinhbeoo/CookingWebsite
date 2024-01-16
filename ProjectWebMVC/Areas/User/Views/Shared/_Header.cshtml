@@ -113,8 +113,14 @@
                     </ul>
                 </li>
                 <li><a class="page-scroll" href="#gallery">Gallery</a></li>
-                <li><a class="page-scroll" href="@Url.Action("Index", "ContestsList", new { area = "User" })">Contests</a></li>
-                <li><a class="page-scroll" href="#blog">Blog</a></li>
+                <li class="dropdown">
+                    <a href="#" class="page-scroll dropdown-toggle" data-toggle="dropdown">Contests <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("Index", "ContestsList", new { area = "User" })">Contest List</a></li>
+                        <li><a href="@Url.Action("Index", "WinnerInfo", new { area = "User" })">Winner Information</a></li>
+                    </ul>
+                </li>
+                <li><a class="page-scroll" href="@Url.Action("Index", "Blog", new { area = "User" })">Blog</a></li>
 
                 @if (userName != null)
                 {

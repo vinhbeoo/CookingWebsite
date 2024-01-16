@@ -98,9 +98,18 @@
                             @Html.DisplayFor(modelItem => item.OwnerUser.UserName)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ContestId }, new { @class = "btn btn-danger" })
-                            @Html.ActionLink("Details", "Details", new { id = item.ContestId }, new { @class = "btn btn-danger details-link" })
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ContestId }, new { @class = "btn btn-danger delete-link" })
+                            @if (item.EndTime < DateTime.Now)
+                            {
+                                @Html.ActionLink("WinnerInfo", "Details", "WinnerInfo", new { contestId = item.ContestId }, new { @class = "btn btn-danger details-link" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ContestId }, new { @class = "btn btn-danger mr-1" })
+                                <text> | </text>
+                                @Html.ActionLink("Details", "Details", new { id = item.ContestId }, new { @class = "btn btn-danger details-link mr-1" })
+                                <text> | </text>
+                                @Html.ActionLink("Delete", "Delete", new { id = item.ContestId }, new { @class = "btn btn-danger delete-link" })
+                            }
                         </td>
                     </tr>
                 }
@@ -129,5 +138,18 @@
                 $(this).remove();
             });
         }, 5000);
+
+        // Lặp qua từng hàng trong bảng
+        $("table.custom-table tbody tr").each(function () {
+            var endTime = new Date($(this).find("td:eq(4)").text()); // Lấy giá trị thời gian từ cột thứ 4 (EndTime)
+            var now = new Date(); // Lấy thời gian hiện tại
+
+            // So sánh thời gian và ẩn/hiển thị nút "WinnerInfo"
+            if (endTime < now) {
+                $(this).find("td:eq(6) button.details-link").show(); // Hiển thị nút "WinnerInfo"
+            } else {
+                $(this).find("td:eq(5) a.btn.btn-danger").show(); // Hiển thị các nút "Edit", "Details", "Delete"
+            }
+        });
     });
 </script>

@@ -15,5 +15,7 @@ namespace ProjectLibrary.Repository
         public void UpdateUserDetail(UserDetail u) => UserDetailDAO.Instance.UpdateUserDetail(u);
         public List<UserDetail> GetUserDetails() => UserDetailDAO.Instance.GetUserDetails();
         public UserDetail GetUserDetailById(int id) => UserDetailDAO.Instance.FindUserDetailById(id);
-    }
+        public Task<List<UserDetail>> GetUserDetailsByUserIds(List<int> userIds) => UserDetailDAO.Instance.GetUserDetailsByUserIds(userIds);
+
+	}
 }

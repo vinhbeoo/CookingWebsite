@@ -86,5 +86,26 @@ namespace ProjectWebAPI.Controllers
             repository.DeleteUserDetail(userDetail);
             return Ok("UserDetail Delete successfully");
         }
-    }
+
+		[HttpGet("getByUserIds")]
+		public async Task<ActionResult<List<UserDetail>>> GetUserDetailsByUserIdsAsync([FromQuery] List<int> userIds)
+		{
+			try
+			{
+				var userDetailList = await repository.GetUserDetailsByUserIds(userIds);
+
+				if (userDetailList == null || userDetailList.Count == 0)
+				{
+					return NotFound("No user details found for the provided user IDs.");
+				}
+
+				return Ok(userDetailList);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(500, $"An error occurred: {ex.Message}");
+			}
+		}
+
+	}
 }

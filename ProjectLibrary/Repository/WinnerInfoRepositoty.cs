@@ -12,6 +12,7 @@ namespace ProjectLibrary.Repository
     {
         public List<WinnerInfo> GetWinnerInfos() => WinnerInfoDAO.Instance.GetWinnerInfos();
         public WinnerInfo GetWinnerInfoById(int id) => WinnerInfoDAO.Instance.GetWinnerInfoById(id);
+        public WinnerInfo GetWinnerInfoByContestId(int contestId) => WinnerInfoDAO.Instance.GetWinnerInfoByContestId(contestId);
         public void SaveWinnerInfo(WinnerInfo winner) => WinnerInfoDAO.Instance.SaveWinnerInfo(winner);
         public void UpdateWinnerInfo(WinnerInfo winner) => WinnerInfoDAO.Instance.UpdateWinnerInfo(winner);
         public void DeleteWinnerInfo(WinnerInfo winner)=> WinnerInfoDAO.Instance.DeleteWinnerInfo(winner);

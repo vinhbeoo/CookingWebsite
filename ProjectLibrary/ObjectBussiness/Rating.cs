@@ -9,11 +9,17 @@ public partial class Rating
 
     public int? UserId { get; set; }
 
+    public  int? ContestId { get; set; }
+
     public int? RecipeId { get; set; }
+
+    public DateTime? CreateDate { get; set; }
 
     public int? Vote { get; set; }
 
     public virtual Recipe? Recipe { get; set; }
+
+    public virtual Contest? Contest { get; set; }
 
     public virtual User? User { get; set; }
 }
