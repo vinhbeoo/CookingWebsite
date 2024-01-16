@@ -13,6 +13,11 @@ namespace ProjectWebAPI.Controllers
     public class WinnerInfoController : ControllerBase
     {
         private IWinnerInfoRepositoty repository = new WinnerInfoRepositoty();
+
+        private IRatingRepository ratingRepository = new RatingRepository();
+        private IRecipeRepository recipeRepository = new RecipeRepository();
+        private IUserDetailRepository userDetailRepository = new UserDetailRepository();
+
         // GET: api/<WinnerInfoController>
         [HttpGet]
         public ActionResult<IEnumerable<WinnerInfo>> GetWinnerInfos() => repository.GetWinnerInfos();
@@ -43,6 +48,7 @@ namespace ProjectWebAPI.Controllers
             {
                 WinnerId = winnerInfoDTO.WinnerId,
                 ContestId = winnerInfoDTO.ContestId,
+                RecipeId = winnerInfoDTO.RecipeId,
                 WinnerUserId = winnerInfoDTO.WinnerUserId,
                 WinningDate = winnerInfoDTO.WinningDate,
                 Prize = winnerInfoDTO.Prize,
@@ -75,6 +81,7 @@ namespace ProjectWebAPI.Controllers
 
             // Cập nhật thông tin cuộc thi từ DTO
             existingWinnerInfo.ContestId = updateWinnerInfoDTO.ContestId;
+            existingWinnerInfo.RecipeId = updateWinnerInfoDTO.RecipeId;
             existingWinnerInfo.WinnerUserId = updateWinnerInfoDTO.WinnerUserId;
             existingWinnerInfo.WinningDate = updateWinnerInfoDTO.WinningDate;
             existingWinnerInfo.Prize = updateWinnerInfoDTO.Prize;
@@ -99,6 +106,76 @@ namespace ProjectWebAPI.Controllers
             repository.DeleteWinnerInfo(winnerInfo);
 
             return Ok("WinnerInfo Delete successfully");
+        }
+
+        // Get thông tin người thắng cuộc
+        [HttpGet("Recipe/{contestId}")]
+        public IActionResult GetWinnerInfo(int contestId)
+        {
+            // Kiểm tra xem có WinnerInfo nào tồn tại với contestId đã cho hay không
+            var existingWinnerInfo = repository.GetWinnerInfoByContestId(contestId);
+            if (existingWinnerInfo != null)
+            {
+                // Nếu có, trả về thông tin WinnerInfo đã tồn tại
+                return Ok(existingWinnerInfo);
+            }
+
+            // Lấy danh sách những lượt đánh giá theo id cuộc thi truyền vào
+            var listRecipeByContest = ratingRepository.GetRatingByContestId(contestId);
+
+            if (listRecipeByContest == null || !listRecipeByContest.Any())
+            {
+                return NotFound();
+            }
+
+            var voteCountByRecipe = listRecipeByContest
+                .GroupBy(rating => rating.RecipeId)
+                .Select(group => new
+                {
+                    RecipeId = group.Key,
+                    VoteCount = group.Sum(rating => rating.Vote),
+                    MinCreateDate = group.Min(rating => rating.CreateDate)
+                })
+                .ToList();
+
+            // Lấy recipedId có tổng số lượt vote cao nhất và thời gian tạo sớm nhất
+            var selectedRecipe = voteCountByRecipe
+                .OrderByDescending(x => x.VoteCount)
+                .ThenByDescending(x => x.MinCreateDate)
+                .FirstOrDefault();
+            if (selectedRecipe == null)
+            {
+                // Nếu không có lượt vote nào, xử lý theo yêu cầu của bạn
+                return NotFound("No votes for any recipes in the contest.");
+            }
+
+            // Lấy thông tin công thức theo RecipeId
+            var recipeEntity = recipeRepository.GetRecipeById(selectedRecipe.RecipeId.GetValueOrDefault());
+            if (recipeEntity == null)
+            {
+                // Xử lý khi không tìm thấy công thức
+                return NotFound("Recipe not found.");
+            }
+
+            // Chuyển đổi từ selectedRecipe sang WinnerInfoDTO
+            var winnerInfoDTO = new WinnerInfoDTO
+            {
+                ContestId = contestId,
+                RecipeId = recipeEntity.RecipeId, // Sử dụng RecipeId từ công thức tìm được
+                WinnerUserId = recipeEntity.Creator, 
+                WinningDate = DateTime.Now,
+                Prize = "1000$", // Thay thế bằng giải thưởng thực tế
+                Vote = selectedRecipe.VoteCount
+            };
+
+            // Lưu thông tin WinnerInfo mới vào cơ sở dữ liệu
+            CreateWinnerInfo(winnerInfoDTO);
+
+            // Gọi phương thức để lấy thông tin WinnerInfo vừa tạo
+            var newWinnerInfo = repository.GetWinnerInfoByContestId(contestId);
+
+            // Trả về thông tin WinnerInfo
+            return Ok(newWinnerInfo);
         }
     }
 }

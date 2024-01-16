@@ -14,5 +14,7 @@ namespace ProjectLibrary.Repository
         void DeleteUserDetail(UserDetail u);
         void UpdateUserDetail(UserDetail u);
         List<UserDetail> GetUserDetails();
-    }
+        Task<List<UserDetail>> GetUserDetailsByUserIds(List<int> userIds);
+
+	}
 }

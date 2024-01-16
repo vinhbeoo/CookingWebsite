@@ -15,6 +15,8 @@ namespace ProjectLibrary.Repository
         public void SaveRating(Rating r) => RatingDAO.Instance.SaveRating(r);
         public Rating GetRatingById(int id) => RatingDAO.Instance.FindRatingById(id);
         public Rating GetRatingByUserAndRecipeId(int user, int recipeId) => RatingDAO.Instance.GetRatingByUserAndRecipeId(user, recipeId);
+
+        public List<Rating> GetRatingByContestId(int contestId) => RatingDAO.Instance.GetRatingByContestId(contestId);
         public void DeleteRating(Rating r) => RatingDAO.Instance.DeleteRating(r);
         public void UpdateRating(Rating r) => RatingDAO.Instance.UpdateRating(r);
     }

@@ -65,6 +65,27 @@ namespace ProjectLibrary.DataAccess
             return winner;
         }
 
+        public WinnerInfo GetWinnerInfoByContestId(int contestId)
+        {
+            WinnerInfo winner = new WinnerInfo();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    winner = context.WinnerInfos.FirstOrDefault(x => x.ContestId == contestId);
+                }
+                if (winner == null)
+                {
+                    throw new Exception("winner doesn't exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return winner;
+        }
+
         public void SaveWinnerInfo(WinnerInfo winner)
         {
             try

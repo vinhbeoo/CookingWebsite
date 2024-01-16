@@ -168,5 +168,23 @@ namespace ProjectLibrary.DataAccess
                 throw new Exception(ex.Message);
             }
         }
-    }
+		public Task<List<UserDetail>> GetUserDetailsByUserIds(List<int> userIds)
+		{
+			try
+			{
+                using (var context = new CookingWebsiteContext())
+                {
+                    var userDetailList = context.UserDetails
+                    .Where(u => userIds.Contains(u.UserId))
+                    .ToListAsync();
+
+                    return userDetailList;
+                }
+			}
+			catch (Exception ex)
+			{
+				throw new Exception(ex.Message);
+			}
+		}
+	}
 }

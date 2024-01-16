@@ -5,15 +5,18 @@ using X.PagedList;
 using Microsoft.AspNetCore.Authorization;
 using ProjectWebMVC.Areas.User.Services;
 using System.Security.Claims;
+using System.Security.Cryptography.Pkcs;
+using System.Text;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 
 namespace ProjectWebMVC.Areas.User.Controllers
 {
 
-	[Area("User")]
-	[Authorize(Roles = "User")]
-	[Authorize(AuthenticationSchemes = "User")]
-	public class ContestsListController : Controller
-	{
+    [Area("User")]
+    [Authorize(Roles = "User")]
+    [Authorize(AuthenticationSchemes = "User")]
+    public class ContestsListController : Controller
+    {
         private readonly INotificationService notificationService;
 
         public ContestsListController(INotificationService notificationService)
@@ -23,9 +26,9 @@ namespace ProjectWebMVC.Areas.User.Controllers
         //private readonly HttpClient _httpClient;
         //private string _userApiUrl = "";
         public async Task<IActionResult> Index(string? searchString, int? page)
-		{
+        {
 
-			HttpClient client = new HttpClient();
+            HttpClient client = new HttpClient();
             //Current User
             var user = User as ClaimsPrincipal;
             var userName = user?.FindFirstValue(ClaimTypes.Name);
@@ -33,14 +36,14 @@ namespace ProjectWebMVC.Areas.User.Controllers
 
             //Contest
             var contestData = await client.GetAsync("https://localhost:7269/api/Contest");
-			var contestDataRead = await contestData.Content.ReadAsStringAsync();
-			var contestDataJson = JsonConvert.DeserializeObject<IEnumerable<Contest>>(contestDataRead);
-			
-			//Phan trang
-			var pageNumber = page ?? 1;
+            var contestDataRead = await contestData.Content.ReadAsStringAsync();
+            var contestDataJson = JsonConvert.DeserializeObject<IEnumerable<Contest>>(contestDataRead);
 
-			//Search string
-			var Search = searchString ?? "";
+            //Phan trang
+            var pageNumber = page ?? 1;
+
+            //Search string
+            var Search = searchString ?? "";
 
             //Recipe
             var recipeData = await client.GetAsync("https://localhost:7269/api/Recipe");
@@ -56,7 +59,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
             ViewBag.UserId = userId;
 
             return View();
-		}
+        }
 
 
         public async Task<IActionResult> ViewRecipe(int? contestId)
@@ -72,7 +75,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
             var recipeDataRead = await recipeData.Content.ReadAsStringAsync();
             var recipeDataJson = JsonConvert.DeserializeObject<IEnumerable<Recipe>>(recipeDataRead);
             //Xử lý recipe theo contestId
-            var recipeList = recipeDataJson.Where(x =>  x.ContestId == contestId && x.Creator.ToString() == userId).ToList();
+            var recipeList = recipeDataJson.Where(x => x.ContestId == contestId && x.Creator.ToString() == userId).ToList();
             var recID = recipeList.FirstOrDefault().RecipeId;
 
             return RedirectToAction("Index", "Recipe", new { recipeID = recID });
@@ -114,6 +117,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
                       (recipe, rating) => new
                       {
                           RecipeId = recipe.RecipeId,
+                          contestId = contestId,
                           Createdate = recipe.CreateDate,
                           RecipeTitle = recipe.RecipeTitle,
                           ImageTitle = recipe.ImageTitle,
@@ -128,6 +132,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
                       (recipe, rating) => new
                       {
                           RecipeId = recipe.RecipeId,
+                          ContestId = contestId,
                           Createdate = recipe.Createdate,
                           RecipeTitle = recipe.RecipeTitle,
                           ImageTitle = recipe.ImageTitle,
@@ -137,16 +142,12 @@ namespace ProjectWebMVC.Areas.User.Controllers
                       })
                 .OrderByDescending(r => r.TotalVote)
                 .OrderBy(r => r.Createdate);
-            //string RecipeDataJson = JsonConvert.SerializeObject(RecipeData);
-            //var RecipeDataList = JsonConvert.DeserializeObject<List<object>>(RecipeDataJson);
 
+            var recID = RecipeData.FirstOrDefault()?.RecipeId;
 
-
-
-
-            var recID = RecipeData.FirstOrDefault().RecipeId;
             return RedirectToAction("Index", "Recipe", new { recipeID = recID });
         }
+
 
 
     }

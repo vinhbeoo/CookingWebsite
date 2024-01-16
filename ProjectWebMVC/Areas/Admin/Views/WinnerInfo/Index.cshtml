@@ -76,6 +76,9 @@
                 </tr>
             </thead>
             <tbody>
+                @{
+                    var linkCreated = false;
+                }
                 @foreach (var item in Model)
                 {
                     <tr>
@@ -86,7 +89,19 @@
                             @Html.DisplayFor(modelItem => item.ContestId)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.WinnerUserId)
+                            @{
+                                var detailsLink = Html.ActionLink(item.WinnerUserId.ToString(), "Details", "UserDetail", new { id = item.WinnerUserId }, null);
+                                if (detailsLink != null)
+                                {
+                                    linkCreated = true;
+                                    @detailsLink
+                                }
+                                else
+                                {
+                                    // Nếu không tạo được ActionLink, set linkCreated về false
+                                    linkCreated = false;
+                                }
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.WinningDate)

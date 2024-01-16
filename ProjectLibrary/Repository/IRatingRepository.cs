@@ -14,6 +14,7 @@ namespace ProjectLibrary.Repository
         void SaveRating(Rating r);
         Rating GetRatingById(int id);
         Rating GetRatingByUserAndRecipeId(int user, int recipeId);
+        List<Rating> GetRatingByContestId(int contestId);
         void DeleteRating(Rating r);
         void UpdateRating(Rating r);
     }

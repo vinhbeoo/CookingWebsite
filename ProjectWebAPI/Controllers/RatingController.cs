@@ -54,9 +54,11 @@ namespace ProjectWebAPI.Controllers
             // Chuyển đổi từ DTO sang đối tượng Contest
             var newRating = new Rating
             {
+                ContestId = ratingDTO.ContestId,
                 RatingId = ratingDTO.RatingId,
                 UserId = ratingDTO.UserId,
                 RecipeId = ratingDTO.RecipeId,
+                CreateDate = ratingDTO.CreateDate,
                 Vote = ratingDTO.Vote,
             };
 
@@ -84,9 +86,11 @@ namespace ProjectWebAPI.Controllers
             }
 
             // Cập nhật thông tin cuộc thi từ DTO
+            existingRating.ContestId = updatedRatingDTO.ContestId;
             existingRating.RatingId = updatedRatingDTO.RatingId;
             existingRating.UserId = updatedRatingDTO.UserId;
             existingRating.RecipeId = updatedRatingDTO.RecipeId;
+            existingRating.CreateDate = updatedRatingDTO.CreateDate;
             existingRating.Vote = updatedRatingDTO.Vote;
 
             // Gọi dịch vụ để lưu thay đổi vào cơ sở dữ liệu
@@ -110,7 +114,7 @@ namespace ProjectWebAPI.Controllers
             return Ok("Rating Delete successfully");
         }
 
-        // DELETE by user and recid
+        // DELETE by user and recipe
         [HttpDelete("{user}/{recipeId}")]
         public IActionResult DeleteRatingByUserAndRecipeId(int user, int recipeId)
         {

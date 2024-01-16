@@ -11,6 +11,7 @@ namespace ProjectLibrary.Repository
     {
         List<WinnerInfo> GetWinnerInfos();
         WinnerInfo GetWinnerInfoById(int id);
+        WinnerInfo GetWinnerInfoByContestId(int contestId);
         void SaveWinnerInfo(WinnerInfo winner);
         void UpdateWinnerInfo(WinnerInfo winner);
         void DeleteWinnerInfo(WinnerInfo winner);
