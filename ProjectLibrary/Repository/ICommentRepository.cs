@@ -13,6 +13,7 @@ namespace ProjectLibrary.Repository
         List<Comment> GetComments(int recipeId);
         void SaveComment(Comment comment);
         Comment GetCommentById(int id);
+        Comment GetCommentByRecId(int RecId);
         void DeleteComment(Comment comment);
         void UpdateComment(Comment comment);
     }

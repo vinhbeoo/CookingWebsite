@@ -86,6 +86,27 @@ namespace ProjectLibrary.DataAccess
             return rating;
         }
 
+        public Rating GetRatingByRecId(int recipeId)
+        {
+            Rating rating = new Rating();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    rating = context.Ratings.FirstOrDefault(x => x.RecipeId == recipeId);
+                }
+                //if (rating == null)
+                //{
+                //    throw new Exception("Contest doesn't exists");
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return rating;
+        }
+
         public Rating GetRatingByUserAndRecipeId(int user, int recipeId)
         {
             Rating rating = new Rating();

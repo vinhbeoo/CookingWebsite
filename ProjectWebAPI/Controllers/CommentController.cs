@@ -112,5 +112,22 @@ namespace ProjectWebAPI.Controllers
 
             return Ok("Comment deleted successfully");
 		}
-	}
+
+        // DELETE By Recipe
+        [HttpDelete("DelByRecId/{recipeId}")]
+        public IActionResult DeleteCommentByRecipe(int recipeId)
+        {
+            var comment = repository.GetCommentByRecId(recipeId);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            repository.DeleteComment(comment);
+
+            //Hàm ghi log UserActivity
+            LogUserActivity.LogCommentActivity(comment.UserId, comment.CommentId, "Delete", "Delete a comment");
+
+            return Ok("Comment deleted successfully");
+        }
+    }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using ProjectWebMVC.Areas.User.Services;
 using System.Security.Claims;
 using System.Net;
+using System.Net.Http;
 
 namespace ProjectWebMVC.Areas.User.Controllers
 {
@@ -25,6 +26,19 @@ namespace ProjectWebMVC.Areas.User.Controllers
         {
 
             HttpClient client = new HttpClient();
+            //Current User
+            var user = User as ClaimsPrincipal;
+            var userName = user?.FindFirstValue(ClaimTypes.Name);
+            var userId = user?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var userData = await client.GetAsync("https://localhost:7269/api/User");
+            var userDataRead = await userData.Content.ReadAsStringAsync();
+            var userDataJson = JsonConvert.DeserializeObject<IEnumerable<ProjectLibrary.ObjectBussiness.User>>(userDataRead);
+            //Xử lý lấy thông tin user theo userId
+            var UserList = userDataJson.Where(x => x.UserId.ToString() == userId).ToList();
+            // lấy usertype -- 1 member -- 2 free
+            var usertype = UserList.FirstOrDefault().UserType;
+
             //Recipe
             var recipeData = await client.GetAsync("https://localhost:7269/api/Recipe");
             var recipeDataRead = await recipeData.Content.ReadAsStringAsync();
@@ -44,6 +58,7 @@ namespace ProjectWebMVC.Areas.User.Controllers
             ViewBag.Recipe = recipeDataJson.Where(x => x.RecipeTitle.Contains(Search)).ToList().ToPagedList(pageNumber, 6);
             ViewBag.Category = categoryDataJson;
             ViewBag.Notifications = await this.notificationService.GetAsync();
+            ViewBag.UserType = usertype;
             return View();
         }
 
@@ -113,5 +128,56 @@ namespace ProjectWebMVC.Areas.User.Controllers
 			}
 		}
 
-	}
+        public async Task<IActionResult> DeleteRecipe(int? recipeId)
+        {
+            try
+            {
+                HttpClient client = new HttpClient();
+                string ApiUrl = "https://localhost:7269/api/";
+
+                HttpResponseMessage response1 = await client.DeleteAsync(ApiUrl + "Comment/DelByRecId/" + recipeId.ToString());
+                if (!response1.IsSuccessStatusCode)
+                {
+                    // Xử lý lỗi 
+                }
+                HttpResponseMessage response2 = await client.DeleteAsync(ApiUrl + "RecipesStep/" + recipeId.ToString());
+                if (!response2.IsSuccessStatusCode)
+                {
+                    // Xử lý lỗi 
+                }
+                HttpResponseMessage response3 = await client.DeleteAsync(ApiUrl + "IngredientGroup/DelByRecId/" + recipeId.ToString());
+                if (!response3.IsSuccessStatusCode)
+                {
+                    // Xử lý lỗi 
+                }
+                HttpResponseMessage response4 = await client.DeleteAsync(ApiUrl + "Rating/DelByRecId/" + recipeId.ToString());
+                if (!response4.IsSuccessStatusCode)
+                {
+                    // Xử lý lỗi 
+                }
+                HttpResponseMessage response5 = await client.DeleteAsync(ApiUrl + "Recipe/" + recipeId.ToString());
+                if (!response5.IsSuccessStatusCode)
+                {
+                    // Xử lý lỗi 
+                }
+                //if (response.IsSuccessStatusCode)
+                //{
+                return RedirectToAction("UserIndex");
+                //}
+                //else
+                //{
+                //    return View("Error");
+                //}
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, set an error message, etc.
+                TempData["ErrorMessage"] = "An error occurred while saving the comment.";
+            }
+
+
+            return RedirectToAction("UserIndex");
+        }
+
+    }
 }

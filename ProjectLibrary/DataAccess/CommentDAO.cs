@@ -90,7 +90,27 @@ namespace ProjectLibrary.DataAccess
 			}
 			return comment;
 		}
-
+        // get comment theo id recipe
+        public Comment FindCommentByRecId(int recipeId)
+        {
+            Comment comment = new Comment();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    comment = context.Comments.FirstOrDefault(x => x.RecipeId == recipeId);
+                }
+                //if (comment == null)
+                //{
+                //    throw new Exception("Comment not found");
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return comment;
+        }
         // insert comment 
         public void SaveComment(Comment comment)
         {

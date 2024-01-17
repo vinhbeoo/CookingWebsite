@@ -53,10 +53,10 @@ namespace ProjectLibrary.DataAccess
 				{
 					recipesStep = context.RecipesSteps.FirstOrDefault(x => x.RecipeId == id);
 				}
-				if (recipesStep == null)
-				{
-					throw new Exception("Recipes step doesn't exist");
-				}
+				//if (recipesStep == null)
+				//{
+				//	throw new Exception("Recipes step doesn't exist");
+				//}
 			}
 			catch (Exception ex)
 			{

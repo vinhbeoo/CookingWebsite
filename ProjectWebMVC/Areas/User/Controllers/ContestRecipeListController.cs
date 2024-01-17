@@ -130,8 +130,9 @@ namespace ProjectWebMVC.Areas.User.Controllers
                     UserId = int.Parse(userId.ToString()),
                     RecipeId = recipeId,
                     ContestId = contestId,
+                    CreateDate = DateTime.Now,
                     Vote = vote
-                });
+                }); ;
                 foreach (var rate in ratingList)
                 {
                     string strData = JsonSerializer.Serialize(rate);
