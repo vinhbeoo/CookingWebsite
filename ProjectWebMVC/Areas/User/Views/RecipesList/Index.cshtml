@@ -6,7 +6,9 @@
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
     var recipes = ViewBag.Recipe;
     var categories = ViewBag.Category;
+    var usertype = ViewBag.UserType;
     var recipesCount = ViewBag.Recipe.Count;
+
 }
 
 <head>
@@ -52,16 +54,42 @@
                     <div class="recipe-container">
                         <div class="row">
                             <div class="col-md-4 d-flex align-items-center">
-                                <img src="@recipe.ImageTitle" class="img-responsive img-circle" style="width: 120px; height: 120px;">
+                                <div class="img-circle-container" style="width: 190px; height: 180px; background-color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <img src="@recipe.ImageTitle" class="img-responsive img-circle" style="width: 180px; height: 170px; border-radius: 50%;">
+                                </div>
                             </div>
                             <div class="col-md-8 text-md-left">
                                 @{
                                     string recTitle = @recipe.RecipeTitle;
+                                    bool free = @recipe.ReadFree;
                                 }
-                                <h1 style="color: white; font-size: 24px;">
-                                    @Html.ActionLink(recTitle, "Index", "Recipe", new { recipeId = @recipe.RecipeId }, new { style = "color: white; text-decoration: none;", target = "_blank" })
-                                </h1>
-                                <p>@Truncate(recipe.Description, 50)</p>
+                                @if (usertype == 0)
+                                {
+                                    @if (free == false)
+                                    {
+                                        <h1 style="color: white; font-size: 24px; color: white; text-decoration: none;">
+                                            @recTitle
+                                        </h1>
+                                        <p>@Truncate(recipe.Description, 50)</p>
+                                        <button type="button" class="btn btn-danger" disabled>You need to be a member to view this recipe</button>
+                                    }
+                                    else
+                                    {
+                                        <h1 style="color: white; font-size: 24px;">
+                                            @Html.ActionLink(recTitle, "Index", "Recipe", new { recipeId = @recipe.RecipeId }, new { style = "color: white; text-decoration: none;", target = "_blank" })
+                                        </h1>
+                                        <p>@Truncate(recipe.Description, 50)</p>
+
+                                    }
+                                }
+                                else
+                                {
+                                    <h1 style="color: white; font-size: 24px;">
+                                        @Html.ActionLink(recTitle, "Index", "Recipe", new { recipeId = @recipe.RecipeId }, new { style = "color: white; text-decoration: none;", target = "_blank" })
+                                    </h1>
+                                    <p>@Truncate(recipe.Description, 50)</p>
+
+                                }
                             </div>
                         </div>
                     </div>

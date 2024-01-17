@@ -57,15 +57,15 @@ namespace ProjectWebMVC.Controllers
 			rec.CreateDate = DateTime.Now;
 			rec.ReadFree = false;
 
-            // Trong action SaveRecipe
-            int contestId = (int)TempData["ContestId"];
-            int categoryId = (int)TempData["CategoryId"];
+   //         // Trong action SaveRecipe
+   //         int contestId = (int)TempData["ContestId"];
+   //         int categoryId = (int)TempData["CategoryId"];
 
-			if(contestId != null || categoryId != null)
-			{
-                rec.ContestId = contestId;
-                rec.CategoryId = categoryId;
-            }	
+			//if(contestId != null || categoryId != null)
+			//{
+   //             rec.ContestId = contestId;
+   //             rec.CategoryId = categoryId;
+   //         }	
             
             // add vào bảng recipe
             string strData = JsonSerializer.Serialize(rec);

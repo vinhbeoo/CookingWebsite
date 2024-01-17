@@ -12,7 +12,8 @@ namespace ProjectLibrary.Repository
     {
         public List<IngredientsGroup> GetIngredientsGroups() => IngredientsGroupDAO.Instance.GetIngredientsGroups();
         public IngredientsGroup GetIngredientsGroupById(int id) => IngredientsGroupDAO.Instance.GetIngredientsGroupById(id);
-		public List<IngredientsGroup> GetIngredientsGroupsByRecipeId(int RecipeId) => IngredientsGroupDAO.Instance.GetIngredientsGroupsByRecipeId(RecipeId);
+        public IngredientsGroup GetIngredientsGroupByRecId(int RecipeId) => IngredientsGroupDAO.Instance.GetIngredientsGroupByRecId(RecipeId);
+        public List<IngredientsGroup> GetIngredientsGroupsByRecipeId(int RecipeId) => IngredientsGroupDAO.Instance.GetIngredientsGroupsByRecipeId(RecipeId);
 		public void SaveIngredientsGroup(IngredientsGroup ingredientsGroup) => IngredientsGroupDAO.Instance.SaveIngredientsGroup(ingredientsGroup);
         public void UpdateIngredientsGroup(IngredientsGroup ingredientsGroup) => IngredientsGroupDAO.Instance.UpdateIngredientsGroup(ingredientsGroup);
         public void DeleteIngredientsGroup(IngredientsGroup ingredientsGroup) => IngredientsGroupDAO.Instance.DeleteIngredientsGroup(ingredientsGroup);

@@ -95,6 +95,7 @@
                                         <select asp-for="@Model.CategoryId" asp-items="@ViewBag.Category" class="form-control" style="font-size: 16px;" disabled>
                                             <option value="">-- Select Category --</option>
                                         </select>
+                                        <input type="hidden" asp-for="@Model.CategoryId" />
                                     }
 
                                     <span asp-validation-for="@Model.CategoryId" class="text-danger"></span>
@@ -194,6 +195,7 @@
                             <select asp-for="@Model.ContestId" asp-items="@ViewBag.Contest" class="form-control" style="font-size: 16px; height: 40px;" disabled>
                                 <option value="">-- Select Category --</option>
                             </select>
+                            <input type="hidden" asp-for="@Model.ContestId" />
                         }
                         
                         <span asp-validation-for="@Model.ContestId" class="text-danger"></span>
@@ -244,7 +246,7 @@
 
             $("#addStepBtn").on("click", function (e) {
                 e.preventDefault();
-                //$(".removeStepBtn").hide();
+                $(".removeStepBtn").hide();
                 var step = counter + 1
                 // Tạo textbox mới và thêm vào container
                 var newTextBox = $(
@@ -274,6 +276,9 @@
                 );
                 $("#textBoxContainer").append(newTextBox);
 
+                // Chỉ hiển thị nút "DELETE STEP" của bước gần nhất
+                newTextBox.find(".removeStepBtn").show();
+
                 counter++;
             });
 
@@ -284,8 +289,9 @@
                     removedStep.remove();
                     counter--;
 
+                    // Hiển thị nút "DELETE STEP" của bước gần nhất
                     if (counter >= 0) {
-                        $(".removeStepBtn").show();
+                        $("#textBoxContainer .input-group:last-child .removeStepBtn").show();
                     }
 
                 }

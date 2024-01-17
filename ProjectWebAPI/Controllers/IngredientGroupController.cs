@@ -96,5 +96,18 @@ namespace ProjectWebAPI.Controllers
 			repository.DeleteIngredientsGroup(temp);
 			return NoContent();
 		}
-	}
+
+        // DELETE api/<TypeController>/5
+        [HttpDelete("DelByRecId/{recipeId}")]
+        public IActionResult DeleteIngredientsGroupByRecipe(int recipeId)
+        {
+            var temp = repository.GetIngredientsGroupByRecId(recipeId);
+            if (temp == null)
+            {
+                return NotFound();
+            }
+            repository.DeleteIngredientsGroup(temp);
+            return NoContent();
+        }
+    }
 }

@@ -52,7 +52,9 @@
                     <div class="recipe-container">
                         <div class="row">
                             <div class="col-md-4 d-flex align-items-center">
-                                <img src="@recipe.ImageTitle" class="img-responsive img-circle" style="width: 120px; height: 120px;">
+                                <div class="img-circle-container" style="width: 190px; height: 180px; background-color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <img src="@recipe.ImageTitle" class="img-responsive img-circle" style="width: 180px; height: 170px; border-radius: 50%;">
+                                </div>
                             </div>
                             <div class="col-md-8 text-md-left">
                                 @{
@@ -61,16 +63,19 @@
                                 <h1 style="color: white; font-size: 24px;">
                                     <span>
                                         @Html.ActionLink(recTitle, "DetailRecipe", "Recipe", new { recipeId = @recipe.RecipeId }, new { style = "color: white; text-decoration: none;" })
-                                        <a href="@Url.Action("DetailRecipe", "Recipe", new { recipeId = @recipe.RecipeId })" title="Detail Recipe">
-                                            <img src="~/User/images/detailIcon.png" alt="DetailRecipe" style="width: 20px; height: 20px;" class="ml-2">
-                                        </a>
-
-                                        <a href="@Url.Action("EditRecipe", "Recipe", new { recipeId = @recipe.RecipeId })" title="Edit Recipe">
-                                            <img src="~/User/images/edit.png" alt="EditRecipe" style="width: 20px; height: 20px;" class="ml-2">
-                                        </a>
                                     </span>
                                 </h1>
                                 <p>@Truncate(recipe.Description, 50)</p>
+                                <a href="@Url.Action("DetailRecipe", "Recipe", new { recipeId = @recipe.RecipeId })" class="btn btn-primary" target="_blank">
+                                    <i class="glyphicon glyphicon-eye-open"></i> View
+                                </a>
+                                <a href="@Url.Action("EditRecipe", "Recipe", new { recipeId = @recipe.RecipeId })" class="btn btn-warning" target="_blank">
+                                    <i class="glyphicon glyphicon-eye-open"></i> Edit
+                                </a>
+                                <a href="@Url.Action("DeleteRecipe", "RecipesList", new { recipeId = @recipe.RecipeId })" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this recipe?');" >
+                                    <i class="glyphicon glyphicon-eye-open"></i> Delete
+                                </a>
+                     
                             </div>
                         </div>
                     </div>

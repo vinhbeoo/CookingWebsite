@@ -64,8 +64,27 @@ namespace ProjectLibrary.DataAccess
 			}
 			return ingredientsGroup;
 		}
-
-		public List<IngredientsGroup> GetIngredientsGroupsByRecipeId(int RecipeId)
+        public IngredientsGroup GetIngredientsGroupByRecId(int RecipeId)
+        {
+            IngredientsGroup ingredientsGroup = new IngredientsGroup();
+            try
+            {
+                using (var context = new CookingWebsiteContext())
+                {
+                    ingredientsGroup = context.IngredientsGroups.FirstOrDefault(x => x.RecipeId == RecipeId);
+                }
+                //if (ingredientsGroup == null)
+                //{
+                //    throw new Exception("Ingredients group doesn't exist");
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return ingredientsGroup;
+        }
+        public List<IngredientsGroup> GetIngredientsGroupsByRecipeId(int RecipeId)
 		{
 			var list = new List<IngredientsGroup>();
 			try
